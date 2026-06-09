@@ -1,0 +1,33 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">Mis Favoritos</h1>
+
+    <!-- Favorites Grid -->
+    @if (favorites.length > 0) {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (job of favorites; track job.slug) {
+          <app-job-card [job]="job"></app-job-card>
+        }
+      </div>
+    }
+
+    <!-- Empty State -->
+    @if (favorites.length === 0) {
+      <app-empty-state 
+        message="Aún no tienes vacantes favoritas"
+        icon="⭐">
+      </app-empty-state>
+    }
+
+    <!-- Clear All Button -->
+    @if (favorites.length > 0) {
+      <div class="text-center mt-8">
+        <button 
+          (click)="clearAllFavorites()"
+          class="px-6 py-3 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors">
+          Limpiar todos los favoritos
+        </button>
+      </div>
+    }
+  </div>
+</div>

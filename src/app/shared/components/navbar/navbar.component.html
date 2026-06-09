@@ -1,0 +1,56 @@
+<nav class="bg-white shadow-lg">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex justify-between h-16">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <a routerLink="/" class="text-2xl font-bold text-blue-600">
+          TechHire
+        </a>
+      </div>
+
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center space-x-8">
+        <a routerLink="/jobs" 
+           class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+           routerLinkActive="text-blue-600">
+          Vacantes
+        </a>
+        <a routerLink="/favorites" 
+           class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium"
+           routerLinkActive="text-blue-600">
+          Favoritos
+        </a>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden flex items-center">
+        <button (click)="toggleMenu()" 
+                class="text-gray-700 hover:text-blue-600 focus:outline-none">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            @if (!isMenuOpen) {
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            } @else {
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            }
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    @if (isMenuOpen) {
+      <div class="md:hidden pb-4">
+        <a routerLink="/jobs" 
+           class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium"
+           (click)="isMenuOpen = false">
+          Vacantes
+        </a>
+        <a routerLink="/favorites" 
+           class="block text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium"
+           (click)="isMenuOpen = false">
+          Favoritos
+        </a>
+      </div>
+    }
+  </div>
+</nav>

@@ -40,6 +40,11 @@ export class FavoriteService {
     this.saveFavoritesToStorage(favorites);
   }
 
+  clearFavorites(): void {
+    this.favoritesSubject.next([]);
+    this.saveFavoritesToStorage([]);
+  }
+
   isFavorite(slug: string): boolean {
     return this.getFavorites().some(job => job.slug === slug);
   }
