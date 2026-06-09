@@ -17,6 +17,7 @@ export class JobDetailComponent implements OnInit {
   job: Job | undefined;
   loading = true;
   isFavorite = false;
+  error: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,20 +27,33 @@ export class JobDetailComponent implements OnInit {
 
   ngOnInit(): void {
     const slug = this.route.snapshot.paramMap.get('slug');
+    console.log('📋 Job detail for slug:', slug);
+    
     if (slug) {
       this.loadJobDetails(slug);
+    } else {
+      this.error = 'No se encontró el identificador de la vacante';
+      this.loading = false;
     }
   }
 
-  private loadJobDetails(slug: string): void {
+  loadJobDetails(slug: string): void {
+    console.log('🔍 Loading details for:', slug);
+    this.loading = true;
+    this.error = null;
+    
     this.jobService.getJobBySlug(slug).subscribe({
       next: (job) => {
+        console.log('✅ Job details loaded:', job?.title);
         this.job = job;
-        this.isFavorite = this.favoriteService.isFavorite(slug);
+        if (job) {
+          this.isFavorite = this.favoriteService.isFavorite(slug);
+        }
         this.loading = false;
       },
       error: (error) => {
-        console.error('Error loading job details:', error);
+        console.error('❌ Error loading job details:', error);
+        this.error = 'Error al cargar los detalles de la vacante';
         this.loading = false;
       }
     });
@@ -49,6 +63,7 @@ export class JobDetailComponent implements OnInit {
     if (this.job) {
       this.favoriteService.toggleFavorite(this.job);
       this.isFavorite = !this.isFavorite;
+      console.log('⭐ Favorite toggled:', this.isFavorite);
     }
   }
 

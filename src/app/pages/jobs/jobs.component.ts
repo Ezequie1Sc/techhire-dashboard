@@ -10,13 +10,20 @@ import { EmptyStateComponent } from '../../shared/components/empty-state/empty-s
 @Component({
   selector: 'app-jobs',
   standalone: true,
-  imports: [CommonModule, FormsModule, JobCardComponent, LoaderComponent, EmptyStateComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    JobCardComponent,
+    LoaderComponent,
+    EmptyStateComponent
+  ],
   templateUrl: './jobs.component.html',
   styleUrls: ['./jobs.component.css']
 })
 export class JobsComponent implements OnInit {
   jobs: Job[] = [];
-  loading = true;
+  loading = false;
+  error: string | null = null;
   searchTerm = '';
   currentPage = 1;
   totalPages = 1;
@@ -29,52 +36,65 @@ export class JobsComponent implements OnInit {
 
   loadJobs(): void {
     this.loading = true;
+    this.error = null;
+
     this.jobService.getJobs(this.currentPage).subscribe({
       next: (response: JobResponse) => {
-        this.jobs = response.data;
+        this.jobs = response.data || [];
         this.totalPages = response.meta?.last_page || 1;
         this.loading = false;
       },
-      error: (error) => {
-        console.error('Error loading jobs:', error);
+      error: () => {
+        this.error = 'Error al cargar las vacantes. Intenta de nuevo.';
         this.loading = false;
       }
     });
   }
 
   search(): void {
-    this.loading = true;
-    this.currentPage = 1;
-    
-    if (this.searchTerm.trim()) {
-      this.jobService.searchJobs(this.searchTerm).subscribe({
-        next: (response: JobResponse) => {
-          this.jobs = response.data;
-          this.totalPages = response.meta?.last_page || 1;
-          this.loading = false;
-        },
-        error: (error) => {
-          console.error('Error searching jobs:', error);
-          this.loading = false;
-        }
-      });
-    } else {
+    const term = this.searchTerm.trim();
+
+    if (!term) {
+      this.currentPage = 1;
       this.loadJobs();
+      return;
     }
+
+    this.loading = true;
+    this.error = null;
+    this.currentPage = 1;
+
+    this.jobService.searchJobs(term).subscribe({
+      next: (response: JobResponse) => {
+        this.jobs = response.data || [];
+        this.totalPages = 1;
+        this.loading = false;
+      },
+      error: () => {
+        this.error = 'Error en la búsqueda. Intenta con otro término.';
+        this.loading = false;
+      }
+    });
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.currentPage = 1;
+    this.loadJobs();
   }
 
   nextPage(): void {
-    if (this.currentPage < this.totalPages) {
+    if (this.currentPage < this.totalPages && !this.searchTerm.trim()) {
       this.currentPage++;
-      this.searchTerm ? this.search() : this.loadJobs();
+      this.loadJobs();
       window.scrollTo(0, 0);
     }
   }
 
   previousPage(): void {
-    if (this.currentPage > 1) {
+    if (this.currentPage > 1 && !this.searchTerm.trim()) {
       this.currentPage--;
-      this.searchTerm ? this.search() : this.loadJobs();
+      this.loadJobs();
       window.scrollTo(0, 0);
     }
   }

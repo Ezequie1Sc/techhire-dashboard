@@ -27,11 +27,25 @@
       Últimas Vacantes Publicadas
     </h2>
     
+    <!-- Loading State -->
     @if (loading) {
       <app-loader></app-loader>
     }
     
-    @if (!loading) {
+    <!-- Error State -->
+    @if (error) {
+      <div class="text-center py-8">
+        <div class="text-red-500 text-xl mb-4">😕</div>
+        <p class="text-red-600">{{ error }}</p>
+        <button (click)="loadLatestJobs()" 
+                class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+          Reintentar
+        </button>
+      </div>
+    }
+    
+    <!-- Jobs Grid -->
+    @if (!loading && !error && latestJobs.length > 0) {
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @for (job of latestJobs; track job.slug) {
           <app-job-card [job]="job"></app-job-card>
@@ -39,11 +53,20 @@
       </div>
     }
     
-    <div class="text-center mt-8">
-      <a routerLink="/jobs" 
-         class="text-blue-600 hover:text-blue-800 font-semibold">
-        Ver todas las vacantes →
-      </a>
-    </div>
+    <!-- No Jobs -->
+    @if (!loading && !error && latestJobs.length === 0) {
+      <div class="text-center py-8">
+        <p class="text-gray-600">No hay vacantes disponibles en este momento.</p>
+      </div>
+    }
+    
+    @if (latestJobs.length > 0) {
+      <div class="text-center mt-8">
+        <a routerLink="/jobs" 
+           class="text-blue-600 hover:text-blue-800 font-semibold">
+          Ver todas las vacantes →
+        </a>
+      </div>
+    }
   </section>
 </div>
