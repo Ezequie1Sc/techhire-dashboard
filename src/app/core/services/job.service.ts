@@ -1,28 +1,31 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, map, catchError, of } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 import { Job, JobResponse } from '../../models/job.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class JobService {
-  private apiUrl = 'https://www.arbeitnow.com/api/job-board-api';
+  private apiUrl = '/api/jobs';
 
   constructor(private http: HttpClient) {}
 
   getJobs(page: number = 1): Observable<JobResponse> {
     return this.http.get<JobResponse>(`${this.apiUrl}?page=${page}`).pipe(
-      catchError(this.handleError)
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error al cargar empleos:', error);
+        return of(this.emptyResponse());
+      })
     );
   }
 
   searchJobs(keyword: string): Observable<JobResponse> {
     const cleanKeyword = keyword.toLowerCase().trim();
 
-    return this.getJobs(1).pipe(
+    return this.http.get<JobResponse>(`${this.apiUrl}?page=1`).pipe(
       map((response: JobResponse) => {
-        const filteredData = response.data.filter((job: Job) => {
+        const filteredJobs = (response.data || []).filter((job: Job) => {
           const title = job.title?.toLowerCase() || '';
           const company = job.company_name?.toLowerCase() || '';
           const location = job.location?.toLowerCase() || '';
@@ -41,36 +44,40 @@ export class JobService {
         });
 
         return {
-          ...response,
-          data: filteredData,
+          data: filteredJobs,
+          links: response.links,
           meta: {
-            ...response.meta!,
             current_page: 1,
+            from: filteredJobs.length > 0 ? 1 : 0,
             last_page: 1,
-            total: filteredData.length
+            path: response.meta?.path || '',
+            per_page: filteredJobs.length,
+            to: filteredJobs.length,
+            total: filteredJobs.length
           }
         };
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error('Error en búsqueda:', error);
-        return of({ data: [] } as JobResponse);
+        console.error('Error al buscar empleos:', error);
+        return of(this.emptyResponse());
       })
     );
   }
 
   getJobBySlug(slug: string): Observable<Job | undefined> {
-    return this.getJobs(1).pipe(
-      map((response: JobResponse) =>
-        response.data.find((job: Job) => job.slug === slug)
-      ),
-      catchError(() => of(undefined))
+    return this.http.get<JobResponse>(`${this.apiUrl}?page=1`).pipe(
+      map((response: JobResponse) => {
+        return (response.data || []).find((job: Job) => job.slug === slug);
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error al buscar detalle del empleo:', error);
+        return of(undefined);
+      })
     );
   }
 
-  private handleError(error: HttpErrorResponse): Observable<JobResponse> {
-    console.error('Error al cargar empleos:', error);
-
-    return of({
+  private emptyResponse(): JobResponse {
+    return {
       data: [],
       links: {
         first: '',
@@ -87,6 +94,6 @@ export class JobService {
         to: 0,
         total: 0
       }
-    });
+    };
   }
 }

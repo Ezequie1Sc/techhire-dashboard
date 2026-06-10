@@ -40,12 +40,16 @@ export class JobsComponent implements OnInit {
 
     this.jobService.getJobs(this.currentPage).subscribe({
       next: (response: JobResponse) => {
-        this.jobs = response.data || [];
+        this.jobs = response.data;
         this.totalPages = response.meta?.last_page || 1;
         this.loading = false;
+
+        if (this.jobs.length === 0) {
+          this.error = 'No se encontraron vacantes.';
+        }
       },
       error: () => {
-        this.error = 'Error al cargar las vacantes. Intenta de nuevo.';
+        this.error = 'Error al cargar las vacantes.';
         this.loading = false;
       }
     });
@@ -62,16 +66,19 @@ export class JobsComponent implements OnInit {
 
     this.loading = true;
     this.error = null;
-    this.currentPage = 1;
 
     this.jobService.searchJobs(term).subscribe({
       next: (response: JobResponse) => {
-        this.jobs = response.data || [];
+        this.jobs = response.data;
         this.totalPages = 1;
         this.loading = false;
+
+        if (this.jobs.length === 0) {
+          this.error = `No se encontraron resultados para "${term}".`;
+        }
       },
       error: () => {
-        this.error = 'Error en la búsqueda. Intenta con otro término.';
+        this.error = 'Error al buscar vacantes.';
         this.loading = false;
       }
     });
