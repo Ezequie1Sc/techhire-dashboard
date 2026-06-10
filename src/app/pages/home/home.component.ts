@@ -19,6 +19,17 @@ export class HomeComponent implements OnInit {
   loading = false;
   error: string | null = null;
 
+  techCategories = [
+    'Frontend',
+    'Backend',
+    'Mobile',
+    'Cloud',
+    'DevOps',
+    'Data',
+    'AI',
+    'Cybersecurity'
+  ];
+
   constructor(
     private jobService: JobService,
     private cdr: ChangeDetectorRef
@@ -43,7 +54,6 @@ export class HomeComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.latestJobs = (response.data || []).slice(0, 3);
-
           if (this.latestJobs.length === 0) {
             this.error = 'No se encontraron vacantes disponibles.';
           }
