@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { finalize } from 'rxjs';
 import { JobService } from '../../core/services/job.service';
 import { Job, JobResponse } from '../../models/job.model';
 import { JobCardComponent } from '../../shared/components/job-card/job-card.component';
@@ -21,14 +22,20 @@ import { EmptyStateComponent } from '../../shared/components/empty-state/empty-s
   styleUrls: ['./jobs.component.css']
 })
 export class JobsComponent implements OnInit {
+  allJobs: Job[] = [];
   jobs: Job[] = [];
+
   loading = false;
   error: string | null = null;
   searchTerm = '';
+
   currentPage = 1;
   totalPages = 1;
 
-  constructor(private jobService: JobService) {}
+  constructor(
+    private jobService: JobService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.loadJobs();
@@ -37,57 +44,67 @@ export class JobsComponent implements OnInit {
   loadJobs(): void {
     this.loading = true;
     this.error = null;
+    this.jobs = [];
 
-    this.jobService.getJobs(this.currentPage).subscribe({
-      next: (response: JobResponse) => {
-        this.jobs = response.data;
-        this.totalPages = response.meta?.last_page || 1;
-        this.loading = false;
+    this.jobService.getJobs(this.currentPage)
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: (response: JobResponse) => {
+          this.allJobs = response.data || [];
+          this.jobs = [...this.allJobs];
+          this.totalPages = response.meta?.last_page || 1;
 
-        if (this.jobs.length === 0) {
-          this.error = 'No se encontraron vacantes.';
+          if (this.jobs.length === 0) {
+            this.error = 'No se encontraron vacantes.';
+          }
+        },
+        error: () => {
+          this.error = 'Error al cargar las vacantes.';
         }
-      },
-      error: () => {
-        this.error = 'Error al cargar las vacantes.';
-        this.loading = false;
-      }
-    });
+      });
   }
 
   search(): void {
-    const term = this.searchTerm.trim();
+    const term = this.searchTerm.trim().toLowerCase();
+    this.error = null;
 
     if (!term) {
-      this.currentPage = 1;
-      this.loadJobs();
+      this.jobs = [...this.allJobs];
+      this.cdr.detectChanges();
       return;
     }
 
-    this.loading = true;
-    this.error = null;
+    this.jobs = this.allJobs.filter((job: Job) => {
+      const title = job.title?.toLowerCase() || '';
+      const company = job.company_name?.toLowerCase() || '';
+      const location = job.location?.toLowerCase() || '';
+      const description = job.description?.toLowerCase() || '';
+      const tags = job.tags?.join(' ').toLowerCase() || '';
+      const jobTypes = job.job_types?.join(' ').toLowerCase() || '';
 
-    this.jobService.searchJobs(term).subscribe({
-      next: (response: JobResponse) => {
-        this.jobs = response.data;
-        this.totalPages = 1;
-        this.loading = false;
-
-        if (this.jobs.length === 0) {
-          this.error = `No se encontraron resultados para "${term}".`;
-        }
-      },
-      error: () => {
-        this.error = 'Error al buscar vacantes.';
-        this.loading = false;
-      }
+      return (
+        title.includes(term) ||
+        company.includes(term) ||
+        location.includes(term) ||
+        description.includes(term) ||
+        tags.includes(term) ||
+        jobTypes.includes(term)
+      );
     });
+
+    this.cdr.detectChanges();
   }
 
   clearSearch(): void {
     this.searchTerm = '';
-    this.currentPage = 1;
-    this.loadJobs();
+    this.error = null;
+    this.jobs = [...this.allJobs];
+    this.cdr.detectChanges();
   }
 
   nextPage(): void {

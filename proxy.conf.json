@@ -1,6 +1,10 @@
 {
-  "/api/*": {
+  "/api/jobs": {
     "target": "https://www.arbeitnow.com",
-    "changeOrigin": true
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api/jobs": "/api/job-board-api"
+    }
   }
 }

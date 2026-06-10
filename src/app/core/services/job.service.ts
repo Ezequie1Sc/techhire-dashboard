@@ -7,24 +7,53 @@ import { Job, JobResponse } from '../../models/job.model';
   providedIn: 'root'
 })
 export class JobService {
-  private apiUrl = '/api/jobs';
+  // URL para usar con el proxy
+  
+private apiUrl = '/api/jobs';
 
   constructor(private http: HttpClient) {}
 
   getJobs(page: number = 1): Observable<JobResponse> {
+    console.log('🔍 Fetching jobs from:', `${this.apiUrl}?page=${page}`);
+    
     return this.http.get<JobResponse>(`${this.apiUrl}?page=${page}`).pipe(
+      map(response => {
+        console.log('✅ API Response received');
+        console.log('📊 Jobs count:', response.data?.length);
+        return response;
+      }),
       catchError((error: HttpErrorResponse) => {
-        console.error('Error al cargar empleos:', error);
-        return of(this.emptyResponse());
+        console.error('❌ Error fetching jobs:', error);
+        return of({
+          data: [],
+          links: {
+            first: '',
+            last: '',
+            prev: null,
+            next: null
+          },
+          meta: {
+            current_page: 1,
+            from: 0,
+            last_page: 1,
+            path: '',
+            per_page: 0,
+            to: 0,
+            total: 0
+          }
+        });
       })
     );
   }
 
   searchJobs(keyword: string): Observable<JobResponse> {
     const cleanKeyword = keyword.toLowerCase().trim();
+    console.log('🔍 Searching for:', cleanKeyword);
 
-    return this.http.get<JobResponse>(`${this.apiUrl}?page=1`).pipe(
+    return this.http.get<JobResponse>(`${this.apiUrl}`).pipe(
       map((response: JobResponse) => {
+        console.log('📊 Total jobs to filter:', response.data?.length);
+        
         const filteredJobs = (response.data || []).filter((job: Job) => {
           const title = job.title?.toLowerCase() || '';
           const company = job.company_name?.toLowerCase() || '';
@@ -43,6 +72,8 @@ export class JobService {
           );
         });
 
+        console.log('✅ Filtered results:', filteredJobs.length);
+        
         return {
           data: filteredJobs,
           links: response.links,
@@ -58,42 +89,37 @@ export class JobService {
         };
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error('Error al buscar empleos:', error);
-        return of(this.emptyResponse());
+        console.error('❌ Error searching jobs:', error);
+        return of({
+          data: [],
+          links: { first: '', last: '', prev: null, next: null },
+          meta: {
+            current_page: 1,
+            from: 0,
+            last_page: 1,
+            path: '',
+            per_page: 0,
+            to: 0,
+            total: 0
+          }
+        });
       })
     );
   }
 
   getJobBySlug(slug: string): Observable<Job | undefined> {
-    return this.http.get<JobResponse>(`${this.apiUrl}?page=1`).pipe(
+    console.log('🔍 Fetching job detail for slug:', slug);
+    
+    return this.http.get<JobResponse>(`${this.apiUrl}`).pipe(
       map((response: JobResponse) => {
-        return (response.data || []).find((job: Job) => job.slug === slug);
+        const job = (response.data || []).find((job: Job) => job.slug === slug);
+        console.log('✅ Job found:', job?.title || 'Not found');
+        return job;
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error('Error al buscar detalle del empleo:', error);
+        console.error('❌ Error fetching job detail:', error);
         return of(undefined);
       })
     );
-  }
-
-  private emptyResponse(): JobResponse {
-    return {
-      data: [],
-      links: {
-        first: '',
-        last: '',
-        prev: null,
-        next: null
-      },
-      meta: {
-        current_page: 1,
-        from: 0,
-        last_page: 1,
-        path: '',
-        per_page: 0,
-        to: 0,
-        total: 0
-      }
-    };
   }
 }

@@ -9,16 +9,10 @@
         <input
           type="text"
           [(ngModel)]="searchTerm"
-          (keyup.enter)="search()"
+          (input)="search()"
           placeholder="Buscar por título, empresa o tecnología..."
           class="flex-1 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-
-        <button
-          (click)="search()"
-          class="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
-          Buscar
-        </button>
 
         @if (searchTerm.trim()) {
           <button
@@ -34,7 +28,7 @@
       <app-loader></app-loader>
     }
 
-    @if (error && !loading) {
+    @if (!loading && error) {
       <div class="text-center py-8">
         <p class="text-red-600">{{ error }}</p>
       </div>

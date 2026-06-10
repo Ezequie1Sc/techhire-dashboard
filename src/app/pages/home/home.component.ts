@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { finalize } from 'rxjs';
 import { JobService } from '../../core/services/job.service';
 import { Job } from '../../models/job.model';
 import { JobCardComponent } from '../../shared/components/job-card/job-card.component';
@@ -18,7 +19,10 @@ export class HomeComponent implements OnInit {
   loading = false;
   error: string | null = null;
 
-  constructor(private jobService: JobService) {}
+  constructor(
+    private jobService: JobService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.loadLatestJobs();
@@ -27,20 +31,27 @@ export class HomeComponent implements OnInit {
   loadLatestJobs(): void {
     this.loading = true;
     this.error = null;
+    this.latestJobs = [];
 
-    this.jobService.getJobs(1).subscribe({
-      next: (response) => {
-        this.latestJobs = response.data.slice(0, 6);
-        this.loading = false;
+    this.jobService.getJobs(1)
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: (response) => {
+          const jobs = response.data || [];
+          this.latestJobs = jobs.slice(0, 6);
 
-        if (this.latestJobs.length === 0) {
-          this.error = 'No se encontraron vacantes disponibles.';
+          if (this.latestJobs.length === 0) {
+            this.error = 'No se encontraron vacantes disponibles.';
+          }
+        },
+        error: () => {
+          this.error = 'No se pudieron cargar las vacantes.';
         }
-      },
-      error: () => {
-        this.error = 'No se pudieron cargar las vacantes.';
-        this.loading = false;
-      }
-    });
+      });
   }
 }
