@@ -1,0 +1,103 @@
+/* job-detail.component.css */
+
+/* Resetear estilos del HTML externo de las descripciones de empleo */
+.job-description-content {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #374151;
+}
+
+.job-description-content h1,
+.job-description-content h2,
+.job-description-content h3,
+.job-description-content h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #1f2937;
+}
+
+.job-description-content h1 {
+  font-size: 1.5rem;
+}
+
+.job-description-content h2 {
+  font-size: 1.35rem;
+}
+
+.job-description-content p {
+  margin-bottom: 1rem;
+}
+
+.job-description-content ul,
+.job-description-content ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+  padding-left: 0.5rem;
+}
+
+.job-description-content ul {
+  list-style-type: disc;
+}
+
+.job-description-content ol {
+  list-style-type: decimal;
+}
+
+.job-description-content li {
+  margin-bottom: 0.25rem;
+}
+
+.job-description-content strong,
+.job-description-content b {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.job-description-content a {
+  color: #4a5d4e;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.job-description-content a:hover {
+  color: #3d4f40;
+}
+
+/* Limitar imágenes si vienen muy grandes */
+.job-description-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.job-description-content blockquote {
+  border-left: 4px solid #4a5d4e;
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: #4b5563;
+  font-style: italic;
+}
+
+.job-description-content code {
+  background: #f3f4f6;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  color: #1f2937;
+}
+
+.job-description-content pre {
+  background: #f3f4f6;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+/* Transiciones suaves */
+.job-description-content * {
+  transition: all 0.2s ease;
+}
