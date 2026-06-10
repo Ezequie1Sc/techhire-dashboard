@@ -1,87 +1,102 @@
 /* job-detail.component.css */
 
-/* Resetear estilos del HTML externo de las descripciones de empleo */
-.job-description-content {
+/* Contenedor principal de la descripción */
+.job-description-container {
   font-size: 1rem;
-  line-height: 1.7;
+  line-height: 1.8;
   color: #374151;
 }
 
-.job-description-content h1,
-.job-description-content h2,
-.job-description-content h3,
-.job-description-content h4 {
+/* Reset total de estilos del HTML externo */
+.job-description-container * {
+  all: revert;
+}
+
+/* Títulos */
+.job-description-container h1,
+.job-description-container h2,
+.job-description-container h3,
+.job-description-container h4,
+.job-description-container h5,
+.job-description-container h6 {
   font-size: 1.25rem;
   font-weight: 600;
   margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
   color: #1f2937;
 }
 
-.job-description-content h1 {
-  font-size: 1.5rem;
-}
+.job-description-container h1 { font-size: 1.5rem; }
+.job-description-container h2 { font-size: 1.35rem; }
+.job-description-container h3 { font-size: 1.2rem; }
+.job-description-container h4 { font-size: 1.1rem; }
 
-.job-description-content h2 {
-  font-size: 1.35rem;
-}
-
-.job-description-content p {
+/* Párrafos */
+.job-description-container p {
   margin-bottom: 1rem;
+  line-height: 1.8;
 }
 
-.job-description-content ul,
-.job-description-content ol {
-  margin-left: 1.5rem;
-  margin-bottom: 1rem;
+/* Listas */
+.job-description-container ul,
+.job-description-container ol {
+  margin: 0.5rem 0 1rem 1.5rem;
   padding-left: 0.5rem;
 }
 
-.job-description-content ul {
+.job-description-container ul {
   list-style-type: disc;
 }
 
-.job-description-content ol {
+.job-description-container ol {
   list-style-type: decimal;
 }
 
-.job-description-content li {
-  margin-bottom: 0.25rem;
+.job-description-container li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
 }
 
-.job-description-content strong,
-.job-description-content b {
-  color: #1f2937;
+/* Texto en negrita */
+.job-description-container strong,
+.job-description-container b {
   font-weight: 600;
+  color: #1f2937;
 }
 
-.job-description-content a {
+/* Enlaces */
+.job-description-container a {
   color: #4a5d4e;
   text-decoration: underline;
   font-weight: 500;
+  transition: color 0.2s ease;
 }
 
-.job-description-content a:hover {
+.job-description-container a:hover {
   color: #3d4f40;
 }
 
-/* Limitar imágenes si vienen muy grandes */
-.job-description-content img {
+/* Imágenes */
+.job-description-container img {
   max-width: 100%;
   height: auto;
-  border-radius: 0.5rem;
-  margin: 1rem 0;
+  border-radius: 0.75rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.job-description-content blockquote {
+/* Citas */
+.job-description-container blockquote {
   border-left: 4px solid #4a5d4e;
-  padding-left: 1rem;
+  padding: 0.5rem 0 0.5rem 1.5rem;
   margin: 1rem 0;
+  background-color: #f9fafb;
+  border-radius: 0 0.5rem 0.5rem 0;
   color: #4b5563;
-  font-style: italic;
 }
 
-.job-description-content code {
+/* Código */
+.job-description-container code {
   background: #f3f4f6;
   padding: 0.125rem 0.375rem;
   border-radius: 0.25rem;
@@ -89,7 +104,7 @@
   color: #1f2937;
 }
 
-.job-description-content pre {
+.job-description-container pre {
   background: #f3f4f6;
   padding: 1rem;
   border-radius: 0.5rem;
@@ -97,7 +112,37 @@
   margin: 1rem 0;
 }
 
-/* Transiciones suaves */
-.job-description-content * {
-  transition: all 0.2s ease;
+/* Tablas si las hay */
+.job-description-container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.job-description-container th,
+.job-description-container td {
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.job-description-container th {
+  background-color: #f9fafb;
+  font-weight: 600;
+}
+
+/* Separadores */
+.job-description-container hr {
+  border: 0;
+  border-top: 2px solid #e5e7eb;
+  margin: 2rem 0;
+}
+
+/* Espaciado adicional entre secciones */
+.job-description-container > *:first-child {
+  margin-top: 0;
+}
+
+.job-description-container > *:last-child {
+  margin-bottom: 0;
 }

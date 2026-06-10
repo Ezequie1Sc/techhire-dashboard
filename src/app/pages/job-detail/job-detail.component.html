@@ -138,27 +138,29 @@
             </div>
           </div>
 
-          <!-- Description -->
-          <div class="mt-8">
-            <h2 class="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+          <!-- Description - CORREGIDA Y SEPARADA -->
+          <div class="mt-8 border-t border-gray-100 pt-8">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#4a5d4e]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
               Descripción del Puesto
             </h2>
             
-            <!-- CORRECCIÓN: Se eliminó 'prose' y se usaron clases limpias -->
-            <div class="text-gray-700 leading-relaxed text-base space-y-4 job-description-content" 
-                 [innerHTML]="job.description">
+            <!-- Contenedor limpio para la descripción -->
+            <div class="job-description-container">
+              <!-- Usamos innerHTML pero con estilos controlados -->
+              <div [innerHTML]="job.description"></div>
             </div>
           </div>
 
           <!-- Apply Button -->
           <div class="mt-10 pt-6 border-t border-gray-100">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <p class="text-gray-500 text-sm">
-                ¿Interesado en esta posición?
-              </p>
+              <div>
+                <p class="text-gray-700 font-medium">¿Interesado en esta posición?</p>
+                <p class="text-gray-500 text-sm">Postúlate directamente desde la fuente oficial</p>
+              </div>
               <a [href]="job.url" 
                  target="_blank"
                  rel="noopener noreferrer"
