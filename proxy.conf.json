@@ -1,10 +1,10 @@
 {
-  "/api/jobs": {
+  "/api/jobs/adzuna": {
     "target": "https://api.adzuna.com",
     "secure": true,
     "changeOrigin": true,
     "pathRewrite": {
-      "^/api/jobs": "/v1/api/jobs/mx/search/1"
+      "^/api/jobs/adzuna": "/v1/api/jobs/mx/search/1"
     },
     "query": {
       "app_id": "921dd9a0",
@@ -15,6 +15,14 @@
     "headers": {
       "Accept": "application/json",
       "User-Agent": "TechHire-Dashboard"
+    }
+  },
+  "/api/jobs/arbeitnow": {
+    "target": "https://www.arbeitnow.com",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api/jobs/arbeitnow": "/api/job-board-api"
     }
   }
 }
