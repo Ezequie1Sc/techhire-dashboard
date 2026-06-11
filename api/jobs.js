@@ -5,36 +5,43 @@ module.exports = async function handler(req, res) {
     const page = Number(req.query?.page || 1);
     const perPage = 20;
 
-    const result = await fetchJson('https://remotive.com/api/remote-jobs');
-    const jobs = Array.isArray(result.jobs) ? result.jobs : [];
+    const appId = process.env.ADZUNA_APP_ID || '921dd9a0';
+    const appKey = process.env.ADZUNA_APP_KEY || 'TU_APP_KEY_AQUI';
+
+    const url =
+      `https://api.adzuna.com/v1/api/jobs/mx/search/${page}` +
+      `?app_id=${appId}` +
+      `&app_key=${appKey}` +
+      `&results_per_page=${perPage}` +
+      `&what=developer`;
+
+    const result = await fetchJson(url);
+    const jobs = Array.isArray(result.results) ? result.results : [];
 
     const mappedJobs = jobs.map((job) => {
       const title = job.title || 'Vacante sin título';
-      const id = job.id || Math.random().toString(36).slice(2);
 
       return {
-        slug: `${id}-${slugify(title)}`,
+        slug: `${job.id}-${slugify(title)}`,
         title,
-        company_name: job.company_name || 'Empresa no especificada',
-        location: job.candidate_required_location || 'Remote',
-        remote: true,
-        url: job.url || '',
+        company_name: job.company?.display_name || 'Empresa no especificada',
+        location: job.location?.display_name || 'México',
+        remote: isRemote(job),
+        url: job.redirect_url || '',
         description: job.description || '',
-        tags: Array.isArray(job.tags) ? job.tags : [],
-        job_types: job.job_type ? [job.job_type] : ['Full-time'],
-        created_at: job.publication_date
-          ? Math.floor(new Date(job.publication_date).getTime() / 1000)
+        tags: buildTags(job),
+        job_types: [job.category?.label || 'General'],
+        created_at: job.created
+          ? Math.floor(new Date(job.created).getTime() / 1000)
           : Math.floor(Date.now() / 1000)
       };
     });
 
-    const start = (page - 1) * perPage;
-    const paginatedJobs = mappedJobs.slice(start, start + perPage);
-    const total = mappedJobs.length;
+    const total = result.count || mappedJobs.length;
     const lastPage = Math.max(1, Math.ceil(total / perPage));
 
-    res.status(200).json({
-      data: paginatedJobs,
+    return res.status(200).json({
+      data: mappedJobs,
       links: {
         first: '/api/jobs?page=1',
         last: `/api/jobs?page=${lastPage}`,
@@ -43,67 +50,61 @@ module.exports = async function handler(req, res) {
       },
       meta: {
         current_page: page,
-        from: paginatedJobs.length ? start + 1 : 0,
+        from: mappedJobs.length ? (page - 1) * perPage + 1 : 0,
         last_page: lastPage,
         path: '/api/jobs',
         per_page: perPage,
-        to: start + paginatedJobs.length,
+        to: (page - 1) * perPage + mappedJobs.length,
         total
       }
     });
   } catch (error) {
     console.error('API /api/jobs error:', error);
-
-    res.status(200).json({
-      data: [],
-      links: {
-        first: '',
-        last: '',
-        prev: null,
-        next: null
-      },
-      meta: {
-        current_page: 1,
-        from: 0,
-        last_page: 1,
-        path: '',
-        per_page: 0,
-        to: 0,
-        total: 0
-      }
-    });
+    return res.status(200).json(emptyResponse());
   }
 };
 
 function fetchJson(url) {
   return new Promise((resolve, reject) => {
     https
-      .get(
-        url,
-        {
-          headers: {
-            Accept: 'application/json',
-            'User-Agent': 'TechHire-Dashboard'
+      .get(url, { headers: { Accept: 'application/json' } }, (response) => {
+        let data = '';
+
+        response.on('data', (chunk) => {
+          data += chunk;
+        });
+
+        response.on('end', () => {
+          try {
+            resolve(JSON.parse(data));
+          } catch (error) {
+            reject(error);
           }
-        },
-        (response) => {
-          let data = '';
-
-          response.on('data', (chunk) => {
-            data += chunk;
-          });
-
-          response.on('end', () => {
-            try {
-              resolve(JSON.parse(data));
-            } catch (error) {
-              reject(error);
-            }
-          });
-        }
-      )
+        });
+      })
       .on('error', reject);
   });
+}
+
+function buildTags(job) {
+  const tags = [];
+
+  if (job.category?.label) tags.push(job.category.label);
+  if (job.location?.display_name) tags.push(job.location.display_name);
+  if (isRemote(job)) tags.push('Remoto');
+
+  return tags.slice(0, 4);
+}
+
+function isRemote(job) {
+  const text = `${job.title || ''} ${job.description || ''} ${job.location?.display_name || ''}`.toLowerCase();
+
+  return (
+    text.includes('remote') ||
+    text.includes('remoto') ||
+    text.includes('home office') ||
+    text.includes('trabajo desde casa')
+  );
 }
 
 function slugify(text) {
@@ -113,4 +114,25 @@ function slugify(text) {
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)+/g, '');
+}
+
+function emptyResponse() {
+  return {
+    data: [],
+    links: {
+      first: '',
+      last: '',
+      prev: null,
+      next: null
+    },
+    meta: {
+      current_page: 1,
+      from: 0,
+      last_page: 1,
+      path: '',
+      per_page: 0,
+      to: 0,
+      total: 0
+    }
+  };
 }
