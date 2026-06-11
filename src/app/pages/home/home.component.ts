@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { finalize } from 'rxjs';
@@ -17,10 +17,11 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  @ViewChild('jobsCarousel') jobsCarousel!: ElementRef<HTMLDivElement>;
+
   latestJobs: Job[] = [];
   loading = false;
   error: string | null = null;
-  currentSlide = 0;
 
   techCategories = [
     'Frontend',
@@ -56,8 +57,7 @@ export class HomeComponent implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          this.latestJobs = (response.data || []).slice(0, 6);
-          this.currentSlide = 0;
+          this.latestJobs = (response.data || []).slice(0, 8);
 
           if (this.latestJobs.length === 0) {
             this.error = 'No se encontraron vacantes disponibles.';
@@ -69,22 +69,15 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  nextSlide(): void {
-    if (this.latestJobs.length === 0) return;
+  scrollCarousel(direction: 'left' | 'right'): void {
+    const carousel = this.jobsCarousel?.nativeElement;
+    if (!carousel) return;
 
-    this.currentSlide = (this.currentSlide + 1) % this.latestJobs.length;
-  }
+    const scrollAmount = carousel.clientWidth * 0.85;
 
-  previousSlide(): void {
-    if (this.latestJobs.length === 0) return;
-
-    this.currentSlide =
-      this.currentSlide === 0
-        ? this.latestJobs.length - 1
-        : this.currentSlide - 1;
-  }
-
-  goToSlide(index: number): void {
-    this.currentSlide = index;
+    carousel.scrollBy({
+      left: direction === 'right' ? scrollAmount : -scrollAmount,
+      behavior: 'smooth'
+    });
   }
 }

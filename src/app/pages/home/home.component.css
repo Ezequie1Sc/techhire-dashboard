@@ -11,32 +11,57 @@ button {
   will-change: transform;
 }
 
-.carousel-btn {
-  width: 44px;
-  height: 44px;
+.jobs-carousel {
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.jobs-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-item {
+  scroll-snap-align: start;
+}
+
+.carousel-control {
+  width: 46px;
+  height: 46px;
   border-radius: 999px;
-  background: #fbfaf7;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
   color: #141414;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.25s ease;
 }
 
-.carousel-btn:hover {
+.carousel-control:hover {
+  transform: scale(1.05);
+  background: #f4f1ec;
+}
+
+.carousel-control-dark {
   background: #141414;
   color: white;
-  transform: scale(1.05);
 }
 
-.carousel-dot {
-  width: 9px;
-  height: 9px;
+.carousel-control-dark:hover {
+  background: #2a2a2a;
+}
+
+.carousel-mobile-btn {
+  padding: 0.85rem 1.2rem;
   border-radius: 999px;
-  background: #d8cec2;
-  transition: all 0.25s ease;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: #141414;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
-.carousel-dot-active {
-  width: 28px;
+.carousel-mobile-btn-dark {
   background: #141414;
+  color: white;
 }

@@ -188,106 +188,122 @@
 
     </div>
   </section>
+<!-- VACANTES -->
+<section class="max-w-7xl mx-auto px-5 md:px-8 pb-20">
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
+    <div>
+      <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
+        Oportunidades recientes
+      </span>
 
-  <!-- VACANTES -->
-  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20">
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
-      <div>
-        <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
-          Oportunidades recientes
-        </span>
-
-        <h2 class="text-4xl md:text-5xl font-semibold tracking-[-0.05em] mt-3">
-          Vacantes destacadas.
-        </h2>
-      </div>
-
-      <div class="flex items-center gap-3">
-        @if (!loading && !error && latestJobs.length > 1) {
-          <button
-            type="button"
-            (click)="previousSlide()"
-            class="carousel-btn"
-            aria-label="Vacante anterior"
-          >
-            ←
-          </button>
-
-          <button
-            type="button"
-            (click)="nextSlide()"
-            class="carousel-btn"
-            aria-label="Siguiente vacante"
-          >
-            →
-          </button>
-        }
-
-        <a
-          routerLink="/jobs"
-          class="bg-[#141414] text-white px-6 py-3 rounded-full font-medium hover:scale-[1.02] transition w-fit"
-        >
-          Ver todas →
-        </a>
-      </div>
+      <h2 class="text-4xl md:text-5xl font-semibold tracking-[-0.05em] mt-3">
+        Vacantes destacadas.
+      </h2>
     </div>
 
-    @if (loading) {
-      <div class="bg-white rounded-[2rem] p-10 border border-black/5">
-        <app-loader></app-loader>
-      </div>
-    }
+    <a
+      routerLink="/jobs"
+      class="bg-[#141414] text-white px-6 py-3 rounded-full font-medium hover:scale-[1.02] transition w-fit"
+    >
+      Ver todas →
+    </a>
+  </div>
 
-    @if (!loading && error && latestJobs.length === 0) {
-      <div class="bg-white rounded-[2rem] p-10 text-center border border-black/5">
-        <p class="text-gray-500">{{ error }}</p>
+  @if (loading) {
+    <div class="bg-white rounded-[2rem] p-10 border border-black/5">
+      <app-loader></app-loader>
+    </div>
+  }
 
-        <button
-          (click)="loadLatestJobs()"
-          class="mt-5 bg-[#141414] text-white px-6 py-3 rounded-full hover:scale-[1.02] transition"
-        >
-          Reintentar
-        </button>
-      </div>
-    }
+  @if (!loading && error && latestJobs.length === 0) {
+    <div class="bg-white rounded-[2rem] p-10 text-center border border-black/5">
+      <p class="text-gray-500">{{ error }}</p>
 
-    @if (!loading && !error && latestJobs.length > 0) {
-      <div class="relative overflow-hidden rounded-[2.5rem] bg-[#fbfaf7] border border-black/5 p-4 md:p-6 shadow-[0_30px_80px_rgba(0,0,0,0.06)]">
-        <div
-          class="flex transition-transform duration-500 ease-out"
-          [style.transform]="'translateX(-' + (currentSlide * 100) + '%)'"
-        >
-          @for (job of latestJobs; track job.slug) {
-            <div class="min-w-full px-1 md:px-3">
-              <div class="max-w-3xl mx-auto">
-                <app-job-card [job]="job"></app-job-card>
-              </div>
-            </div>
-          }
+      <button
+        type="button"
+        (click)="loadLatestJobs()"
+        class="mt-5 bg-[#141414] text-white px-6 py-3 rounded-full hover:scale-[1.02] transition"
+      >
+        Reintentar
+      </button>
+    </div>
+  }
+
+  @if (!loading && !error && latestJobs.length > 0) {
+    <div class="relative bg-[#fbfaf7] border border-black/5 rounded-[2.5rem] p-4 md:p-6 shadow-[0_30px_80px_rgba(0,0,0,0.06)] overflow-hidden">
+
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <div>
+          <p class="text-sm font-semibold text-[#141414]">
+            Desliza para ver más oportunidades
+          </p>
+          <p class="text-sm text-[#6b665f]">
+            Vacantes recientes.
+          </p>
         </div>
 
-        @if (latestJobs.length > 1) {
-          <div class="flex justify-center gap-2 mt-6">
-            @for (job of latestJobs; track job.slug; let i = $index) {
-              <button
-                type="button"
-                (click)="goToSlide(i)"
-                class="carousel-dot"
-                [class.carousel-dot-active]="currentSlide === i"
-                aria-label="Cambiar vacante"
-              ></button>
-            }
+        <div class="hidden md:flex items-center gap-2">
+          <button
+            type="button"
+            (click)="scrollCarousel('left')"
+            class="carousel-control"
+            aria-label="Mover a la izquierda"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            (click)="scrollCarousel('right')"
+            class="carousel-control carousel-control-dark"
+            aria-label="Mover a la derecha"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div
+        #jobsCarousel
+        class="jobs-carousel flex gap-5 overflow-x-auto scroll-smooth pb-4"
+      >
+        @for (job of latestJobs; track job.slug) {
+          <div class="carousel-item shrink-0 w-[88%] sm:w-[70%] md:w-[48%] xl:w-[32%]">
+            <app-job-card [job]="job"></app-job-card>
           </div>
         }
       </div>
-    }
 
-    @if (!loading && !error && latestJobs.length === 0) {
-      <div class="bg-white rounded-[2rem] p-10 text-center border border-black/5">
-        <p class="text-gray-500">No hay vacantes disponibles en este momento.</p>
+      <div class="md:hidden flex justify-center gap-3 mt-4">
+        <button
+          type="button"
+          (click)="scrollCarousel('left')"
+          class="carousel-mobile-btn"
+        >
+          Anterior
+        </button>
+
+        <button
+          type="button"
+          (click)="scrollCarousel('right')"
+          class="carousel-mobile-btn carousel-mobile-btn-dark"
+        >
+          Siguiente
+        </button>
       </div>
-    }
-  </section>
+    </div>
+  }
+
+  @if (!loading && !error && latestJobs.length === 0) {
+    <div class="bg-white rounded-[2rem] p-10 text-center border border-black/5">
+      <p class="text-gray-500">No hay vacantes disponibles en este momento.</p>
+    </div>
+  }
+</section>
 
   <!-- CTA FINAL -->
   <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20">
