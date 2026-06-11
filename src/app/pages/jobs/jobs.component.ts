@@ -18,7 +18,6 @@ import { NotFoundComponent } from '../not-found/not-found.component';
     FormsModule,
     JobCardComponent,
     LoaderComponent,
-    NotFoundComponent
   ],
   templateUrl: './jobs.component.html',
   styleUrls: ['./jobs.component.css']

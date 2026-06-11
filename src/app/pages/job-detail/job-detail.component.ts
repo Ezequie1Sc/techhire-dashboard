@@ -1,16 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+
 import { JobService } from '../../core/services/job.service';
 import { FavoriteService } from '../../core/services/favorite.service';
 import { Job } from '../../models/job.model';
+
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { NotFoundComponent } from '../not-found/not-found.component';
 
 @Component({
   selector: 'app-job-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, LoaderComponent, NotFoundComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    LoaderComponent,
+    NotFoundComponent
+  ],
   templateUrl: './job-detail.component.html',
   styleUrls: ['./job-detail.component.css']
 })

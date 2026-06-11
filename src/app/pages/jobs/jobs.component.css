@@ -15,3 +15,163 @@ select {
 button {
   will-change: transform;
 }
+.empty-search {
+  position: relative;
+  width: 220px;
+  height: 170px;
+}
+
+.empty-lens {
+  position: absolute;
+  width: 96px;
+  height: 96px;
+  border: 12px solid #141414;
+  border-radius: 50%;
+  left: 52px;
+  top: 18px;
+  animation: floatSearch 4s ease-in-out infinite;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.empty-handle {
+  position: absolute;
+  width: 70px;
+  height: 14px;
+  background: #141414;
+  border-radius: 999px;
+  transform: rotate(45deg);
+  left: 126px;
+  top: 105px;
+  animation: floatSearchHandle 4s ease-in-out infinite;
+}
+
+.empty-card {
+  position: absolute;
+  width: 86px;
+  height: 54px;
+  background: #ffffff;
+  border: 1px solid rgba(20, 20, 20, 0.06);
+  border-radius: 18px;
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.08);
+  padding: 14px;
+  animation: floatCard 3.5s ease-in-out infinite;
+}
+
+.empty-card span {
+  display: block;
+  height: 7px;
+  background: #d8cec2;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+
+.empty-card span:first-child {
+  width: 48px;
+}
+
+.empty-card span:last-child {
+  width: 30px;
+}
+
+.empty-card-one {
+  left: 0;
+  top: 20px;
+}
+
+.empty-card-two {
+  right: 0;
+  bottom: 12px;
+  animation-delay: 1s;
+}
+
+.empty-dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #141414;
+  border-radius: 50%;
+  opacity: 0.35;
+  animation: blinkDot 2.4s ease-in-out infinite;
+}
+
+.empty-dot-one {
+  left: 28px;
+  bottom: 28px;
+}
+
+.empty-dot-two {
+  right: 38px;
+  top: 28px;
+  animation-delay: 0.8s;
+}
+
+.empty-dot-three {
+  left: 108px;
+  bottom: 0;
+  animation-delay: 1.4s;
+}
+
+.empty-blob {
+  animation: blobMove 8s ease-in-out infinite;
+}
+
+.empty-blob-delay {
+  animation: blobMove 9s ease-in-out infinite reverse;
+}
+
+@keyframes floatSearch {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-14px) rotate(-3deg);
+  }
+}
+
+@keyframes floatSearchHandle {
+  0%,
+  100% {
+    transform: translateY(0) rotate(45deg);
+  }
+
+  50% {
+    transform: translateY(-14px) rotate(42deg);
+  }
+}
+
+@keyframes floatCard {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes blinkDot {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.75;
+    transform: scale(1.6);
+  }
+}
+
+@keyframes blobMove {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-24px) scale(1.05);
+  }
+}
