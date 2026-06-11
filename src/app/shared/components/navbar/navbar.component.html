@@ -1,31 +1,36 @@
 <header class="fixed top-4 left-0 right-0 z-50 px-4">
   <nav class="max-w-7xl mx-auto">
-    <div class="bg-[#fbfaf7]/90 backdrop-blur-xl border border-black/5 shadow-[0_18px_50px_rgba(0,0,0,0.08)] rounded-full px-4 md:px-5 py-3">
 
+    <div class="navbar-shell">
       <div class="flex items-center justify-between gap-4">
 
-        <!-- Logo -->
+        <!-- Brand -->
         <a
           routerLink="/"
-          class="flex items-center gap-3 group"
+          class="flex items-center gap-3 min-w-0"
           (click)="isMenuOpen = false"
         >
-          <div class="w-10 h-10 rounded-full bg-[#141414] text-white flex items-center justify-center font-semibold tracking-[-0.04em]">
-            T
+          <div class="brand-logo">
+            <img
+              src="/logo3.png"
+              alt="Logo Jobly"
+              class="w-full h-full object-contain"
+            />
           </div>
 
-          <div class="leading-tight">
-            <p class="font-semibold text-[#141414] tracking-[-0.03em]">
-              TechHire
+          <div class="leading-tight min-w-0">
+            <p class="text-[#141414] font-semibold tracking-[-0.04em] text-lg">
+              Jobly
             </p>
-            <p class="hidden sm:block text-[11px] text-[#8a8177] uppercase tracking-[0.18em]">
-              Jobs Platform
+
+            <p class="hidden sm:block text-[10px] text-[#8a8177] uppercase tracking-[0.22em]">
+              Tech Jobs
             </p>
           </div>
         </a>
 
-        <!-- Desktop Menu -->
-        <div class="hidden md:flex items-center gap-2 bg-white/70 border border-black/5 rounded-full p-1">
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex items-center gap-1 nav-pill">
           <a
             routerLink="/"
             routerLinkActive="nav-active"
@@ -52,29 +57,70 @@
           </a>
         </div>
 
-        <!-- Desktop CTA -->
-        <a
-          routerLink="/jobs"
-          class="hidden md:inline-flex items-center gap-2 bg-[#141414] text-white px-5 py-3 rounded-full text-sm font-medium hover:scale-[1.02] transition"
-        >
-          Explorar
-          <span>→</span>
-        </a>
+        <!-- Desktop Action -->
+        <div class="hidden md:flex items-center gap-3">
+          <span class="text-xs text-[#8a8177] uppercase tracking-[0.18em]">
+            Remote Jobs
+          </span>
+
+          <a
+            routerLink="/jobs"
+            class="nav-cta"
+          >
+            Explorar
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="1.8"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M13 7l5 5m0 0l-5 5m5-5H6"
+              />
+            </svg>
+          </a>
+        </div>
 
         <!-- Mobile Button -->
         <button
           type="button"
           (click)="toggleMenu()"
-          class="md:hidden w-11 h-11 rounded-full bg-[#141414] text-white flex items-center justify-center transition hover:scale-105"
+          class="mobile-toggle"
           aria-label="Abrir menú"
         >
           @if (!isMenuOpen) {
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4 7h16M4 12h16M4 17h16"
+              />
             </svg>
           } @else {
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           }
         </button>
@@ -84,16 +130,19 @@
 
     <!-- Mobile Menu -->
     @if (isMenuOpen) {
-      <div class="md:hidden mt-3 bg-[#fbfaf7]/95 backdrop-blur-xl border border-black/5 shadow-[0_18px_50px_rgba(0,0,0,0.08)] rounded-[2rem] p-3">
+      <div class="mobile-menu">
 
         <a
           routerLink="/"
-          [routerLinkActiveOptions]="{ exact: true }"
           routerLinkActive="mobile-active"
+          [routerLinkActiveOptions]="{ exact: true }"
           class="mobile-link"
           (click)="isMenuOpen = false"
         >
-          Inicio
+          <span>Inicio</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
         </a>
 
         <a
@@ -102,7 +151,10 @@
           class="mobile-link"
           (click)="isMenuOpen = false"
         >
-          Vacantes
+          <span>Vacantes</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
         </a>
 
         <a
@@ -111,18 +163,22 @@
           class="mobile-link"
           (click)="isMenuOpen = false"
         >
-          Favoritos
+          <span>Favoritos</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
         </a>
 
         <a
           routerLink="/jobs"
-          class="mt-2 flex items-center justify-center bg-[#141414] text-white px-5 py-4 rounded-full text-sm font-medium"
+          class="mobile-cta"
           (click)="isMenuOpen = false"
         >
-          Explorar vacantes →
+          Explorar vacantes
         </a>
 
       </div>
     }
+
   </nav>
 </header>
