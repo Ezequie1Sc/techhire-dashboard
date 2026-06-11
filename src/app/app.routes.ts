@@ -7,8 +7,12 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
+
   { path: 'jobs', component: JobsComponent },
-  { path: 'favorites', component: FavoritesComponent },
   { path: 'jobs/:slug', component: JobDetailComponent },
+
+  { path: 'favorites', component: FavoritesComponent },
+
+  // 404 GLOBAL
   { path: '**', component: NotFoundComponent }
 ];
