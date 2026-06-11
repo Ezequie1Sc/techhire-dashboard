@@ -1,31 +1,43 @@
-export default async function handler(req: any, res: any) {
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
-    const page = Number(req.query.page || 1);
+    const page = Number(req.query?.page || 1);
     const perPage = 20;
 
-    const response = await fetch('https://remotive.com/api/remote-jobs');
+    const response = await fetch('https://remotive.com/api/remote-jobs', {
+      headers: {
+        Accept: 'application/json',
+        'User-Agent': 'TechHire-Dashboard'
+      }
+    });
 
     if (!response.ok) {
-      return res.status(500).json(emptyResponse());
+      return res.status(200).json(emptyResponse());
     }
 
     const result = await response.json();
-    const jobs = result.jobs || [];
+    const jobs = Array.isArray(result?.jobs) ? result.jobs : [];
 
-    const mappedJobs = jobs.map((job: any) => ({
-      slug: `${job.id}-${slugify(job.title)}`,
-      title: job.title || 'Vacante sin título',
-      company_name: job.company_name || 'Empresa no especificada',
-      location: job.candidate_required_location || 'Remote',
-      remote: true,
-      url: job.url || '',
-      description: job.description || '',
-      tags: job.tags || [],
-      job_types: job.job_type ? [job.job_type] : ['Full-time'],
-      created_at: job.publication_date
-        ? Math.floor(new Date(job.publication_date).getTime() / 1000)
-        : Math.floor(Date.now() / 1000)
-    }));
+    const mappedJobs = jobs.map((job: any) => {
+      const title = job?.title || 'Vacante sin título';
+      const id = job?.id || crypto.randomUUID();
+
+      return {
+        slug: `${id}-${slugify(title)}`,
+        title,
+        company_name: job?.company_name || 'Empresa no especificada',
+        location: job?.candidate_required_location || 'Remote',
+        remote: true,
+        url: job?.url || '',
+        description: job?.description || '',
+        tags: Array.isArray(job?.tags) ? job.tags : [],
+        job_types: job?.job_type ? [job.job_type] : ['Full-time'],
+        created_at: job?.publication_date
+          ? Math.floor(new Date(job.publication_date).getTime() / 1000)
+          : Math.floor(Date.now() / 1000)
+      };
+    });
 
     const start = (page - 1) * perPage;
     const paginatedJobs = mappedJobs.slice(start, start + perPage);
@@ -51,12 +63,13 @@ export default async function handler(req: any, res: any) {
       }
     });
   } catch (error) {
-    return res.status(500).json(emptyResponse());
+    console.error('API /api/jobs error:', error);
+    return res.status(200).json(emptyResponse());
   }
 }
 
 function slugify(text: string): string {
-  return text
+  return String(text)
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
