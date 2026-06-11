@@ -1,0 +1,79 @@
+<div class="min-h-screen bg-[#f4f1ec] flex items-center justify-center px-6">
+
+  <div class="max-w-4xl w-full">
+
+    <div
+      class="bg-[#fbfaf7] border border-black/5 rounded-[3rem] p-10 md:p-16 text-center shadow-[0_30px_80px_rgba(0,0,0,0.08)]"
+    >
+
+      <!-- Icon -->
+      <div
+        class="w-24 h-24 mx-auto rounded-[2rem] bg-white border border-black/5 flex items-center justify-center mb-8"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-10 h-10 text-[#141414]"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="1.8"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M9.172 9.172a4 4 0 015.656 0m-5.656 5.656a4 4 0 005.656 0M12 3v3m0 12v3m9-9h-3M6 12H3"
+          />
+        </svg>
+      </div>
+
+      <!-- Label -->
+      <span
+        class="inline-flex items-center gap-2 bg-white border border-black/5 px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-[0.2em] text-[#8a8177]"
+      >
+        Error 404
+      </span>
+
+      <!-- Title -->
+      <h1
+        class="text-7xl md:text-9xl font-semibold tracking-[-0.08em] text-[#141414] mt-8"
+      >
+        404
+      </h1>
+
+      <h2
+        class="text-3xl md:text-5xl font-semibold tracking-[-0.05em] mt-4 text-[#141414]"
+      >
+        Página no encontrada
+      </h2>
+
+      <p
+        class="max-w-2xl mx-auto mt-5 text-[#6b665f] leading-relaxed text-lg"
+      >
+        La página que intentas visitar no existe, fue eliminada o cambió de
+        dirección.
+      </p>
+
+      <!-- Buttons -->
+      <div
+        class="flex flex-col sm:flex-row justify-center gap-4 mt-10"
+      >
+        <a
+          routerLink="/"
+          class="bg-[#141414] text-white px-8 py-4 rounded-full font-medium hover:scale-[1.02] transition"
+        >
+          Volver al inicio
+        </a>
+
+        <a
+          routerLink="/jobs"
+          class="bg-white border border-black/5 px-8 py-4 rounded-full font-medium hover:bg-[#f4f1ec] transition"
+        >
+          Explorar vacantes
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
