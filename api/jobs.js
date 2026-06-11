@@ -1,95 +1,137 @@
 module.exports = async function handler(req, res) {
   try {
-    const page = Number(req.query.page || 1);
+    const page = Number(req.query?.page || 1);
     const perPage = 20;
 
-    const appId = process.env.ADZUNA_APP_ID;
-    const appKey = process.env.ADZUNA_APP_KEY;
+    const [adzunaResult, remotiveResult] = await Promise.allSettled([
+      getAdzunaJobs(page, perPage),
+      getRemotiveJobs()
+    ]);
 
-    if (!appId || !appKey) {
-      return res.status(200).json({
-        data: [],
-        error: 'Faltan variables de entorno de Adzuna'
-      });
-    }
+    const adzunaJobs =
+      adzunaResult.status === 'fulfilled' ? adzunaResult.value : [];
 
-    const url =
-      `https://api.adzuna.com/v1/api/jobs/mx/search/${page}` +
-      `?app_id=${appId}` +
-      `&app_key=${appKey}` +
-      `&results_per_page=${perPage}` +
-      `&what=developer`;
+    const remotiveJobs =
+      remotiveResult.status === 'fulfilled' ? remotiveResult.value : [];
 
-    const response = await fetch(url);
-
-    if (!response.ok) {
-      return res.status(200).json({
-        data: [],
-        error: `Adzuna respondió con error ${response.status}`
-      });
-    }
-
-    const result = await response.json();
-    const jobs = Array.isArray(result.results) ? result.results : [];
-
-    const mappedJobs = jobs.map((job) => {
-      const title = job.title || 'Vacante sin título';
-
-      return {
-        slug: `adzuna-${job.id}-${slugify(title)}`,
-        title,
-        company_name: job.company?.display_name || 'Empresa no especificada',
-        location: job.location?.display_name || 'México',
-        remote: isRemote(job),
-        url: job.redirect_url || '',
-        description: job.description || '',
-        tags: buildTags(job),
-        job_types: [job.category?.label || 'General'],
-        created_at: job.created
-          ? Math.floor(new Date(job.created).getTime() / 1000)
-          : Math.floor(Date.now() / 1000)
-      };
-    });
-
-    const total = result.count || mappedJobs.length;
-    const lastPage = Math.max(1, Math.ceil(total / perPage));
+    const allJobs = [...adzunaJobs, ...remotiveJobs];
 
     return res.status(200).json({
-      data: mappedJobs,
+      debug: {
+        adzuna: adzunaJobs.length,
+        remotive: remotiveJobs.length,
+        total: allJobs.length
+      },
+      data: allJobs,
       links: {
         first: '/api/jobs?page=1',
-        last: `/api/jobs?page=${lastPage}`,
-        prev: page > 1 ? `/api/jobs?page=${page - 1}` : null,
-        next: page < lastPage ? `/api/jobs?page=${page + 1}` : null
+        last: '/api/jobs?page=1',
+        prev: null,
+        next: null
       },
       meta: {
         current_page: page,
-        from: mappedJobs.length ? (page - 1) * perPage + 1 : 0,
-        last_page: lastPage,
+        from: allJobs.length ? 1 : 0,
+        last_page: 1,
         path: '/api/jobs',
         per_page: perPage,
-        to: (page - 1) * perPage + mappedJobs.length,
-        total
+        to: allJobs.length,
+        total: allJobs.length
       }
     });
   } catch (error) {
     return res.status(200).json({
+      debug: {
+        error: String(error)
+      },
       data: [],
-      error: String(error)
+      links: {
+        first: '',
+        last: '',
+        prev: null,
+        next: null
+      },
+      meta: {
+        current_page: 1,
+        from: 0,
+        last_page: 1,
+        path: '',
+        per_page: 0,
+        to: 0,
+        total: 0
+      }
     });
   }
 };
 
-function buildTags(job) {
-  const tags = [];
+async function getAdzunaJobs(page, perPage) {
+  const appId = process.env.ADZUNA_APP_ID;
+  const appKey = process.env.ADZUNA_APP_KEY;
 
-  if (job.category?.label) tags.push(job.category.label);
-  if (job.location?.display_name) tags.push(job.location.display_name);
-  if (isRemote(job)) tags.push('Remoto');
+  if (!appId || !appKey) {
+    throw new Error('Faltan ADZUNA_APP_ID o ADZUNA_APP_KEY');
+  }
 
-  tags.push('México');
+  const url =
+    `https://api.adzuna.com/v1/api/jobs/mx/search/${page}` +
+    `?app_id=${appId}` +
+    `&app_key=${appKey}` +
+    `&results_per_page=${perPage}` +
+    `&what=developer`;
 
-  return tags.slice(0, 4);
+  const response = await fetch(url);
+  const result = await response.json();
+
+  const jobs = Array.isArray(result.results) ? result.results : [];
+
+  return jobs.map((job) => {
+    const title = job.title || 'Vacante sin título';
+
+    return {
+      slug: `adzuna-${job.id}-${slugify(title)}`,
+      title,
+      company_name: job.company?.display_name || 'Empresa no especificada',
+      location: job.location?.display_name || 'México',
+      remote: isRemote(job),
+      url: job.redirect_url || '',
+      description: job.description || '',
+      tags: [
+        job.category?.label || 'México',
+        job.location?.display_name || 'México',
+        'Adzuna'
+      ],
+      job_types: [job.category?.label || 'General'],
+      created_at: job.created
+        ? Math.floor(new Date(job.created).getTime() / 1000)
+        : Math.floor(Date.now() / 1000)
+    };
+  });
+}
+
+async function getRemotiveJobs() {
+  const response = await fetch('https://remotive.com/api/remote-jobs');
+  const result = await response.json();
+
+  const jobs = Array.isArray(result.jobs) ? result.jobs.slice(0, 20) : [];
+
+  return jobs.map((job) => {
+    const title = job.title || 'Vacante sin título';
+
+    return {
+      slug: `remotive-${job.id}-${slugify(title)}`,
+      title,
+      company_name: job.company_name || 'Empresa no especificada',
+      location: job.candidate_required_location || 'Remote',
+      remote: true,
+      url: job.url || '',
+      description: job.description || '',
+      tags: Array.isArray(job.tags) ? [...job.tags.slice(0, 3), 'Remotive'] : ['Remotive'],
+      job_types: job.job_type ? [job.job_type] : ['Remote'],
+      created_at: job.publication_date
+        ? Math.floor(new Date(job.publication_date).getTime() / 1000)
+        : Math.floor(Date.now() / 1000)
+    };
+  });
 }
 
 function isRemote(job) {
