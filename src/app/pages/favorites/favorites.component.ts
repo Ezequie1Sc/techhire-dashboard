@@ -4,11 +4,17 @@ import { FavoriteService } from '../../core/services/favorite.service';
 import { Job } from '../../models/job.model';
 import { JobCardComponent } from '../../shared/components/job-card/job-card.component';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-favorites',
   standalone: true,
-  imports: [CommonModule, JobCardComponent, EmptyStateComponent],
+
+  imports: [
+  CommonModule,
+  RouterModule,
+  JobCardComponent
+],
   templateUrl: './favorites.component.html',
   styleUrls: ['./favorites.component.css']
 })
