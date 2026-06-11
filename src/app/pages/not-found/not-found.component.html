@@ -1,79 +1,123 @@
-<div class="min-h-screen bg-[#f4f1ec] flex items-center justify-center px-6">
+<div class="min-h-screen bg-[#f4f1ec] text-[#141414] flex items-center justify-center px-5 py-10 overflow-hidden">
 
-  <div class="max-w-4xl w-full">
+  <section class="relative max-w-7xl w-full rounded-[3rem] bg-[#fbfaf7] border border-black/5 shadow-[0_30px_80px_rgba(0,0,0,0.08)] overflow-hidden">
 
-    <div
-      class="bg-[#fbfaf7] border border-black/5 rounded-[3rem] p-10 md:p-16 text-center shadow-[0_30px_80px_rgba(0,0,0,0.08)]"
-    >
+    <div class="absolute -top-40 -right-40 w-96 h-96 bg-[#e8e2d8] rounded-full blur-3xl opacity-70"></div>
+    <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-[#ded5ca] rounded-full blur-3xl opacity-70"></div>
 
-      <!-- Icon -->
-      <div
-        class="w-24 h-24 mx-auto rounded-[2rem] bg-white border border-black/5 flex items-center justify-center mb-8"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-10 h-10 text-[#141414]"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="1.8"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M9.172 9.172a4 4 0 015.656 0m-5.656 5.656a4 4 0 005.656 0M12 3v3m0 12v3m9-9h-3M6 12H3"
-          />
-        </svg>
+    <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center p-8 md:p-14 lg:p-20">
+
+      <!-- Text Content -->
+      <div class="text-center lg:text-left">
+        <span class="inline-flex items-center gap-2 bg-white border border-black/5 px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-[0.2em] text-[#8a8177]">
+          Error 404
+        </span>
+
+        <h1 class="mt-8 text-[110px] md:text-[180px] font-semibold tracking-[-0.12em] leading-none">
+          404
+        </h1>
+
+        <h2 class="text-3xl md:text-5xl font-semibold tracking-[-0.05em]">
+          Página no encontrada
+        </h2>
+
+        <p class="mt-5 text-[#6b665f] text-lg leading-relaxed max-w-xl mx-auto lg:mx-0">
+          Parece que esta vacante tomó otro camino. La página pudo ser eliminada,
+          cambiada de dirección o el enlace no es correcto.
+        </p>
+
+        <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 mt-10">
+          <a
+            routerLink="/"
+            class="bg-[#141414] text-white px-8 py-4 rounded-full font-medium hover:scale-[1.03] transition duration-300"
+          >
+            Volver al inicio
+          </a>
+
+          <a
+            routerLink="/jobs"
+            class="bg-white border border-black/5 px-8 py-4 rounded-full font-medium hover:bg-[#f4f1ec] transition"
+          >
+            Explorar vacantes
+          </a>
+        </div>
       </div>
 
-      <!-- Label -->
-      <span
-        class="inline-flex items-center gap-2 bg-white border border-black/5 px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-[0.2em] text-[#8a8177]"
-      >
-        Error 404
-      </span>
-
-      <!-- Title -->
-      <h1
-        class="text-7xl md:text-9xl font-semibold tracking-[-0.08em] text-[#141414] mt-8"
-      >
-        404
-      </h1>
-
-      <h2
-        class="text-3xl md:text-5xl font-semibold tracking-[-0.05em] mt-4 text-[#141414]"
-      >
-        Página no encontrada
-      </h2>
-
-      <p
-        class="max-w-2xl mx-auto mt-5 text-[#6b665f] leading-relaxed text-lg"
-      >
-        La página que intentas visitar no existe, fue eliminada o cambió de
-        dirección.
-      </p>
-
-      <!-- Buttons -->
-      <div
-        class="flex flex-col sm:flex-row justify-center gap-4 mt-10"
-      >
-        <a
-          routerLink="/"
-          class="bg-[#141414] text-white px-8 py-4 rounded-full font-medium hover:scale-[1.02] transition"
+      <!-- Animated City Scene SVG -->
+      <div class="relative h-[390px] md:h-[470px] flex items-center justify-center overflow-hidden">
+        <svg 
+          class="error-svg w-full h-full max-w-[500px]" 
+          viewBox="0 0 1120 645" 
+          xmlns="http://www.w3.org/2000/svg"
         >
-          Volver al inicio
-        </a>
+          <defs>
+            <linearGradient id="linear-gradient" x1="679.53" y1="188.68" x2="900.4" y2="188.68" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#757575"/>
+              <stop offset="1" stop-color="#626261"/>
+            </linearGradient>
+            <linearGradient id="light-gradient" x1="92.08" y1="410.47" x2="92.08" y2="402.93" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#5c5c5c"/>
+              <stop offset="1" stop-color="#3a3a3a"/>
+            </linearGradient>
+          </defs>
 
-        <a
-          routerLink="/jobs"
-          class="bg-white border border-black/5 px-8 py-4 rounded-full font-medium hover:bg-[#f4f1ec] transition"
-        >
-          Explorar vacantes
-        </a>
+          <!-- Edificios principales -->
+          <path d="M767.25,157c56.53,25.83,76.51,54,37.89,75.3-39.07,21.58-98.76,11.69-150.75-11.82-52.88-24.16-76.18-53.59-37.1-75.18C657.76,122.93,717.18,134.1,767.25,157ZM690,200.8c41.68,19.27,70,23.77,83.75,16.19s.35-21.21-41.28-40.22c-40.5-18.51-69.09-24.29-83.28-16.45C636.15,167.51,647.28,181.52,690,200.8Z" fill="url(#linear-gradient)"/>
+          <path d="M773.73,217C760,224.57,731.66,220.07,690,200.8c-29.72-13.42-44.13-24.28-45.77-32.07h0L644,215.46c39,20.06,90.21,34.61,134.46,26.33l-.1-35-.37-.11C780,210.84,778.6,214.3,773.73,217Z" fill="#9e9e9e"/>
+
+          <!-- Calle principal -->
+          <polygon points="595.52 385.7 579.23 395.11 347.26 529.03 330.97 538.44 347.37 547.9 532.02 654.51 533.54 655.39 548.41 663.98 637.6 612.48 640.58 614.21 364.19 773.78 396.98 773.78 676.25 612.54 640.49 591.88 548.31 645.1 363.66 538.5 595.62 404.57 1083.14 686.02 1083.14 667.21 611.91 395.17 595.52 385.7" fill="#d5d5d5"/>
+          
+          <!-- Carreteras -->
+          <polygon points="67.59 389.8 51.2 380.33 0.23 350.9 0.23 369.72 34.91 389.74 0.23 409.76 0.23 428.69 51.3 399.2 67.59 389.8" fill="#d5d5d5"/>
+          <polyline points="598.48 383.99 614.88 393.46 1083.14 663.79 1083.14 644.97 631.17 384.05 595.4 363.4 374.19 234.89 338.64 255.41 559.85 383.92 327.89 517.85 106.22 389.87 502.59 161.02 466.82 140.37 70.45 369.21 0.23 328.67 0.23 347.48 54.16 378.62 70.56 388.08 86.85 378.68 463.93 160.97 466.91 162.69 89.83 380.4 73.54 389.81 89.93 399.27 311.6 527.25 327.99 536.72 344.28 527.31 576.25 393.39 592.54 383.98 576.14 374.52 374.34 257.21 377.3 255.5 579.11 372.81 595.5 382.27" fill="#d5d5d5"/>
+
+          <!-- Carros animados -->
+          <g id="car-1" class="animated-car">
+            <polygon points="94.09 410.99 94.09 410.99 94.09 410.99 94.09 406.94 80.65 399.18 80.65 403.22 74.3 406.89 87.74 414.65 94.09 410.99 94.09 410.99 94.09 410.99" fill="#898989"/>
+            <polygon points="80.65 399.18 94.09 406.94 87.74 410.61 74.3 402.85 80.65 399.18" fill="#c4c4c4"/>
+            <polygon points="84.23 405.6 77.63 401.79 83.98 398.12 90.59 401.93 84.23 405.6" fill="#c4c4c4"/>
+          </g>
+
+          <g id="car-2" class="animated-car">
+            <polygon points="154.28 422.84 154.28 422.84 154.28 422.84 154.28 418.79 140.84 411.03 140.84 415.08 134.48 418.75 147.93 426.51 154.28 422.84 154.28 422.84 154.28 422.84" fill="#898989"/>
+            <polygon points="140.84 411.03 154.28 418.79 147.93 422.46 134.48 414.7 140.84 411.03" fill="#c4c4c4"/>
+            <polygon points="144.42 417.46 137.82 413.65 144.17 409.98 150.77 413.79 144.42 417.46" fill="#c4c4c4"/>
+          </g>
+
+          <g id="car-3" class="animated-car">
+            <polygon points="643.15 396.27 643.15 396.27 643.15 396.27 643.15 392.22 629.71 384.46 629.71 388.51 623.35 392.18 636.79 399.94 643.15 396.27 643.15 396.27 643.15 396.27" fill="#898989"/>
+            <polygon points="629.71 384.46 643.15 392.22 636.79 395.89 623.35 388.13 629.71 384.46" fill="#c4c4c4"/>
+            <polygon points="633.29 390.89 626.69 387.08 633.04 383.41 639.64 387.22 633.29 390.89" fill="#c4c4c4"/>
+          </g>
+
+          <g id="car-4" class="animated-car">
+            <polygon points="697.13 449.39 697.13 449.39 697.13 449.39 697.13 445.34 683.69 437.58 683.69 441.63 677.33 445.29 690.78 453.06 697.13 449.39 697.13 449.39 697.13 449.39" fill="#898989"/>
+            <polygon points="683.69 437.58 697.13 445.34 690.78 449.01 677.33 441.25 683.69 437.58" fill="#c4c4c4"/>
+            <polygon points="687.27 444 680.67 440.19 687.02 436.52 693.63 440.33 687.27 444" fill="#c4c4c4"/>
+          </g>
+
+          <!-- Ventanas iluminadas (con animaciones) -->
+          <polygon id="window-1" class="window-light" points="389.29 394.67 385.89 396.63 385.89 386.29 389.29 384.32 389.29 394.67" fill="#f4d400"/>
+          <polygon id="window-2" class="window-light" points="398.93 365.73 395.53 367.69 395.53 357.35 398.93 355.38 398.93 365.73" fill="#f4d400"/>
+          <polygon id="window-3" class="window-light" points="398.93 412.49 395.53 414.45 395.53 404.11 398.93 402.14 398.93 412.49" fill="#f4d400"/>
+          <polygon id="window-4" class="window-light" points="403.74 421.4 400.34 423.36 400.34 413.01 403.74 411.05 403.74 421.4" fill="#f4d400"/>
+          <polygon id="window-5" class="window-light" points="389.29 441.43 385.89 443.39 385.89 433.05 389.29 431.08 389.29 441.43" fill="#f4d400"/>
+          <polygon id="window-6" class="window-light" points="367.6 371.46 364.21 369.5 364.2 379.85 367.6 381.81 367.6 371.46" fill="#f4d400"/>
+          <polygon id="window-7" class="window-light" points="362.79 380.37 359.39 378.41 359.39 388.75 362.79 390.72 362.79 380.37" fill="#f4d400"/>
+          <polygon id="window-8" class="window-light" points="372.42 409.31 369.02 407.35 369.02 417.69 372.42 419.66 372.42 409.31" fill="#f4d400"/>
+          <polygon id="window-9" class="window-light" points="357.97 412.66 354.57 410.7 354.57 421.05 357.97 423.01 357.97 412.66" fill="#f4d400"/>
+          <polygon id="window-10" class="window-light" points="362.79 427.13 359.39 425.17 359.39 435.51 362.79 437.48 362.79 427.13" fill="#f4d400"/>
+          <polygon id="window-11" class="window-light" points="262.24 384.8 259.43 383.18 259.43 391.73 262.24 393.36 262.24 384.8" fill="#f4d400"/>
+          <polygon id="window-12" class="window-light" points="266.22 396.77 263.41 395.14 263.41 403.7 266.22 405.32 266.22 396.77" fill="#f4d400"/>
+          <polygon id="window-13" class="window-light" points="274.19 420.7 271.37 419.08 271.37 427.64 274.19 429.26 274.19 420.7" fill="#f4d400"/>
+          <polygon id="window-14" class="window-light" points="266.22 425.77 263.41 424.15 263.41 432.7 266.22 434.33 266.22 425.77" fill="#f4d400"/>
+          <polygon id="window-15" class="window-light" points="270.2 447.41 267.39 445.79 267.39 454.34 270.2 455.97 270.2 447.41" fill="#f4d400"/>
+        </svg>
       </div>
 
     </div>
 
-  </div>
+  </section>
 
 </div>

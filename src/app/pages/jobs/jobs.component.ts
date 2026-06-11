@@ -2,11 +2,13 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
+
 import { JobService } from '../../core/services/job.service';
 import { Job, JobResponse } from '../../models/job.model';
+
 import { JobCardComponent } from '../../shared/components/job-card/job-card.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
-import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
+import { NotFoundComponent } from '../not-found/not-found.component';
 
 @Component({
   selector: 'app-jobs',
@@ -16,7 +18,7 @@ import { EmptyStateComponent } from '../../shared/components/empty-state/empty-s
     FormsModule,
     JobCardComponent,
     LoaderComponent,
-    EmptyStateComponent
+    NotFoundComponent
   ],
   templateUrl: './jobs.component.html',
   styleUrls: ['./jobs.component.css']
@@ -75,10 +77,6 @@ export class JobsComponent implements OnInit {
           this.allJobs = response.data || [];
           this.applyFilters();
           this.totalPages = response.meta?.last_page || 1;
-
-          if (this.jobs.length === 0) {
-            this.error = 'No se encontraron vacantes.';
-          }
         },
         error: () => {
           this.error = 'Error al cargar las vacantes.';
