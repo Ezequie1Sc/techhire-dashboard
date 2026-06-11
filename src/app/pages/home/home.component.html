@@ -1,171 +1,239 @@
-<div class="bg-[#faf9f6] min-h-screen font-sans text-gray-800">
+<div class="min-h-screen bg-[#f4f1ec] text-[#141414] overflow-hidden">
 
-  <!-- HERO SECTION (Estilo imagen principal) -->
-  <section class="container mx-auto px-6 pt-12 pb-16 max-w-7xl">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-      
-      <!-- Texto Izquierda -->
-      <div class="order-2 lg:order-1">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="w-2 h-2 rounded-full bg-[#4a5d4e]"></span>
-          <span class="text-sm font-medium text-[#4a5d4e] uppercase tracking-widest">TechHire Dashboard</span>
-        </div>
-        
-        <h1 class="text-4xl md:text-6xl font-semibold text-gray-900 leading-tight mb-6">
-          Encuentra tu próximo <br />
-          <span class="text-[#4a5d4e]">empleo tech</span>
-        </h1>
-        
-        <p class="text-lg text-gray-600 mb-8 max-w-lg">
-          Explora oportunidades para desarrolladores, ingenieros y perfiles tecnológicos. 
-          Diseñado para una experiencia limpia y profesional.
-        </p>
+  <!-- HERO -->
+  <section class="max-w-7xl mx-auto px-5 md:px-8 pt-10 pb-16">
+    <div class="rounded-[2rem] bg-[#fbfaf7] border border-black/5 shadow-[0_30px_80px_rgba(0,0,0,0.08)] overflow-hidden">
 
-        <div class="flex flex-wrap gap-4 mb-10">
-          <a routerLink="/jobs" class="bg-[#4a5d4e] hover:bg-[#3d4f40] text-white px-8 py-3 rounded-full font-medium transition-colors flex items-center gap-2">
-            Explorar vacantes
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
-          </a>
-          <a routerLink="/favorites" class="border border-gray-300 hover:border-[#4a5d4e] text-gray-700 hover:text-[#4a5d4e] px-8 py-3 rounded-full font-medium transition-colors">
-            Ver favoritos
-          </a>
+      <!-- Top browser bar -->
+      <div class="h-14 bg-[#151515] flex items-center justify-between px-6">
+        <div class="flex gap-2">
+          <span class="w-3 h-3 rounded-full bg-[#ff5f57]"></span>
+          <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
+          <span class="w-3 h-3 rounded-full bg-[#28c840]"></span>
         </div>
 
-        <!-- Stats simples -->
-        <div class="flex gap-8 text-sm">
-          <div>
-            <div class="font-bold text-2xl text-gray-900">100+</div>
-            <div class="text-gray-500">Vacantes</div>
-          </div>
-          <div>
-            <div class="font-bold text-2xl text-gray-900">Remote</div>
-            <div class="text-gray-500">Oportunidades</div>
-          </div>
+        <div class="hidden md:flex bg-white/10 text-white/60 text-xs px-5 py-2 rounded-full">
+          TechHire Dashboard · Remote Jobs Platform
         </div>
-      </div>
 
-      <!-- Imagen Derecha (Estilo visual de la web solicitada) -->
-      <div class="order-1 lg:order-2 relative">
-        <div class="relative rounded-3xl overflow-hidden shadow-xl bg-white p-2">
-          <img 
-            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" 
-            alt="Equipo profesional" 
-            class="w-full h-auto object-cover rounded-2xl"
-          />
-          <!-- Badge flotante decorativo -->
-          <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg border border-gray-100">
-            <p class="text-xs font-bold text-gray-800">+25 Nuevas vacantes</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- BARRA DE CATEGORÍAS (Estilo navegación horizontal) -->
-  <section class="bg-white border-y border-gray-200 py-4 mb-12">
-    <div class="container mx-auto px-6 max-w-7xl">
-      <div class="flex flex-wrap justify-center md:justify-between items-center gap-4 overflow-x-auto">
-        <span class="font-semibold text-gray-500 text-sm uppercase tracking-wider hidden md:block">Explora por:</span>
-        @for (category of techCategories; track category) {
-          <a href="#" class="text-sm font-medium text-gray-600 hover:text-[#4a5d4e] hover:underline transition-colors px-3 py-1 whitespace-nowrap">
-            {{ category }}
-          </a>
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- SECCIÓN "CÓMO FUNCIONA" (Estilo tarjetas limpias) -->
-  <section class="container mx-auto px-6 max-w-7xl mb-20">
-    <div class="text-center mb-12">
-      <span class="text-[#4a5d4e] font-semibold tracking-wide text-sm uppercase">Proceso simple</span>
-      <h2 class="text-3xl font-semibold text-gray-900 mt-2">Tu camino hacia el empleo ideal</h2>
-      <p class="text-gray-500 max-w-xl mx-auto mt-2">Organiza tu búsqueda en pasos claros para avanzar rápido.</p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 bg-[#f0f3ef] rounded-full flex items-center justify-center mx-auto mb-4 text-[#4a5d4e] font-bold">01</div>
-        <h3 class="font-semibold text-lg">Explora</h3>
-        <p class="text-gray-500 text-sm">Consulta vacantes tecnológicas desde nuestra API.</p>
-      </div>
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 bg-[#f0f3ef] rounded-full flex items-center justify-center mx-auto mb-4 text-[#4a5d4e] font-bold">02</div>
-        <h3 class="font-semibold text-lg">Analiza</h3>
-        <p class="text-gray-500 text-sm">Revisa detalles, empresa y ubicación.</p>
-      </div>
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 bg-[#f0f3ef] rounded-full flex items-center justify-center mx-auto mb-4 text-[#4a5d4e] font-bold">03</div>
-        <h3 class="font-semibold text-lg">Guarda</h3>
-        <p class="text-gray-500 text-sm">Marca favoritas para revisar después.</p>
-      </div>
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 bg-[#f0f3ef] rounded-full flex items-center justify-center mx-auto mb-4 text-[#4a5d4e] font-bold">04</div>
-        <h3 class="font-semibold text-lg">Aplica</h3>
-        <p class="text-gray-500 text-sm">Abre el enlace y continúa tu postulación.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECCIÓN DE VACANTES (Estilo destacado con fondo) -->
-  <section class="bg-[#4a5d4e]/10 py-16">
-    <div class="container mx-auto px-6 max-w-7xl">
-      
-      <div class="flex flex-col md:flex-row justify-between items-end mb-10">
-        <div>
-          <span class="text-[#4a5d4e] font-semibold text-sm uppercase tracking-wide">Oportunidades</span>
-          <h2 class="text-3xl font-semibold text-gray-900 mt-1">Vacantes recientes</h2>
-        </div>
-        <a routerLink="/jobs" class="font-medium text-[#4a5d4e] hover:underline mt-4 md:mt-0 block">
-          Ver todas &rarr;
+        <a routerLink="/jobs" class="text-white/80 text-xs border border-white/20 px-4 py-2 rounded-full hover:bg-white hover:text-black transition">
+          Explorar
         </a>
       </div>
 
-      <!-- Loader y Errores -->
-      @if (loading) {
-        <app-loader></app-loader>
-      }
+      <!-- Hero Content -->
+      <div class="grid lg:grid-cols-2 gap-8 items-center p-6 md:p-10 lg:p-14">
+        <div>
+          <span class="inline-flex items-center gap-2 bg-[#ece7df] text-[#5d554b] px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-[0.2em] mb-6">
+            <span class="w-2 h-2 bg-[#141414] rounded-full"></span>
+            TechHire Dashboard
+          </span>
 
-      @if (!loading && error && latestJobs.length === 0) {
-        <div class="bg-white p-10 rounded-xl text-center shadow-sm">
-          <p class="text-gray-500">{{ error }}</p>
-          <button (click)="loadLatestJobs()" class="mt-4 bg-[#4a5d4e] text-white px-6 py-2 rounded-full hover:bg-[#3d4f40]">
-            Reintentar
-          </button>
+          <h1 class="text-5xl md:text-7xl font-semibold tracking-[-0.06em] leading-[0.95] max-w-2xl">
+            Encuentra el empleo tech ideal para ti.
+          </h1>
+
+          <p class="mt-6 text-[#6b665f] text-base md:text-lg max-w-xl leading-relaxed">
+            Explora vacantes remotas, guarda tus favoritas y conecta con oportunidades reales para desarrolladores, diseñadores y perfiles de tecnología.
+          </p>
+
+          <div class="mt-8 flex flex-col sm:flex-row gap-3">
+            <a routerLink="/jobs" class="bg-[#141414] text-white px-7 py-4 rounded-full font-medium hover:scale-[1.02] transition flex items-center justify-center gap-2">
+              Explorar vacantes
+              <span>→</span>
+            </a>
+
+            <a routerLink="/favorites" class="bg-white border border-black/10 text-[#141414] px-7 py-4 rounded-full font-medium hover:bg-[#f3f3f3] transition text-center">
+              Ver favoritos
+            </a>
+          </div>
         </div>
-      }
 
-      <!-- Grid de Tarjetas -->
-      @if (!loading && !error && latestJobs.length > 0) {
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          @for (job of latestJobs; track job.slug) {
-            <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-100 p-1">
-               <app-job-card [job]="job"></app-job-card>
+        <!-- Visual Bento -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="col-span-2 rounded-[2rem] overflow-hidden h-64 relative group">
+            <img
+              src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80"
+              alt="Equipo trabajando"
+              class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
+            />
+            <div class="absolute inset-0 bg-black/20"></div>
+            <div class="absolute bottom-5 left-5 bg-white/90 backdrop-blur-md rounded-2xl px-5 py-3 shadow-lg">
+              <p class="text-sm font-semibold">+100 vacantes activas</p>
+              <p class="text-xs text-gray-500">Actualizadas desde API</p>
             </div>
-          }
-        </div>
-      }
+          </div>
 
-      @if (!loading && !error && latestJobs.length === 0) {
-        <div class="bg-white p-10 rounded-xl text-center shadow-sm">
-          <p class="text-gray-500">No hay vacantes disponibles en este momento.</p>
+          <div class="rounded-[2rem] bg-[#e7ded2] p-6 min-h-48 flex flex-col justify-between">
+            <div class="w-11 h-11 bg-white rounded-full flex items-center justify-center text-xl">
+              💻
+            </div>
+            <div>
+              <h3 class="text-3xl font-semibold">Remote</h3>
+              <p class="text-sm text-[#6b665f] mt-1">Oportunidades globales</p>
+            </div>
+          </div>
+
+          <div class="rounded-[2rem] overflow-hidden min-h-48 relative">
+            <img
+              src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80"
+              alt="Trabajo remoto"
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute top-4 right-4 bg-white px-4 py-2 rounded-full text-xs font-semibold">
+              UI/UX
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORÍAS -->
+  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-16">
+    <div class="flex flex-wrap justify-center gap-3">
+      @for (category of techCategories; track category) {
+        <a
+          href="#"
+          class="bg-white/80 border border-black/5 px-5 py-3 rounded-full text-sm font-medium text-[#5f5a53] hover:bg-[#141414] hover:text-white transition"
+        >
+          {{ category }}
+        </a>
       }
+    </div>
+  </section>
+
+  <!-- BENTO INFO -->
+  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20">
+    <div class="grid lg:grid-cols-4 gap-5">
+
+      <div class="lg:col-span-2 bg-white rounded-[2rem] p-8 md:p-10 border border-black/5">
+        <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">Proceso simple</span>
+        <h2 class="text-4xl md:text-5xl font-semibold tracking-[-0.05em] mt-4">
+          Busca, guarda y aplica más rápido.
+        </h2>
+        <p class="text-[#6b665f] mt-5 leading-relaxed">
+          Una experiencia limpia para encontrar oportunidades tecnológicas sin distracciones.
+        </p>
+      </div>
+
+      <div class="bg-[#141414] text-white rounded-[2rem] p-8 flex flex-col justify-between min-h-64">
+        <span class="text-white/50 text-sm">01</span>
+        <div>
+          <h3 class="text-2xl font-semibold">Explora</h3>
+          <p class="text-white/60 text-sm mt-2">Consulta empleos desde la API.</p>
+        </div>
+      </div>
+
+      <div class="bg-[#d8c6b2] rounded-[2rem] p-8 flex flex-col justify-between min-h-64">
+        <span class="text-black/40 text-sm">02</span>
+        <div>
+          <h3 class="text-2xl font-semibold">Filtra</h3>
+          <p class="text-black/60 text-sm mt-2">Encuentra roles por categoría.</p>
+        </div>
+      </div>
+
+      <div class="bg-[#ede7df] rounded-[2rem] p-8 flex flex-col justify-between min-h-64">
+        <span class="text-black/40 text-sm">03</span>
+        <div>
+          <h3 class="text-2xl font-semibold">Guarda</h3>
+          <p class="text-black/60 text-sm mt-2">Marca tus vacantes favoritas.</p>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2 rounded-[2rem] overflow-hidden min-h-64 relative">
+        <img
+          src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80"
+          alt="Oficina moderna"
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-black/20"></div>
+        <div class="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-md rounded-2xl p-5">
+          <h3 class="font-semibold text-xl">Diseñado para perfiles tech</h3>
+          <p class="text-sm text-gray-500 mt-1">Frontend, Backend, Mobile, DevOps, Data y más.</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-[2rem] p-8 flex flex-col justify-between min-h-64 border border-black/5">
+        <span class="text-black/40 text-sm">04</span>
+        <div>
+          <h3 class="text-2xl font-semibold">Aplica</h3>
+          <p class="text-black/60 text-sm mt-2">Abre la vacante original y postúlate.</p>
+        </div>
+      </div>
 
     </div>
   </section>
 
-  <!-- FINAL CTA (Banner inferior) -->
-  <section class="container mx-auto px-6 max-w-7xl py-20">
-    <div class="bg-[#3d3d3d] text-white rounded-3xl p-12 md:p-16 flex flex-col md:flex-row items-center justify-between gap-8">
+  <!-- VACANTES -->
+  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
       <div>
-        <h2 class="text-3xl font-semibold mb-2">¿Listo para el cambio?</h2>
-        <p class="text-gray-300 max-w-lg">Explora vacantes, guarda favoritas y conecta con tu próximo empleo tech.</p>
+        <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">Oportunidades recientes</span>
+        <h2 class="text-4xl md:text-5xl font-semibold tracking-[-0.05em] mt-3">
+          Vacantes destacadas.
+        </h2>
       </div>
-      <a routerLink="/jobs" class="bg-white text-gray-900 px-8 py-3 rounded-full font-medium hover:bg-gray-100 transition-colors flex-shrink-0">
-        Comenzar búsqueda
+
+      <a routerLink="/jobs" class="bg-[#141414] text-white px-6 py-3 rounded-full font-medium hover:scale-[1.02] transition w-fit">
+        Ver todas →
       </a>
+    </div>
+
+    @if (loading) {
+      <app-loader></app-loader>
+    }
+
+    @if (!loading && error && latestJobs.length === 0) {
+      <div class="bg-white rounded-[2rem] p-10 text-center border border-black/5">
+        <p class="text-gray-500">{{ error }}</p>
+        <button
+          (click)="loadLatestJobs()"
+          class="mt-5 bg-[#141414] text-white px-6 py-3 rounded-full hover:scale-[1.02] transition"
+        >
+          Reintentar
+        </button>
+      </div>
+    }
+
+    @if (!loading && !error && latestJobs.length > 0) {
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        @for (job of latestJobs; track job.slug) {
+          <div class="bg-white rounded-[2rem] border border-black/5 p-3 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] transition duration-300">
+            <app-job-card [job]="job"></app-job-card>
+          </div>
+        }
+      </div>
+    }
+
+    @if (!loading && !error && latestJobs.length === 0) {
+      <div class="bg-white rounded-[2rem] p-10 text-center border border-black/5">
+        <p class="text-gray-500">No hay vacantes disponibles en este momento.</p>
+      </div>
+    }
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20">
+    <div class="relative overflow-hidden rounded-[2.5rem] bg-[#141414] text-white p-8 md:p-14">
+      <img
+        src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=80"
+        alt="Equipo profesional"
+        class="absolute inset-0 w-full h-full object-cover opacity-20"
+      />
+
+      <div class="relative z-10 max-w-2xl">
+        <h2 class="text-4xl md:text-6xl font-semibold tracking-[-0.06em] leading-none">
+          Tu próximo empleo puede empezar hoy.
+        </h2>
+        <p class="text-white/70 mt-5 max-w-xl">
+          Explora vacantes, guarda tus favoritas y construye una búsqueda laboral más organizada.
+        </p>
+
+        <a routerLink="/jobs" class="inline-flex mt-8 bg-white text-[#141414] px-7 py-4 rounded-full font-medium hover:scale-[1.02] transition">
+          Comenzar búsqueda →
+        </a>
+      </div>
     </div>
   </section>
 

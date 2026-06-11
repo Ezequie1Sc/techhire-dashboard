@@ -1,16 +1,12 @@
-/* Importar una fuente moderna similar a la imagen si no está en el proyecto global */
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
-
-* {
-  font-family: 'Manrope', sans-serif;
+:host {
+  display: block;
 }
 
-/* Transiciones suaves para los efectos hover */
-.hero-section img, .job-card {
-  transition: all 0.3s ease;
+img {
+  user-select: none;
 }
 
-/* Resaltar la sección de empleos */
-.bg-\[4a5d4e\]\/10 {
-  background-color: rgba(74, 93, 78, 0.08); /* Un verde oliva muy suave */
+a,
+button {
+  will-change: transform;
 }
