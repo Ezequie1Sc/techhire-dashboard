@@ -3,46 +3,57 @@ module.exports = async function handler(req, res) {
     const page = Number(req.query?.page || 1);
     const perPage = 20;
 
-    const [adzunaResult, remotiveResult] = await Promise.allSettled([
+    const [adzunaResult, arbeitnowResult] = await Promise.allSettled([
       getAdzunaJobs(page, perPage),
-      getRemotiveJobs()
+      getArbeitnowJobs()
     ]);
 
     const adzunaJobs =
       adzunaResult.status === 'fulfilled' ? adzunaResult.value : [];
 
-    const remotiveJobs =
-      remotiveResult.status === 'fulfilled' ? remotiveResult.value : [];
+    const arbeitnowJobs =
+      arbeitnowResult.status === 'fulfilled' ? arbeitnowResult.value : [];
 
-    const allJobs = [...adzunaJobs, ...remotiveJobs];
+    const allJobs = removeDuplicates([...adzunaJobs, ...arbeitnowJobs]);
+
+    const start = (page - 1) * perPage;
+    const paginatedJobs = allJobs.slice(start, start + perPage);
+    const total = allJobs.length;
+    const lastPage = Math.max(1, Math.ceil(total / perPage));
 
     return res.status(200).json({
       debug: {
-        adzuna: adzunaJobs.length,
-        remotive: remotiveJobs.length,
-        total: allJobs.length
+        adzuna_count: adzunaJobs.length,
+        arbeitnow_count: arbeitnowJobs.length,
+        total_combined: allJobs.length,
+        adzuna_status: adzunaResult.status,
+        arbeitnow_status: arbeitnowResult.status,
+        adzuna_error:
+          adzunaResult.status === 'rejected' ? String(adzunaResult.reason) : null,
+        arbeitnow_error:
+          arbeitnowResult.status === 'rejected' ? String(arbeitnowResult.reason) : null
       },
-      data: allJobs,
+      data: paginatedJobs,
       links: {
         first: '/api/jobs?page=1',
-        last: '/api/jobs?page=1',
-        prev: null,
-        next: null
+        last: `/api/jobs?page=${lastPage}`,
+        prev: page > 1 ? `/api/jobs?page=${page - 1}` : null,
+        next: page < lastPage ? `/api/jobs?page=${page + 1}` : null
       },
       meta: {
         current_page: page,
-        from: allJobs.length ? 1 : 0,
-        last_page: 1,
+        from: paginatedJobs.length ? start + 1 : 0,
+        last_page: lastPage,
         path: '/api/jobs',
         per_page: perPage,
-        to: allJobs.length,
-        total: allJobs.length
+        to: start + paginatedJobs.length,
+        total
       }
     });
   } catch (error) {
     return res.status(200).json({
       debug: {
-        error: String(error)
+        fatal_error: String(error)
       },
       data: [],
       links: {
@@ -69,19 +80,28 @@ async function getAdzunaJobs(page, perPage) {
   const appKey = process.env.ADZUNA_APP_KEY;
 
   if (!appId || !appKey) {
-    throw new Error('Faltan ADZUNA_APP_ID o ADZUNA_APP_KEY');
+    throw new Error('Faltan variables ADZUNA_APP_ID o ADZUNA_APP_KEY');
   }
 
   const url =
     `https://api.adzuna.com/v1/api/jobs/mx/search/${page}` +
-    `?app_id=${appId}` +
-    `&app_key=${appKey}` +
+    `?app_id=${encodeURIComponent(appId)}` +
+    `&app_key=${encodeURIComponent(appKey)}` +
     `&results_per_page=${perPage}` +
     `&what=developer`;
 
-  const response = await fetch(url);
-  const result = await response.json();
+  const response = await fetch(url, {
+    headers: {
+      Accept: 'application/json',
+      'User-Agent': 'Jobly'
+    }
+  });
 
+  if (!response.ok) {
+    throw new Error(`Adzuna HTTP ${response.status}`);
+  }
+
+  const result = await response.json();
   const jobs = Array.isArray(result.results) ? result.results : [];
 
   return jobs.map((job) => {
@@ -92,14 +112,15 @@ async function getAdzunaJobs(page, perPage) {
       title,
       company_name: job.company?.display_name || 'Empresa no especificada',
       location: job.location?.display_name || 'México',
-      remote: isRemote(job),
+      remote: isRemoteText(`${job.title || ''} ${job.description || ''} ${job.location?.display_name || ''}`),
       url: job.redirect_url || '',
       description: job.description || '',
-      tags: [
-        job.category?.label || 'México',
-        job.location?.display_name || 'México',
+      tags: buildCleanTags([
+        job.category?.label,
+        job.location?.display_name,
+        'México',
         'Adzuna'
-      ],
+      ]),
       job_types: [job.category?.label || 'General'],
       created_at: job.created
         ? Math.floor(new Date(job.created).getTime() / 1000)
@@ -108,41 +129,74 @@ async function getAdzunaJobs(page, perPage) {
   });
 }
 
-async function getRemotiveJobs() {
-  const response = await fetch('https://remotive.com/api/remote-jobs');
+async function getArbeitnowJobs() {
+  const response = await fetch('https://www.arbeitnow.com/api/job-board-api', {
+    headers: {
+      Accept: 'application/json',
+      'User-Agent': 'Jobly'
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`Arbeitnow HTTP ${response.status}`);
+  }
+
   const result = await response.json();
+  const jobs = Array.isArray(result.data) ? result.data : [];
 
-  const jobs = Array.isArray(result.jobs) ? result.jobs.slice(0, 20) : [];
-
-  return jobs.map((job) => {
+  return jobs.slice(0, 40).map((job) => {
     const title = job.title || 'Vacante sin título';
 
     return {
-      slug: `remotive-${job.id}-${slugify(title)}`,
+      slug: `arbeitnow-${job.slug || job.id || slugify(title)}`,
       title,
       company_name: job.company_name || 'Empresa no especificada',
-      location: job.candidate_required_location || 'Remote',
-      remote: true,
+      location: job.location || 'Europa',
+      remote: Boolean(job.remote),
       url: job.url || '',
       description: job.description || '',
-      tags: Array.isArray(job.tags) ? [...job.tags.slice(0, 3), 'Remotive'] : ['Remotive'],
-      job_types: job.job_type ? [job.job_type] : ['Remote'],
-      created_at: job.publication_date
-        ? Math.floor(new Date(job.publication_date).getTime() / 1000)
-        : Math.floor(Date.now() / 1000)
+      tags: buildCleanTags([
+        ...(Array.isArray(job.tags) ? job.tags : []),
+        job.remote ? 'Remoto' : null,
+        'Europa',
+        'Arbeitnow'
+      ]),
+      job_types: job.job_types?.length ? job.job_types : ['General'],
+      created_at: job.created_at || Math.floor(Date.now() / 1000)
     };
   });
 }
 
-function isRemote(job) {
-  const text = `${job.title || ''} ${job.description || ''} ${job.location?.display_name || ''}`.toLowerCase();
+function buildCleanTags(tags) {
+  return tags
+    .filter(Boolean)
+    .map((tag) => String(tag))
+    .filter((tag, index, array) => array.indexOf(tag) === index)
+    .slice(0, 4);
+}
+
+function isRemoteText(text) {
+  const cleanText = String(text).toLowerCase();
 
   return (
-    text.includes('remote') ||
-    text.includes('remoto') ||
-    text.includes('home office') ||
-    text.includes('trabajo desde casa')
+    cleanText.includes('remote') ||
+    cleanText.includes('remoto') ||
+    cleanText.includes('home office') ||
+    cleanText.includes('trabajo desde casa')
   );
+}
+
+function removeDuplicates(jobs) {
+  const seen = new Set();
+
+  return jobs.filter((job) => {
+    const key = `${job.company_name}-${job.title}`.toLowerCase();
+
+    if (seen.has(key)) return false;
+
+    seen.add(key);
+    return true;
+  });
 }
 
 function slugify(text) {
