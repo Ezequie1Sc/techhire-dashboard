@@ -2,8 +2,10 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { finalize } from 'rxjs';
+
 import { JobService } from '../../core/services/job.service';
 import { Job } from '../../models/job.model';
+
 import { JobCardComponent } from '../../shared/components/job-card/job-card.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
@@ -18,6 +20,7 @@ export class HomeComponent implements OnInit {
   latestJobs: Job[] = [];
   loading = false;
   error: string | null = null;
+  currentSlide = 0;
 
   techCategories = [
     'Frontend',
@@ -53,7 +56,9 @@ export class HomeComponent implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          this.latestJobs = (response.data || []).slice(0, 3);
+          this.latestJobs = (response.data || []).slice(0, 6);
+          this.currentSlide = 0;
+
           if (this.latestJobs.length === 0) {
             this.error = 'No se encontraron vacantes disponibles.';
           }
@@ -62,5 +67,24 @@ export class HomeComponent implements OnInit {
           this.error = 'No se pudieron cargar las vacantes.';
         }
       });
+  }
+
+  nextSlide(): void {
+    if (this.latestJobs.length === 0) return;
+
+    this.currentSlide = (this.currentSlide + 1) % this.latestJobs.length;
+  }
+
+  previousSlide(): void {
+    if (this.latestJobs.length === 0) return;
+
+    this.currentSlide =
+      this.currentSlide === 0
+        ? this.latestJobs.length - 1
+        : this.currentSlide - 1;
+  }
+
+  goToSlide(index: number): void {
+    this.currentSlide = index;
   }
 }
