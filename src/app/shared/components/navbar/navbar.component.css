@@ -1,0 +1,54 @@
+:host {
+  display: block;
+}
+
+/* Links desktop */
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b665f;
+  transition: all 0.25s ease;
+}
+
+.nav-link:hover {
+  color: #141414;
+  background: #f4f1ec;
+}
+
+.nav-active {
+  background: #141414;
+  color: white !important;
+}
+
+/* Links mobile */
+.mobile-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.1rem;
+  border-radius: 1.2rem;
+  color: #6b665f;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+.mobile-link:hover {
+  background: white;
+  color: #141414;
+}
+
+.mobile-active {
+  background: white;
+  color: #141414 !important;
+}
+
+/* Botones */
+a,
+button {
+  will-change: transform;
+}
