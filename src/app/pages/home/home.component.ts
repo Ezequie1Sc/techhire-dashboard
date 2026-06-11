@@ -54,7 +54,6 @@ export class HomeComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.latestJobs = (response.data || []).slice(0, 3);
-
           if (this.latestJobs.length === 0) {
             this.error = 'No se encontraron vacantes disponibles.';
           }
