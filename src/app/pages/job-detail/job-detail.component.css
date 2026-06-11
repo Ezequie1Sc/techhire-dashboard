@@ -2,11 +2,12 @@
   display: block;
 }
 
+/* Cards principales */
 .detail-card {
   background: #fbfaf7;
   border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 1.7rem;
-  padding: 1.2rem;
+  border-radius: 1.6rem;
+  padding: 1.1rem;
 }
 
 .detail-card span {
@@ -24,55 +25,51 @@
   color: #141414;
   font-size: 0.95rem;
   line-height: 1.4;
+  word-break: break-word;
 }
 
 .section-title {
-  font-size: 1.55rem;
+  font-size: 1.45rem;
   font-weight: 650;
   letter-spacing: -0.045em;
   color: #141414;
 }
 
-/* Descripción limpia y legible */
+/* Descripción limpia */
 .job-description-container {
-  background: white;
+  background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 1.7rem;
-  padding: 2rem;
+  border-radius: 1.75rem;
+  padding: 1.75rem;
   color: #374151;
   font-size: 0.98rem;
-  line-height: 1.85;
-  max-height: 620px;
+  line-height: 1.8;
+  max-height: 640px;
   overflow-y: auto;
 }
 
-.job-description-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.job-description-container::-webkit-scrollbar-thumb {
-  background: #d8cec2;
-  border-radius: 999px;
-}
-
-.job-description-container :where(*) {
-  max-width: 100%;
-}
-
+/* Evita que la descripción se vea como bloque pesado */
 .job-description-container :where(p) {
   margin: 0 0 1rem;
+  max-width: 75ch;
 }
 
+/* Reduce saltos excesivos que vienen de la API */
 .job-description-container :where(br) {
   display: none;
 }
 
-.job-description-container :where(h1, h2, h3, h4, h5, h6) {
+/* Títulos dentro del HTML externo */
+.job-description-container :where(h1, h2, h3, h4, h5, h6, strong, b) {
   color: #141414;
+}
+
+.job-description-container :where(h1, h2, h3, h4, h5, h6) {
+  display: block;
   font-weight: 700;
   letter-spacing: -0.03em;
-  margin: 2rem 0 0.8rem;
   line-height: 1.25;
+  margin: 1.8rem 0 0.8rem;
 }
 
 .job-description-container :where(h1, h2) {
@@ -83,29 +80,33 @@
   font-size: 1.1rem;
 }
 
+/* Listas limpias */
 .job-description-container :where(ul, ol) {
-  margin: 0.75rem 0 1.25rem 1.25rem;
-  padding-left: 1rem;
-}
-
-.job-description-container :where(ul) {
-  list-style: disc;
-}
-
-.job-description-container :where(ol) {
-  list-style: decimal;
+  margin: 0.8rem 0 1.25rem;
+  padding-left: 0;
+  list-style: none;
+  max-width: 75ch;
 }
 
 .job-description-container :where(li) {
-  margin-bottom: 0.55rem;
-  padding-left: 0.25rem;
+  position: relative;
+  margin-bottom: 0.65rem;
+  padding-left: 1.5rem;
+  line-height: 1.7;
 }
 
-.job-description-container :where(strong, b) {
-  color: #141414;
-  font-weight: 700;
+.job-description-container :where(li)::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.72rem;
+  width: 7px;
+  height: 7px;
+  background: #141414;
+  border-radius: 999px;
 }
 
+/* Enlaces */
 .job-description-container :where(a) {
   color: #141414;
   font-weight: 600;
@@ -113,16 +114,56 @@
   text-underline-offset: 3px;
 }
 
+/* Separadores */
 .job-description-container :where(hr) {
   border: 0;
   border-top: 1px solid #eee7dc;
   margin: 2rem 0;
 }
 
+/* Scroll elegante */
+.job-description-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.job-description-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.job-description-container::-webkit-scrollbar-thumb {
+  background: #d8cec2;
+  border-radius: 999px;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
+  .section-title {
+    font-size: 1.25rem;
+  }
+
+  .detail-card {
+    border-radius: 1.35rem;
+    padding: 1rem;
+  }
+
   .job-description-container {
     max-height: none;
     padding: 1.25rem;
-    border-radius: 1.4rem;
+    border-radius: 1.35rem;
+    font-size: 0.94rem;
+    line-height: 1.75;
+  }
+
+  .job-description-container :where(p),
+  .job-description-container :where(ul, ol) {
+    max-width: 100%;
+  }
+
+  .job-description-container :where(h1, h2) {
+    font-size: 1.18rem;
+  }
+
+  .job-description-container :where(h3, h4, h5, h6) {
+    font-size: 1rem;
   }
 }

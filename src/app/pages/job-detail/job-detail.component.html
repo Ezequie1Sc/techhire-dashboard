@@ -1,5 +1,5 @@
 @if (loading) {
-  <div class="min-h-screen bg-[#f4f1ec] flex items-center justify-center">
+  <div class="min-h-screen bg-[#f4f1ec] flex items-center justify-center px-5">
     <app-loader></app-loader>
   </div>
 }
@@ -9,31 +9,34 @@
 }
 
 @if (!loading && job) {
-  <div class="min-h-screen bg-[#f4f1ec] text-[#141414] px-5 py-10">
+  <div class="min-h-screen bg-[#f4f1ec] text-[#141414] px-5 py-8 md:py-10">
     <div class="max-w-7xl mx-auto">
 
-      <a routerLink="/jobs" class="inline-flex items-center gap-2 text-sm text-[#6b665f] hover:text-[#141414] mb-8 transition">
+      <a
+        routerLink="/jobs"
+        class="inline-flex items-center gap-2 text-sm text-[#6b665f] hover:text-[#141414] mb-6 md:mb-8 transition"
+      >
         ← Volver a vacantes
       </a>
 
-      <section class="grid lg:grid-cols-[1fr_360px] gap-6">
+      <section class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-6">
 
-        <!-- CONTENIDO PRINCIPAL -->
-        <main class="space-y-6">
+        <!-- Main -->
+        <main class="space-y-5 md:space-y-6 min-w-0">
 
-          <!-- HERO -->
-          <div class="bg-[#fbfaf7] border border-black/5 rounded-[2.5rem] p-7 md:p-10 shadow-[0_24px_70px_rgba(0,0,0,0.06)]">
-            <div class="flex items-start justify-between gap-5">
-              <div>
+          <!-- Hero -->
+          <div class="bg-[#fbfaf7] border border-black/5 rounded-[2rem] md:rounded-[2.5rem] p-5 md:p-10 shadow-[0_24px_70px_rgba(0,0,0,0.06)]">
+            <div class="flex items-start justify-between gap-4">
+              <div class="min-w-0">
                 <span class="inline-flex bg-white border border-black/5 px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-[0.18em] text-[#8a8177]">
                   {{ job.company_name }}
                 </span>
 
-                <h1 class="mt-6 text-4xl md:text-6xl font-semibold tracking-[-0.06em] leading-[1.02] max-w-4xl">
+                <h1 class="mt-5 md:mt-6 text-3xl sm:text-4xl md:text-6xl font-semibold tracking-[-0.06em] leading-[1.05] max-w-4xl">
                   {{ job.title }}
                 </h1>
 
-                <p class="mt-5 text-[#6b665f] max-w-2xl leading-relaxed">
+                <p class="mt-4 md:mt-5 text-[#6b665f] max-w-2xl leading-relaxed text-sm md:text-base">
                   Revisa los detalles principales de esta vacante antes de continuar con tu postulación.
                 </p>
               </div>
@@ -41,19 +44,30 @@
               <button
                 type="button"
                 (click)="toggleFavorite()"
-                class="w-12 h-12 rounded-full bg-white border border-black/5 flex items-center justify-center hover:scale-105 transition"
+                class="w-11 h-11 md:w-12 md:h-12 rounded-full bg-white border border-black/5 flex items-center justify-center hover:scale-105 transition shrink-0"
                 [class.text-red-500]="isFavorite"
                 [class.text-[#b8afa4]]="!isFavorite"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" [attr.fill]="isFavorite ? 'currentColor' : 'none'" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 h-5 md:w-6 md:h-6"
+                  [attr.fill]="isFavorite ? 'currentColor' : 'none'"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                  />
                 </svg>
               </button>
             </div>
           </div>
 
-          <!-- INFO CARDS -->
-          <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4">
+          <!-- Info cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 md:gap-4">
             <div class="detail-card">
               <span>Ubicación</span>
               <strong>{{ job.location || 'No especificada' }}</strong>
@@ -75,8 +89,8 @@
             </div>
           </div>
 
-          <!-- TAGS -->
-          <div class="bg-[#fbfaf7] border border-black/5 rounded-[2rem] p-7">
+          <!-- Tags -->
+          <div class="bg-[#fbfaf7] border border-black/5 rounded-[2rem] p-5 md:p-7">
             <h2 class="section-title">Tecnologías requeridas</h2>
 
             <div class="flex flex-wrap gap-2 mt-4">
@@ -88,32 +102,37 @@
             </div>
           </div>
 
-          <!-- DESCRIPTION -->
-          <div class="bg-[#fbfaf7] border border-black/5 rounded-[2rem] p-7 md:p-9">
-            <div class="flex items-center justify-between gap-4 border-b border-black/5 pb-5 mb-6">
-              <div>
-                <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-semibold">
-                  Información
-                </span>
-                <h2 class="section-title mt-2">Descripción del puesto</h2>
-              </div>
+          <!-- Description -->
+          <div class="bg-[#fbfaf7] border border-black/5 rounded-[2rem] p-5 md:p-8">
+            <div class="border-b border-black/5 pb-5 mb-6">
+              <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-semibold">
+                Información
+              </span>
+
+              <h2 class="section-title mt-2">
+                Descripción del puesto
+              </h2>
+
+              <p class="text-[#6b665f] text-sm mt-2 max-w-2xl">
+                Resumen organizado de responsabilidades, requisitos y detalles de la vacante.
+              </p>
             </div>
 
-            <div class="job-description-container">
+            <article class="job-description-container">
               <div [innerHTML]="job.description"></div>
-            </div>
+            </article>
           </div>
 
         </main>
 
-        <!-- SIDEBAR -->
+        <!-- Sidebar -->
         <aside class="lg:sticky lg:top-8 h-fit space-y-5">
-          <div class="bg-[#141414] text-white rounded-[2.2rem] p-7 shadow-[0_24px_70px_rgba(0,0,0,0.12)]">
+          <div class="bg-[#141414] text-white rounded-[2rem] md:rounded-[2.2rem] p-6 md:p-7 shadow-[0_24px_70px_rgba(0,0,0,0.12)]">
             <p class="text-white/50 text-xs uppercase tracking-[0.2em]">
               Aplicación
             </p>
 
-            <h3 class="text-3xl font-semibold tracking-[-0.05em] mt-4">
+            <h3 class="text-2xl md:text-3xl font-semibold tracking-[-0.05em] mt-4">
               ¿Te interesa?
             </h3>
 
@@ -145,13 +164,13 @@
             </p>
 
             <div class="flex items-center gap-4 mt-4">
-              <div class="w-12 h-12 rounded-2xl bg-[#141414] text-white flex items-center justify-center font-semibold">
+              <div class="w-12 h-12 rounded-2xl bg-[#141414] text-white flex items-center justify-center font-semibold shrink-0">
                 {{ job.company_name.charAt(0) }}
               </div>
 
-              <div>
-                <p class="font-semibold">{{ job.company_name }}</p>
-                <p class="text-sm text-[#6b665f]">{{ job.location }}</p>
+              <div class="min-w-0">
+                <p class="font-semibold truncate">{{ job.company_name }}</p>
+                <p class="text-sm text-[#6b665f] truncate">{{ job.location }}</p>
               </div>
             </div>
           </div>
