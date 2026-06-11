@@ -1,148 +1,128 @@
-/* job-detail.component.css */
+:host {
+  display: block;
+}
 
-/* Contenedor principal de la descripción */
+.detail-card {
+  background: #fbfaf7;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 1.7rem;
+  padding: 1.2rem;
+}
+
+.detail-card span {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.17em;
+  color: #8a8177;
+  font-weight: 700;
+  margin-bottom: 0.55rem;
+}
+
+.detail-card strong {
+  display: block;
+  color: #141414;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.section-title {
+  font-size: 1.55rem;
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  color: #141414;
+}
+
+/* Descripción limpia y legible */
 .job-description-container {
-  font-size: 1rem;
-  line-height: 1.8;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 1.7rem;
+  padding: 2rem;
   color: #374151;
+  font-size: 0.98rem;
+  line-height: 1.85;
+  max-height: 620px;
+  overflow-y: auto;
 }
 
-/* Reset total de estilos del HTML externo */
-.job-description-container * {
-  all: revert;
+.job-description-container::-webkit-scrollbar {
+  width: 8px;
 }
 
-/* Títulos */
-.job-description-container h1,
-.job-description-container h2,
-.job-description-container h3,
-.job-description-container h4,
-.job-description-container h5,
-.job-description-container h6 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-top: 1.5rem;
-  margin-bottom: 0.75rem;
-  color: #1f2937;
+.job-description-container::-webkit-scrollbar-thumb {
+  background: #d8cec2;
+  border-radius: 999px;
 }
 
-.job-description-container h1 { font-size: 1.5rem; }
-.job-description-container h2 { font-size: 1.35rem; }
-.job-description-container h3 { font-size: 1.2rem; }
-.job-description-container h4 { font-size: 1.1rem; }
-
-/* Párrafos */
-.job-description-container p {
-  margin-bottom: 1rem;
-  line-height: 1.8;
-}
-
-/* Listas */
-.job-description-container ul,
-.job-description-container ol {
-  margin: 0.5rem 0 1rem 1.5rem;
-  padding-left: 0.5rem;
-}
-
-.job-description-container ul {
-  list-style-type: disc;
-}
-
-.job-description-container ol {
-  list-style-type: decimal;
-}
-
-.job-description-container li {
-  margin-bottom: 0.5rem;
-  line-height: 1.6;
-}
-
-/* Texto en negrita */
-.job-description-container strong,
-.job-description-container b {
-  font-weight: 600;
-  color: #1f2937;
-}
-
-/* Enlaces */
-.job-description-container a {
-  color: #4a5d4e;
-  text-decoration: underline;
-  font-weight: 500;
-  transition: color 0.2s ease;
-}
-
-.job-description-container a:hover {
-  color: #3d4f40;
-}
-
-/* Imágenes */
-.job-description-container img {
+.job-description-container :where(*) {
   max-width: 100%;
-  height: auto;
-  border-radius: 0.75rem;
-  margin: 1.5rem 0;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-/* Citas */
-.job-description-container blockquote {
-  border-left: 4px solid #4a5d4e;
-  padding: 0.5rem 0 0.5rem 1.5rem;
-  margin: 1rem 0;
-  background-color: #f9fafb;
-  border-radius: 0 0.5rem 0.5rem 0;
-  color: #4b5563;
+.job-description-container :where(p) {
+  margin: 0 0 1rem;
 }
 
-/* Código */
-.job-description-container code {
-  background: #f3f4f6;
-  padding: 0.125rem 0.375rem;
-  border-radius: 0.25rem;
-  font-size: 0.875rem;
-  color: #1f2937;
+.job-description-container :where(br) {
+  display: none;
 }
 
-.job-description-container pre {
-  background: #f3f4f6;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  overflow-x: auto;
-  margin: 1rem 0;
+.job-description-container :where(h1, h2, h3, h4, h5, h6) {
+  color: #141414;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 2rem 0 0.8rem;
+  line-height: 1.25;
 }
 
-/* Tablas si las hay */
-.job-description-container table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1rem 0;
+.job-description-container :where(h1, h2) {
+  font-size: 1.35rem;
 }
 
-.job-description-container th,
-.job-description-container td {
-  border: 1px solid #e5e7eb;
-  padding: 0.5rem 0.75rem;
-  text-align: left;
+.job-description-container :where(h3, h4, h5, h6) {
+  font-size: 1.1rem;
 }
 
-.job-description-container th {
-  background-color: #f9fafb;
+.job-description-container :where(ul, ol) {
+  margin: 0.75rem 0 1.25rem 1.25rem;
+  padding-left: 1rem;
+}
+
+.job-description-container :where(ul) {
+  list-style: disc;
+}
+
+.job-description-container :where(ol) {
+  list-style: decimal;
+}
+
+.job-description-container :where(li) {
+  margin-bottom: 0.55rem;
+  padding-left: 0.25rem;
+}
+
+.job-description-container :where(strong, b) {
+  color: #141414;
+  font-weight: 700;
+}
+
+.job-description-container :where(a) {
+  color: #141414;
   font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-/* Separadores */
-.job-description-container hr {
+.job-description-container :where(hr) {
   border: 0;
-  border-top: 2px solid #e5e7eb;
+  border-top: 1px solid #eee7dc;
   margin: 2rem 0;
 }
 
-/* Espaciado adicional entre secciones */
-.job-description-container > *:first-child {
-  margin-top: 0;
-}
-
-.job-description-container > *:last-child {
-  margin-bottom: 0;
+@media (max-width: 768px) {
+  .job-description-container {
+    max-height: none;
+    padding: 1.25rem;
+    border-radius: 1.4rem;
+  }
 }
