@@ -1,0 +1,17 @@
+:host {
+  display: block;
+}
+
+input,
+select,
+button {
+  font-family: inherit;
+}
+
+select {
+  cursor: pointer;
+}
+
+button {
+  will-change: transform;
+}

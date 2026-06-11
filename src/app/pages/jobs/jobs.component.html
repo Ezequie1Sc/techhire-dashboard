@@ -1,74 +1,206 @@
-<div class="min-h-screen bg-gray-50 py-8">
-  <div class="max-w-7xl mx-auto px-4">
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900 mb-4">
-        Vacantes Disponibles
-      </h1>
+<div class="min-h-screen bg-[#f4f1ec] text-[#141414]">
 
-      <div class="flex gap-2">
-        <input
-          type="text"
-          [(ngModel)]="searchTerm"
-          (input)="search()"
-          placeholder="Buscar por título, empresa o tecnología..."
-          class="flex-1 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+  <section class="max-w-7xl mx-auto px-5 md:px-8 py-10">
 
-        @if (searchTerm.trim()) {
+    <!-- Header -->
+    <div class="mb-10">
+      <span class="inline-flex items-center gap-2 bg-white border border-black/5 px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-[0.2em] text-[#8a8177]">
+        <span class="w-2 h-2 bg-[#141414] rounded-full"></span>
+        Bolsa de empleo tech
+      </span>
+
+      <div class="mt-5 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+        <div>
+          <h1 class="text-5xl md:text-7xl font-semibold tracking-[-0.06em] leading-none">
+            Vacantes disponibles.
+          </h1>
+          <p class="mt-4 text-[#6b665f] max-w-2xl">
+            Explora oportunidades tecnológicas con una búsqueda más limpia, organizada y fácil de leer.
+          </p>
+        </div>
+
+        <div class="bg-[#141414] text-white rounded-[2rem] px-7 py-5 min-w-[220px]">
+          <p class="text-white/50 text-xs uppercase tracking-[0.2em]">Resultados</p>
+          <p class="text-4xl font-semibold mt-1">{{ jobs.length }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters Panel -->
+    <div class="bg-[#fbfaf7] border border-black/5 rounded-[2rem] p-5 md:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.06)] mb-10">
+
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_220px_180px_auto] gap-4 items-end">
+
+        <!-- Search -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-[0.18em] text-[#9b9388] mb-2">
+            Buscar vacante
+          </label>
+
+          <div class="relative">
+            <input
+              type="text"
+              [(ngModel)]="searchTerm"
+              (input)="applyFilters()"
+              placeholder="Título, empresa, tecnología o ubicación..."
+              class="w-full bg-white border border-black/5 rounded-full px-5 py-4 pl-12 text-sm outline-none focus:ring-2 focus:ring-[#141414]/10 transition"
+            />
+
+          <span class="absolute left-5 top-1/2 -translate-y-1/2 text-[#9b9388]">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="w-4 h-4"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    stroke-width="2">
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z" />
+  </svg>
+  
+</span>
+          </div>
+        </div>
+
+        <!-- Category -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-[0.18em] text-[#9b9388] mb-2">
+            Categoría
+          </label>
+
+          <select
+            [(ngModel)]="selectedCategory"
+            (change)="applyFilters()"
+            class="w-full bg-white border border-black/5 rounded-full px-5 py-4 text-sm outline-none focus:ring-2 focus:ring-[#141414]/10"
+          >
+            @for (category of categories; track category) {
+              <option [value]="category">{{ category }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Mode -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-[0.18em] text-[#9b9388] mb-2">
+            Modalidad
+          </label>
+
+          <select
+            [(ngModel)]="selectedMode"
+            (change)="applyFilters()"
+            class="w-full bg-white border border-black/5 rounded-full px-5 py-4 text-sm outline-none focus:ring-2 focus:ring-[#141414]/10"
+          >
+            @for (mode of modes; track mode) {
+              <option [value]="mode">{{ mode }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Clear -->
+        <button
+          (click)="clearFilters()"
+          class="bg-[#141414] text-white px-6 py-4 rounded-full text-sm font-medium hover:scale-[1.02] transition"
+        >
+          Limpiar
+        </button>
+      </div>
+
+      <!-- Quick categories -->
+      <div class="mt-5 flex flex-wrap gap-2">
+        @for (category of categories.slice(1); track category) {
           <button
-            (click)="clearSearch()"
-            class="px-6 py-3 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors">
-            Limpiar
+            (click)="selectedCategory = category; applyFilters()"
+            class="px-4 py-2 rounded-full text-xs font-medium border transition"
+            [class.bg-[#141414]]="selectedCategory === category"
+            [class.text-white]="selectedCategory === category"
+            [class.border-[#141414]]="selectedCategory === category"
+            [class.bg-white]="selectedCategory !== category"
+            [class.text-[#6b665f]]="selectedCategory !== category"
+            [class.border-black/5]="selectedCategory !== category"
+          >
+            {{ category }}
           </button>
         }
       </div>
     </div>
 
+    <!-- Loading -->
     @if (loading) {
-      <app-loader></app-loader>
-    }
-
-    @if (!loading && error) {
-      <div class="text-center py-8">
-        <p class="text-red-600">{{ error }}</p>
+      <div class="bg-white rounded-[2rem] p-10 border border-black/5">
+        <app-loader></app-loader>
       </div>
     }
 
+    <!-- Error -->
+    @if (!loading && error) {
+      <div class="bg-white rounded-[2rem] p-10 text-center border border-black/5">
+        <p class="text-red-500 font-medium">{{ error }}</p>
+        <button
+          (click)="loadJobs()"
+          class="mt-5 bg-[#141414] text-white px-6 py-3 rounded-full text-sm font-medium"
+        >
+          Reintentar
+        </button>
+      </div>
+    }
+
+    <!-- Jobs Grid -->
     @if (!loading && !error && jobs.length > 0) {
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         @for (job of jobs; track job.slug) {
           <app-job-card [job]="job"></app-job-card>
         }
       </div>
     }
 
+    <!-- Empty -->
     @if (!loading && !error && jobs.length === 0) {
-      <app-empty-state
-        message="No se encontraron vacantes"
-        icon="💼">
-      </app-empty-state>
+      <div class="bg-white rounded-[2rem] border border-black/5 py-16">
+        <app-empty-state
+          message="No se encontraron vacantes con esos filtros"
+          icon="💼">
+        </app-empty-state>
+
+        <div class="text-center mt-6">
+          <button
+            (click)="clearFilters()"
+            class="bg-[#141414] text-white px-6 py-3 rounded-full text-sm font-medium"
+          >
+            Quitar filtros
+          </button>
+        </div>
+      </div>
     }
 
+    <!-- Pagination -->
     @if (!loading && !error && jobs.length > 0 && !searchTerm.trim()) {
-      <div class="mt-8 flex justify-center items-center space-x-4">
+      <div class="mt-12 flex flex-col sm:flex-row justify-center items-center gap-4">
+
         <button
           (click)="previousPage()"
           [disabled]="currentPage === 1"
-          class="px-4 py-2 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50">
+          class="px-6 py-3 rounded-full bg-white border border-black/5 text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#141414] hover:text-white transition"
+        >
           ← Anterior
         </button>
 
-        <span class="text-gray-600">
-          Página {{ currentPage }} de {{ totalPages }}
-        </span>
+        <div class="px-6 py-3 rounded-full bg-[#fbfaf7] border border-black/5 text-sm text-[#6b665f]">
+          Página <span class="font-semibold text-[#141414]">{{ currentPage }}</span>
+          de <span class="font-semibold text-[#141414]">{{ totalPages }}</span>
+        </div>
 
         <button
           (click)="nextPage()"
           [disabled]="currentPage === totalPages"
-          class="px-4 py-2 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50">
+          class="px-6 py-3 rounded-full bg-white border border-black/5 text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#141414] hover:text-white transition"
+        >
           Siguiente →
         </button>
+
       </div>
     }
-  </div>
+
+  </section>
 </div>

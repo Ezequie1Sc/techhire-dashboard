@@ -27,10 +27,27 @@ export class JobsComponent implements OnInit {
 
   loading = false;
   error: string | null = null;
+
   searchTerm = '';
+  selectedCategory = 'Todas';
+  selectedMode = 'Todas';
 
   currentPage = 1;
   totalPages = 1;
+
+  categories = [
+    'Todas',
+    'Frontend',
+    'Backend',
+    'Full Stack',
+    'Mobile',
+    'DevOps',
+    'Data',
+    'Marketing',
+    'Security'
+  ];
+
+  modes = ['Todas', 'Remoto', 'Presencial'];
 
   constructor(
     private jobService: JobService,
@@ -56,7 +73,7 @@ export class JobsComponent implements OnInit {
       .subscribe({
         next: (response: JobResponse) => {
           this.allJobs = response.data || [];
-          this.jobs = [...this.allJobs];
+          this.applyFilters();
           this.totalPages = response.meta?.last_page || 1;
 
           if (this.jobs.length === 0) {
@@ -69,41 +86,43 @@ export class JobsComponent implements OnInit {
       });
   }
 
-  search(): void {
+  applyFilters(): void {
     const term = this.searchTerm.trim().toLowerCase();
-    this.error = null;
-
-    if (!term) {
-      this.jobs = [...this.allJobs];
-      this.cdr.detectChanges();
-      return;
-    }
 
     this.jobs = this.allJobs.filter((job: Job) => {
-      const title = job.title?.toLowerCase() || '';
-      const company = job.company_name?.toLowerCase() || '';
-      const location = job.location?.toLowerCase() || '';
-      const description = job.description?.toLowerCase() || '';
-      const tags = job.tags?.join(' ').toLowerCase() || '';
-      const jobTypes = job.job_types?.join(' ').toLowerCase() || '';
+      const searchableText = `
+        ${job.title || ''}
+        ${job.company_name || ''}
+        ${job.location || ''}
+        ${job.description || ''}
+        ${job.tags?.join(' ') || ''}
+        ${job.job_types?.join(' ') || ''}
+      `.toLowerCase();
 
-      return (
-        title.includes(term) ||
-        company.includes(term) ||
-        location.includes(term) ||
-        description.includes(term) ||
-        tags.includes(term) ||
-        jobTypes.includes(term)
-      );
+      const matchesSearch = !term || searchableText.includes(term);
+
+      const matchesCategory =
+        this.selectedCategory === 'Todas' ||
+        searchableText.includes(this.selectedCategory.toLowerCase());
+
+      const matchesMode =
+        this.selectedMode === 'Todas' ||
+        (this.selectedMode === 'Remoto' && job.remote) ||
+        (this.selectedMode === 'Presencial' && !job.remote);
+
+      return matchesSearch && matchesCategory && matchesMode;
     });
 
+    this.error = null;
     this.cdr.detectChanges();
   }
 
-  clearSearch(): void {
+  clearFilters(): void {
     this.searchTerm = '';
-    this.error = null;
+    this.selectedCategory = 'Todas';
+    this.selectedMode = 'Todas';
     this.jobs = [...this.allJobs];
+    this.error = null;
     this.cdr.detectChanges();
   }
 
@@ -111,7 +130,7 @@ export class JobsComponent implements OnInit {
     if (this.currentPage < this.totalPages && !this.searchTerm.trim()) {
       this.currentPage++;
       this.loadJobs();
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 
@@ -119,7 +138,7 @@ export class JobsComponent implements OnInit {
     if (this.currentPage > 1 && !this.searchTerm.trim()) {
       this.currentPage--;
       this.loadJobs();
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 }
