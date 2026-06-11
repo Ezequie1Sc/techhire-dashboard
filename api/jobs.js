@@ -5,27 +5,30 @@ module.exports = async function handler(req, res) {
     const page = Number(req.query?.page || 1);
     const perPage = 20;
 
-    const [adzunaResult, remotiveResult] = await Promise.allSettled([
+    const [adzuna, remotive] = await Promise.allSettled([
       fetchAdzunaJobs(page, perPage),
       fetchRemotiveJobs()
     ]);
 
-    const adzunaJobs =
-      adzunaResult.status === 'fulfilled' ? adzunaResult.value.jobs : [];
+    const adzunaJobs = adzuna.status === 'fulfilled' ? adzuna.value.jobs : [];
+    const remotiveJobs = remotive.status === 'fulfilled' ? remotive.value.jobs : [];
 
-    const remotiveJobs =
-      remotiveResult.status === 'fulfilled' ? remotiveResult.value.jobs : [];
-
-    const allJobs = [...adzunaJobs, ...remotiveJobs];
-
-    const uniqueJobs = removeDuplicates(allJobs);
+    const allJobs = removeDuplicates([...adzunaJobs, ...remotiveJobs]);
 
     const start = (page - 1) * perPage;
-    const paginatedJobs = uniqueJobs.slice(start, start + perPage);
-    const total = uniqueJobs.length;
-    const lastPage = Math.max(1, Math.ceil(total / perPage));
+    const paginatedJobs = allJobs.slice(start, start + perPage);
+    const lastPage = Math.max(1, Math.ceil(allJobs.length / perPage));
 
     return res.status(200).json({
+      debug: {
+        adzuna_status: adzuna.status,
+        adzuna_count: adzunaJobs.length,
+        adzuna_error: adzuna.status === 'rejected' ? String(adzuna.reason) : null,
+        remotive_status: remotive.status,
+        remotive_count: remotiveJobs.length,
+        remotive_error: remotive.status === 'rejected' ? String(remotive.reason) : null,
+        total_combined: allJobs.length
+      },
       data: paginatedJobs,
       links: {
         first: '/api/jobs?page=1',
@@ -40,12 +43,31 @@ module.exports = async function handler(req, res) {
         path: '/api/jobs',
         per_page: perPage,
         to: start + paginatedJobs.length,
-        total
+        total: allJobs.length
       }
     });
   } catch (error) {
-    console.error('API /api/jobs error:', error);
-    return res.status(200).json(emptyResponse());
+    return res.status(200).json({
+      debug: {
+        fatal_error: String(error)
+      },
+      data: [],
+      links: {
+        first: '',
+        last: '',
+        prev: null,
+        next: null
+      },
+      meta: {
+        current_page: 1,
+        from: 0,
+        last_page: 1,
+        path: '',
+        per_page: 0,
+        to: 0,
+        total: 0
+      }
+    });
   }
 };
 
@@ -54,7 +76,7 @@ async function fetchAdzunaJobs(page, perPage) {
   const appKey = process.env.ADZUNA_APP_KEY;
 
   if (!appId || !appKey) {
-    return { jobs: [], total: 0 };
+    throw new Error('Faltan variables ADZUNA_APP_ID o ADZUNA_APP_KEY');
   }
 
   const url =
@@ -65,11 +87,13 @@ async function fetchAdzunaJobs(page, perPage) {
     `&what=developer`;
 
   const result = await fetchJson(url);
-  const jobs = Array.isArray(result.results) ? result.results : [];
+
+  if (!Array.isArray(result.results)) {
+    throw new Error(`Adzuna no devolvió results: ${JSON.stringify(result).slice(0, 200)}`);
+  }
 
   return {
-    total: result.count || jobs.length,
-    jobs: jobs.map((job) => {
+    jobs: result.results.map((job) => {
       const title = job.title || 'Vacante sin título';
 
       return {
@@ -92,11 +116,13 @@ async function fetchAdzunaJobs(page, perPage) {
 
 async function fetchRemotiveJobs() {
   const result = await fetchJson('https://remotive.com/api/remote-jobs');
-  const jobs = Array.isArray(result.jobs) ? result.jobs : [];
+
+  if (!Array.isArray(result.jobs)) {
+    throw new Error(`Remotive no devolvió jobs: ${JSON.stringify(result).slice(0, 200)}`);
+  }
 
   return {
-    total: jobs.length,
-    jobs: jobs.map((job) => {
+    jobs: result.jobs.slice(0, 40).map((job) => {
       const title = job.title || 'Vacante sin título';
       const id = job.id || Math.random().toString(36).slice(2);
 
@@ -140,7 +166,7 @@ function fetchJson(url) {
             try {
               resolve(JSON.parse(data));
             } catch (error) {
-              reject(error);
+              reject(new Error(`No se pudo parsear JSON: ${data.slice(0, 200)}`));
             }
           });
         }
@@ -191,25 +217,4 @@ function slugify(text) {
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)+/g, '');
-}
-
-function emptyResponse() {
-  return {
-    data: [],
-    links: {
-      first: '',
-      last: '',
-      prev: null,
-      next: null
-    },
-    meta: {
-      current_page: 1,
-      from: 0,
-      last_page: 1,
-      path: '',
-      per_page: 0,
-      to: 0,
-      total: 0
-    }
-  };
 }
