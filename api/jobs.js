@@ -130,21 +130,34 @@ async function getAdzunaJobs(page, perPage) {
 }
 
 async function getArbeitnowJobs() {
-  const response = await fetch('https://www.arbeitnow.com/api/job-board-api', {
-    headers: {
-      Accept: 'application/json',
-      'User-Agent': 'Jobly'
-    }
+  const pagesToFetch = [1, 2, 3];
+
+  const responses = await Promise.allSettled(
+    pagesToFetch.map((page) =>
+      fetch(`https://www.arbeitnow.com/api/job-board-api?page=${page}`, {
+        headers: {
+          Accept: 'application/json',
+          'User-Agent': 'Jobly'
+        }
+      }).then((response) => {
+        if (!response.ok) {
+          throw new Error(`Arbeitnow HTTP ${response.status}`);
+        }
+
+        return response.json();
+      })
+    )
+  );
+
+  const jobs = responses.flatMap((response) => {
+    if (response.status !== 'fulfilled') return [];
+
+    return Array.isArray(response.value.data)
+      ? response.value.data
+      : [];
   });
 
-  if (!response.ok) {
-    throw new Error(`Arbeitnow HTTP ${response.status}`);
-  }
-
-  const result = await response.json();
-  const jobs = Array.isArray(result.data) ? result.data : [];
-
-  return jobs.slice(0, 40).map((job) => {
+  return jobs.map((job) => {
     const title = job.title || 'Vacante sin título';
 
     return {
@@ -161,11 +174,17 @@ async function getArbeitnowJobs() {
         'Europa',
         'Arbeitnow'
       ]),
-      job_types: job.job_types?.length ? job.job_types : ['General'],
+      job_types: Array.isArray(job.job_types) && job.job_types.length
+        ? job.job_types
+        : ['General'],
       created_at: job.created_at || Math.floor(Date.now() / 1000)
     };
   });
 }
+
+
+
+
 
 function buildCleanTags(tags) {
   return tags
