@@ -53,7 +53,7 @@
         <div class="grid grid-cols-2 gap-4">
           <div class="col-span-2 rounded-[2rem] overflow-hidden h-64 relative group">
             <img
-              src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1200"
+              src="./estrechando.jpg"
               alt="Equipo profesional trabajando"
               loading="eager"
               referrerpolicy="no-referrer"
@@ -83,7 +83,7 @@
 
           <div class="rounded-[2rem] overflow-hidden min-h-48 relative">
             <img
-              src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800"
+              src="./remotea.webp"
               alt="Trabajo remoto"
               loading="lazy"
               referrerpolicy="no-referrer"
@@ -98,20 +98,45 @@
       </div>
     </div>
   </section>
+<!-- CATEGORÍAS / ACCESOS RÁPIDOS -->
+<section class="max-w-7xl mx-auto px-5 md:px-8 pb-16">
+  <div class="text-center mb-7">
+    <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
+      Accesos rápidos
+    </span>
 
-  <!-- CATEGORÍAS -->
-  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-16">
-    <div class="flex flex-wrap justify-center gap-3">
-      @for (category of techCategories; track category) {
-        <a
-          href="#"
-          class="bg-white/80 border border-black/5 px-5 py-3 rounded-full text-sm font-medium text-[#5f5a53] hover:bg-[#141414] hover:text-white transition"
+    <h2 class="text-3xl md:text-4xl font-semibold tracking-[-0.05em] mt-3">
+      Explora por especialidad.
+    </h2>
+  </div>
+
+  <div class="flex flex-wrap justify-center gap-3">
+    @for (category of techCategories; track category) {
+      <a
+        routerLink="/jobs"
+        [queryParams]="{ category: category }"
+        class="category-pill group"
+      >
+        <span>{{ category }}</span>
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-4 h-4 opacity-40 group-hover:opacity-100 transition"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="1.8"
         >
-          {{ category }}
-        </a>
-      }
-    </div>
-  </section>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M13 7l5 5m0 0l-5 5m5-5H6"
+          />
+        </svg>
+      </a>
+    }
+  </div>
+</section>
 
   <!-- BENTO INFO -->
   <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20">

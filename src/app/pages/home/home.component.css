@@ -65,3 +65,22 @@ button {
   background: #141414;
   color: white;
 }
+.category-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 0.9rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #5f5a53;
+  transition: all 0.25s ease;
+}
+
+.category-pill:hover {
+  background: #141414;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
