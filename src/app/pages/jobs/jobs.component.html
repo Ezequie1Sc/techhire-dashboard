@@ -13,6 +13,7 @@
           <h1 class="text-5xl md:text-7xl font-semibold tracking-[-0.06em] leading-none">
             Vacantes disponibles.
           </h1>
+
           <p class="mt-4 text-[#6b665f] max-w-2xl">
             Explora oportunidades tecnológicas con una búsqueda más limpia, organizada y fácil de leer.
           </p>
@@ -45,7 +46,7 @@
             </svg>
 
             <span class="text-4xl font-semibold">
-              {{ jobs.length }}
+              {{ filteredJobs.length }}
             </span>
           </div>
         </div>
@@ -152,6 +153,31 @@
           </button>
         }
       </div>
+
+      <!-- Active filters summary -->
+      @if (hasActiveFilters) {
+        <div class="mt-5 flex flex-wrap items-center gap-2 text-sm text-[#6b665f]">
+          <span class="font-medium text-[#141414]">Filtros activos:</span>
+
+          @if (searchTerm.trim()) {
+            <span class="bg-white border border-black/5 px-3 py-1.5 rounded-full">
+              Búsqueda: {{ searchTerm }}
+            </span>
+          }
+
+          @if (selectedCategory !== 'Todas') {
+            <span class="bg-white border border-black/5 px-3 py-1.5 rounded-full">
+              Categoría: {{ selectedCategory }}
+            </span>
+          }
+
+          @if (selectedMode !== 'Todas') {
+            <span class="bg-white border border-black/5 px-3 py-1.5 rounded-full">
+              Modalidad: {{ selectedMode }}
+            </span>
+          }
+        </div>
+      }
     </div>
 
     <!-- Loading -->
@@ -185,60 +211,59 @@
       </div>
     }
 
- <!-- Empty -->
-@if (!loading && !error && jobs.length === 0) {
-  <div class="relative overflow-hidden bg-[#fbfaf7] rounded-[2.5rem] border border-black/5 py-16 px-6 text-center shadow-[0_20px_60px_rgba(0,0,0,0.06)]">
+    <!-- Empty -->
+    @if (!loading && !error && filteredJobs.length === 0) {
+      <div class="relative overflow-hidden bg-[#fbfaf7] rounded-[2.5rem] border border-black/5 py-16 px-6 text-center shadow-[0_20px_60px_rgba(0,0,0,0.06)]">
 
-    <div class="absolute -top-24 -right-24 w-72 h-72 bg-[#e8e2d8] rounded-full blur-3xl opacity-70 empty-blob"></div>
-    <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-[#ded5ca] rounded-full blur-3xl opacity-70 empty-blob-delay"></div>
+        <div class="absolute -top-24 -right-24 w-72 h-72 bg-[#e8e2d8] rounded-full blur-3xl opacity-70 empty-blob"></div>
+        <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-[#ded5ca] rounded-full blur-3xl opacity-70 empty-blob-delay"></div>
 
-    <div class="relative z-10 max-w-xl mx-auto">
-      <div class="empty-search mx-auto mb-8">
-        <div class="empty-lens"></div>
-        <div class="empty-handle"></div>
+        <div class="relative z-10 max-w-xl mx-auto">
+          <div class="empty-search mx-auto mb-8">
+            <div class="empty-lens"></div>
+            <div class="empty-handle"></div>
 
-        <div class="empty-card empty-card-one">
-          <span></span>
-          <span></span>
+            <div class="empty-card empty-card-one">
+              <span></span>
+              <span></span>
+            </div>
+
+            <div class="empty-card empty-card-two">
+              <span></span>
+              <span></span>
+            </div>
+
+            <div class="empty-dot empty-dot-one"></div>
+            <div class="empty-dot empty-dot-two"></div>
+            <div class="empty-dot empty-dot-three"></div>
+          </div>
+
+          <span class="inline-flex items-center gap-2 bg-white border border-black/5 px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-[0.2em] text-[#8a8177]">
+            Sin resultados
+          </span>
+
+          <h3 class="text-4xl md:text-5xl font-semibold tracking-[-0.05em] text-[#141414] mt-6">
+            No encontramos vacantes
+          </h3>
+
+          <p class="text-[#6b665f] mt-4 leading-relaxed">
+            No hay coincidencias para tu búsqueda actual. Prueba con otra tecnología,
+            cambia la categoría o elimina algunos filtros.
+          </p>
+
+          <button
+            type="button"
+            (click)="clearFilters()"
+            class="mt-8 bg-[#141414] text-white px-8 py-4 rounded-full text-sm font-medium hover:scale-[1.03] transition"
+          >
+            Limpiar filtros
+          </button>
         </div>
-
-        <div class="empty-card empty-card-two">
-          <span></span>
-          <span></span>
-        </div>
-
-        <div class="empty-dot empty-dot-one"></div>
-        <div class="empty-dot empty-dot-two"></div>
-        <div class="empty-dot empty-dot-three"></div>
       </div>
-
-      <span class="inline-flex items-center gap-2 bg-white border border-black/5 px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-[0.2em] text-[#8a8177]">
-        Sin resultados
-      </span>
-
-      <h3 class="text-4xl md:text-5xl font-semibold tracking-[-0.05em] text-[#141414] mt-6">
-        No encontramos vacantes
-      </h3>
-
-      <p class="text-[#6b665f] mt-4 leading-relaxed">
-        No hay coincidencias para tu búsqueda actual. Prueba con otra tecnología,
-        cambia la categoría o elimina algunos filtros.
-      </p>
-
-      <button
-        type="button"
-        (click)="clearFilters()"
-        class="mt-8 bg-[#141414] text-white px-8 py-4 rounded-full text-sm font-medium hover:scale-[1.03] transition"
-      >
-        Limpiar filtros
-      </button>
-    </div>
-  </div>
-}
-
+    }
 
     <!-- Pagination -->
-    @if (!loading && !error && jobs.length > 0 && !searchTerm.trim()) {
+    @if (!loading && !error && filteredJobs.length > 0) {
       <div class="mt-12 flex flex-col sm:flex-row justify-center items-center gap-4">
         <button
           type="button"

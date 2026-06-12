@@ -8,7 +8,6 @@ import { Job, JobResponse } from '../../models/job.model';
 
 import { JobCardComponent } from '../../shared/components/job-card/job-card.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
-import { NotFoundComponent } from '../not-found/not-found.component';
 
 @Component({
   selector: 'app-jobs',
@@ -17,13 +16,14 @@ import { NotFoundComponent } from '../not-found/not-found.component';
     CommonModule,
     FormsModule,
     JobCardComponent,
-    LoaderComponent,
+    LoaderComponent
   ],
   templateUrl: './jobs.component.html',
   styleUrls: ['./jobs.component.css']
 })
 export class JobsComponent implements OnInit {
   allJobs: Job[] = [];
+  filteredJobs: Job[] = [];
   jobs: Job[] = [];
 
   loading = false;
@@ -35,6 +35,7 @@ export class JobsComponent implements OnInit {
 
   currentPage = 1;
   totalPages = 1;
+  itemsPerPage = 12;
 
   categories = [
     'Todas',
@@ -45,7 +46,9 @@ export class JobsComponent implements OnInit {
     'DevOps',
     'Data',
     'Marketing',
-    'Security'
+    'Security',
+    'México',
+    'Europa'
   ];
 
   modes = ['Todas', 'Remoto', 'Presencial'];
@@ -63,8 +66,10 @@ export class JobsComponent implements OnInit {
     this.loading = true;
     this.error = null;
     this.jobs = [];
+    this.filteredJobs = [];
+    this.allJobs = [];
 
-    this.jobService.getJobs(this.currentPage)
+    this.jobService.getJobs(1)
       .pipe(
         finalize(() => {
           this.loading = false;
@@ -74,8 +79,8 @@ export class JobsComponent implements OnInit {
       .subscribe({
         next: (response: JobResponse) => {
           this.allJobs = response.data || [];
+          this.currentPage = 1;
           this.applyFilters();
-          this.totalPages = response.meta?.last_page || 1;
         },
         error: () => {
           this.error = 'Error al cargar las vacantes.';
@@ -84,23 +89,24 @@ export class JobsComponent implements OnInit {
   }
 
   applyFilters(): void {
-    const term = this.searchTerm.trim().toLowerCase();
+    const term = this.normalizeText(this.searchTerm);
 
-    this.jobs = this.allJobs.filter((job: Job) => {
-      const searchableText = `
+    this.filteredJobs = this.allJobs.filter((job: Job) => {
+      const searchableText = this.normalizeText(`
         ${job.title || ''}
         ${job.company_name || ''}
         ${job.location || ''}
         ${job.description || ''}
         ${job.tags?.join(' ') || ''}
         ${job.job_types?.join(' ') || ''}
-      `.toLowerCase();
+      `);
 
       const matchesSearch = !term || searchableText.includes(term);
 
+      const category = this.normalizeText(this.selectedCategory);
       const matchesCategory =
         this.selectedCategory === 'Todas' ||
-        searchableText.includes(this.selectedCategory.toLowerCase());
+        searchableText.includes(category);
 
       const matchesMode =
         this.selectedMode === 'Todas' ||
@@ -110,32 +116,58 @@ export class JobsComponent implements OnInit {
       return matchesSearch && matchesCategory && matchesMode;
     });
 
+    this.currentPage = 1;
+    this.updatePagination();
     this.error = null;
     this.cdr.detectChanges();
+  }
+
+  updatePagination(): void {
+    this.totalPages = Math.max(1, Math.ceil(this.filteredJobs.length / this.itemsPerPage));
+
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+
+    this.jobs = this.filteredJobs.slice(start, end);
   }
 
   clearFilters(): void {
     this.searchTerm = '';
     this.selectedCategory = 'Todas';
     this.selectedMode = 'Todas';
-    this.jobs = [...this.allJobs];
-    this.error = null;
-    this.cdr.detectChanges();
+    this.currentPage = 1;
+    this.applyFilters();
   }
 
   nextPage(): void {
-    if (this.currentPage < this.totalPages && !this.searchTerm.trim()) {
+    if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.loadJobs();
+      this.updatePagination();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 
   previousPage(): void {
-    if (this.currentPage > 1 && !this.searchTerm.trim()) {
+    if (this.currentPage > 1) {
       this.currentPage--;
-      this.loadJobs();
+      this.updatePagination();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  }
+
+  get hasActiveFilters(): boolean {
+    return (
+      this.searchTerm.trim().length > 0 ||
+      this.selectedCategory !== 'Todas' ||
+      this.selectedMode !== 'Todas'
+    );
+  }
+
+  private normalizeText(value: string): string {
+    return value
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim();
   }
 }
