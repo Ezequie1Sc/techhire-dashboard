@@ -1,11 +1,11 @@
 module.exports = async function handler(req, res) {
   try {
-    const page = Number(req.query?.page || 1);
-    const perPage = 20;
+    const adzunaPages = [1, 2, 3];
+    const arbeitnowPages = [1, 2, 3, 4];
 
     const [adzunaResult, arbeitnowResult] = await Promise.allSettled([
-      getAdzunaJobs(page, perPage),
-      getArbeitnowJobs()
+      getAdzunaJobs(adzunaPages),
+      getArbeitnowJobs(arbeitnowPages)
     ]);
 
     const adzunaJobs =
@@ -15,17 +15,13 @@ module.exports = async function handler(req, res) {
       arbeitnowResult.status === 'fulfilled' ? arbeitnowResult.value : [];
 
     const allJobs = removeDuplicates([...adzunaJobs, ...arbeitnowJobs]);
-
-    const start = (page - 1) * perPage;
-    const paginatedJobs = allJobs.slice(start, start + perPage);
     const total = allJobs.length;
-    const lastPage = Math.max(1, Math.ceil(total / perPage));
 
     return res.status(200).json({
       debug: {
         adzuna_count: adzunaJobs.length,
         arbeitnow_count: arbeitnowJobs.length,
-        total_combined: allJobs.length,
+        total_combined: total,
         adzuna_status: adzunaResult.status,
         arbeitnow_status: arbeitnowResult.status,
         adzuna_error:
@@ -33,20 +29,20 @@ module.exports = async function handler(req, res) {
         arbeitnow_error:
           arbeitnowResult.status === 'rejected' ? String(arbeitnowResult.reason) : null
       },
-      data: paginatedJobs,
+      data: allJobs,
       links: {
-        first: '/api/jobs?page=1',
-        last: `/api/jobs?page=${lastPage}`,
-        prev: page > 1 ? `/api/jobs?page=${page - 1}` : null,
-        next: page < lastPage ? `/api/jobs?page=${page + 1}` : null
+        first: '/api/jobs',
+        last: '/api/jobs',
+        prev: null,
+        next: null
       },
       meta: {
-        current_page: page,
-        from: paginatedJobs.length ? start + 1 : 0,
-        last_page: lastPage,
+        current_page: 1,
+        from: total ? 1 : 0,
+        last_page: 1,
         path: '/api/jobs',
-        per_page: perPage,
-        to: start + paginatedJobs.length,
+        per_page: total,
+        to: total,
         total
       }
     });
@@ -75,36 +71,45 @@ module.exports = async function handler(req, res) {
   }
 };
 
-async function getAdzunaJobs(page, perPage) {
+async function getAdzunaJobs(pages) {
   const appId = process.env.ADZUNA_APP_ID;
   const appKey = process.env.ADZUNA_APP_KEY;
+  const perPage = 20;
 
   if (!appId || !appKey) {
     throw new Error('Faltan variables ADZUNA_APP_ID o ADZUNA_APP_KEY');
   }
 
-  const url =
-    `https://api.adzuna.com/v1/api/jobs/mx/search/${page}` +
-    `?app_id=${encodeURIComponent(appId)}` +
-    `&app_key=${encodeURIComponent(appKey)}` +
-    `&results_per_page=${perPage}` +
-    `&what=developer`;
+  const requests = pages.map((page) => {
+    const url =
+      `https://api.adzuna.com/v1/api/jobs/mx/search/${page}` +
+      `?app_id=${encodeURIComponent(appId)}` +
+      `&app_key=${encodeURIComponent(appKey)}` +
+      `&results_per_page=${perPage}` +
+      `&what=developer`;
 
-  const response = await fetch(url, {
-    headers: {
-      Accept: 'application/json',
-      'User-Agent': 'Jobly'
-    }
+    return fetch(url, {
+      headers: {
+        Accept: 'application/json',
+        'User-Agent': 'Jobly'
+      }
+    }).then(async (response) => {
+      if (!response.ok) {
+        throw new Error(`Adzuna HTTP ${response.status}`);
+      }
+
+      return response.json();
+    });
   });
 
-  if (!response.ok) {
-    throw new Error(`Adzuna HTTP ${response.status}`);
-  }
+  const responses = await Promise.allSettled(requests);
 
-  const result = await response.json();
-  const jobs = Array.isArray(result.results) ? result.results : [];
+  const rawJobs = responses.flatMap((response) => {
+    if (response.status !== 'fulfilled') return [];
+    return Array.isArray(response.value.results) ? response.value.results : [];
+  });
 
-  return jobs.map((job) => {
+  return rawJobs.map((job) => {
     const title = job.title || 'Vacante sin título';
 
     return {
@@ -129,35 +134,30 @@ async function getAdzunaJobs(page, perPage) {
   });
 }
 
-async function getArbeitnowJobs() {
-  const pagesToFetch = [1, 2, 3];
+async function getArbeitnowJobs(pages) {
+  const requests = pages.map((page) =>
+    fetch(`https://www.arbeitnow.com/api/job-board-api?page=${page}`, {
+      headers: {
+        Accept: 'application/json',
+        'User-Agent': 'Jobly'
+      }
+    }).then(async (response) => {
+      if (!response.ok) {
+        throw new Error(`Arbeitnow HTTP ${response.status}`);
+      }
 
-  const responses = await Promise.allSettled(
-    pagesToFetch.map((page) =>
-      fetch(`https://www.arbeitnow.com/api/job-board-api?page=${page}`, {
-        headers: {
-          Accept: 'application/json',
-          'User-Agent': 'Jobly'
-        }
-      }).then((response) => {
-        if (!response.ok) {
-          throw new Error(`Arbeitnow HTTP ${response.status}`);
-        }
-
-        return response.json();
-      })
-    )
+      return response.json();
+    })
   );
 
-  const jobs = responses.flatMap((response) => {
-    if (response.status !== 'fulfilled') return [];
+  const responses = await Promise.allSettled(requests);
 
-    return Array.isArray(response.value.data)
-      ? response.value.data
-      : [];
+  const rawJobs = responses.flatMap((response) => {
+    if (response.status !== 'fulfilled') return [];
+    return Array.isArray(response.value.data) ? response.value.data : [];
   });
 
-  return jobs.map((job) => {
+  return rawJobs.map((job) => {
     const title = job.title || 'Vacante sin título';
 
     return {
@@ -174,17 +174,14 @@ async function getArbeitnowJobs() {
         'Europa',
         'Arbeitnow'
       ]),
-      job_types: Array.isArray(job.job_types) && job.job_types.length
-        ? job.job_types
-        : ['General'],
+      job_types:
+        Array.isArray(job.job_types) && job.job_types.length
+          ? job.job_types
+          : ['General'],
       created_at: job.created_at || Math.floor(Date.now() / 1000)
     };
   });
 }
-
-
-
-
 
 function buildCleanTags(tags) {
   return tags
