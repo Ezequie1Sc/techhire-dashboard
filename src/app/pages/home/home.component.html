@@ -4,23 +4,6 @@
   <section class="max-w-7xl mx-auto px-5 md:px-8 pt-10 pb-16">
     <div class="rounded-[2rem] bg-[#fbfaf7] border border-black/5 shadow-[0_30px_80px_rgba(0,0,0,0.08)] overflow-hidden">
 
-      <!-- Top browser bar -->
-      <div class="h-14 bg-[#151515] flex items-center justify-between px-6">
-        <div class="flex gap-2">
-          <span class="w-3 h-3 rounded-full bg-[#ff5f57]"></span>
-          <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
-          <span class="w-3 h-3 rounded-full bg-[#28c840]"></span>
-        </div>
-
-        <div class="hidden md:flex bg-white/10 text-white/60 text-xs px-5 py-2 rounded-full">
-          TechHire Dashboard · Remote Jobs Platform
-        </div>
-
-        <a routerLink="/jobs" class="text-white/80 text-xs border border-white/20 px-4 py-2 rounded-full hover:bg-white hover:text-black transition">
-          Explorar
-        </a>
-      </div>
-
       <!-- Hero Content -->
       <div class="grid lg:grid-cols-2 gap-8 items-center p-6 md:p-10 lg:p-14">
         <div>
@@ -53,15 +36,12 @@
         <div class="grid grid-cols-2 gap-4">
           <div class="col-span-2 rounded-[2rem] overflow-hidden h-64 relative group">
             <img
-              src="./estrechando.jpg"
-              alt="Equipo profesional trabajando"
+              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80"
+              alt="Equipo tech colaborando"
               loading="eager"
-              referrerpolicy="no-referrer"
               class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
             />
-
             <div class="absolute inset-0 bg-black/20"></div>
-
             <div class="absolute bottom-5 left-5 bg-white/90 backdrop-blur-md rounded-2xl px-5 py-3 shadow-lg">
               <p class="text-sm font-semibold">+100 vacantes activas</p>
               <p class="text-xs text-gray-500">Actualizadas desde API</p>
@@ -71,10 +51,9 @@
           <div class="rounded-[2rem] bg-[#e7ded2] p-6 min-h-48 flex flex-col justify-between">
             <div class="w-11 h-11 bg-white rounded-full flex items-center justify-center text-[#141414]">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
               </svg>
             </div>
-
             <div>
               <h3 class="text-3xl font-semibold">Remote</h3>
               <p class="text-sm text-[#6b665f] mt-1">Oportunidades globales</p>
@@ -83,13 +62,11 @@
 
           <div class="rounded-[2rem] overflow-hidden min-h-48 relative">
             <img
-              src="./remotea.webp"
-              alt="Trabajo remoto"
+              src="https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&w=800&q=80"
+              alt="Diseñador UI/UX trabajando"
               loading="lazy"
-              referrerpolicy="no-referrer"
               class="w-full h-full object-cover"
             />
-
             <div class="absolute top-4 right-4 bg-white px-4 py-2 rounded-full text-xs font-semibold">
               UI/UX
             </div>
@@ -98,258 +75,274 @@
       </div>
     </div>
   </section>
-<!-- CATEGORÍAS / ACCESOS RÁPIDOS -->
-<section class="max-w-7xl mx-auto px-5 md:px-8 pb-16">
-  <div class="text-center mb-7">
-    <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
-      Accesos rápidos
-    </span>
 
-    <h2 class="text-3xl md:text-4xl font-semibold tracking-[-0.05em] mt-3">
-      Explora por especialidad.
-    </h2>
-  </div>
-
-  <div class="flex flex-wrap justify-center gap-3">
-    @for (category of techCategories; track category) {
-      <a
-        routerLink="/jobs"
-        [queryParams]="{ category: category }"
-        class="category-pill group"
-      >
-        <span>{{ category }}</span>
-
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-4 h-4 opacity-40 group-hover:opacity-100 transition"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="1.8"
+  <!-- CATEGORÍAS -->
+  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-16">
+    <div class="flex flex-wrap justify-center gap-3">
+      @for (category of techCategories; track category) {
+        <a
+          href="#"
+          class="bg-white/80 border border-black/5 px-5 py-3 rounded-full text-sm font-medium text-[#5f5a53] hover:bg-[#141414] hover:text-white transition"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M13 7l5 5m0 0l-5 5m5-5H6"
-          />
-        </svg>
-      </a>
-    }
-  </div>
-</section>
+          {{ category }}
+        </a>
+      }
+    </div>
+  </section>
 
   <!-- BENTO INFO -->
   <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20">
     <div class="grid lg:grid-cols-4 gap-5">
 
-      <div class="lg:col-span-2 bg-white rounded-[2rem] p-8 md:p-10 border border-black/5">
+      <!-- Intro copy -->
+      <div class="lg:col-span-2 bg-white rounded-[2rem] p-8 md:p-10 border border-black/5 flex flex-col justify-between min-h-64">
         <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
           Proceso simple
         </span>
-
-        <h2 class="text-4xl md:text-5xl font-semibold tracking-[-0.05em] mt-4">
-          Busca, guarda y aplica más rápido.
-        </h2>
-
-        <p class="text-[#6b665f] mt-5 leading-relaxed">
-          Una experiencia limpia para encontrar oportunidades tecnológicas sin distracciones.
-        </p>
-      </div>
-
-      <div class="bg-[#141414] text-white rounded-[2rem] p-8 flex flex-col justify-between min-h-64">
-        <span class="text-white/50 text-sm">01</span>
-
         <div>
-          <h3 class="text-2xl font-semibold">Explora</h3>
-          <p class="text-white/60 text-sm mt-2">Consulta empleos desde la API.</p>
-        </div>
-      </div>
-
-      <div class="bg-[#d8c6b2] rounded-[2rem] p-8 flex flex-col justify-between min-h-64">
-        <span class="text-black/40 text-sm">02</span>
-
-        <div>
-          <h3 class="text-2xl font-semibold">Filtra</h3>
-          <p class="text-black/60 text-sm mt-2">Encuentra roles por categoría.</p>
-        </div>
-      </div>
-
-      <div class="bg-[#ede7df] rounded-[2rem] p-8 flex flex-col justify-between min-h-64">
-        <span class="text-black/40 text-sm">03</span>
-
-        <div>
-          <h3 class="text-2xl font-semibold">Guarda</h3>
-          <p class="text-black/60 text-sm mt-2">Marca tus vacantes favoritas.</p>
-        </div>
-      </div>
-
-      <div class="lg:col-span-2 rounded-[2rem] overflow-hidden min-h-64 relative">
-        <img
-          src="https://images.pexels.com/photos/3182833/pexels-photo-3182833.jpeg?auto=compress&cs=tinysrgb&w=1200"
-          alt="Oficina moderna"
-          loading="lazy"
-          referrerpolicy="no-referrer"
-          class="w-full h-full object-cover"
-        />
-
-        <div class="absolute inset-0 bg-black/20"></div>
-
-        <div class="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-md rounded-2xl p-5">
-          <h3 class="font-semibold text-xl">Diseñado para perfiles tech</h3>
-          <p class="text-sm text-gray-500 mt-1">
-            Frontend, Backend, Mobile, DevOps, Data y más.
+          <h2 class="text-4xl md:text-5xl font-semibold tracking-[-0.05em] mt-4 leading-[1.05]">
+            Busca, guarda y aplica más rápido.
+          </h2>
+          <p class="text-[#6b665f] mt-4 leading-relaxed text-sm">
+            Una experiencia limpia para encontrar oportunidades tecnológicas sin distracciones.
           </p>
         </div>
       </div>
 
-      <div class="bg-white rounded-[2rem] p-8 flex flex-col justify-between min-h-64 border border-black/5">
-        <span class="text-black/40 text-sm">04</span>
+      <!-- 01 Explora -->
+      <div class="bg-[#141414] text-white rounded-[2rem] overflow-hidden flex flex-col justify-between min-h-64 relative">
+        <img
+          src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80"
+          alt="Explorar empleos"
+          loading="lazy"
+          class="absolute inset-0 w-full h-full object-cover opacity-20"
+        />
+        <div class="relative z-10 p-8 flex flex-col justify-between h-full">
+          <span class="text-white/30 text-xs font-medium tracking-wide">01</span>
+          <div>
+            <div class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-semibold tracking-tight">Explora</h3>
+            <p class="text-white/50 text-sm mt-2">Consulta empleos desde la API.</p>
+          </div>
+        </div>
+      </div>
 
-        <div>
-          <h3 class="text-2xl font-semibold">Aplica</h3>
-          <p class="text-black/60 text-sm mt-2">Abre la vacante original y postúlate.</p>
+      <!-- 02 Filtra -->
+      <div class="bg-[#ede7df] rounded-[2rem] overflow-hidden flex flex-col justify-between min-h-64 relative">
+        <img
+          src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=600&q=80"
+          alt="Filtrar por categoría"
+          loading="lazy"
+          class="absolute inset-0 w-full h-full object-cover opacity-15"
+        />
+        <div class="relative z-10 p-8 flex flex-col justify-between h-full">
+          <span class="text-black/25 text-xs font-medium tracking-wide">02</span>
+          <div>
+            <div class="w-11 h-11 rounded-full bg-black/[0.08] flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#141414]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75 4.5 4.5m0 0-4.5 4.5m4.5-4.5H10.5"/>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-semibold tracking-tight text-[#141414]">Filtra</h3>
+            <p class="text-[#6b665f] text-sm mt-2">Encuentra roles por categoría.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 Guarda -->
+      <div class="bg-[#e4d9cc] rounded-[2rem] overflow-hidden flex flex-col justify-between min-h-64 relative">
+        <img
+          src="https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?auto=format&fit=crop&w=600&q=80"
+          alt="Guardar favoritos"
+          loading="lazy"
+          class="absolute inset-0 w-full h-full object-cover opacity-15"
+        />
+        <div class="relative z-10 p-8 flex flex-col justify-between h-full">
+          <span class="text-black/25 text-xs font-medium tracking-wide">03</span>
+          <div>
+            <div class="w-11 h-11 rounded-full bg-black/[0.08] flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#141414]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0z"/>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-semibold tracking-tight text-[#141414]">Guarda</h3>
+            <p class="text-[#6b665f] text-sm mt-2">Marca tus vacantes favoritas.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Central card: perfiles tech -->
+      <div class="lg:col-span-2 bg-[#141414] rounded-[2rem] overflow-hidden min-h-64 flex flex-col justify-between relative">
+        <img
+          src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1200&q=80"
+          alt="Equipo de tecnología"
+          loading="lazy"
+          class="absolute inset-0 w-full h-full object-cover opacity-25"
+        />
+        <div class="relative z-10 p-8 md:p-10 flex flex-col justify-between h-full">
+          <div class="inline-flex items-center gap-2 bg-white/[0.08] border border-white/10 rounded-full px-4 py-2 w-fit">
+            <span class="w-2 h-2 rounded-full bg-[#28c840]"></span>
+            <span class="text-white/70 text-xs font-medium">Diseñado para perfiles tech</span>
+          </div>
+          <div>
+            <h3 class="text-white text-2xl md:text-3xl font-semibold tracking-[-0.04em] leading-tight">
+              Todas las disciplinas,<br>en un solo lugar.
+            </h3>
+            <div class="flex flex-wrap gap-2 mt-4">
+              @for (role of techRoles; track role) {
+                <span class="text-white/60 text-xs font-medium bg-white/[0.08] border border-white/10 px-3 py-1.5 rounded-full">
+                  {{ role }}
+                </span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 Aplica -->
+      <div class="bg-[#141414] text-white rounded-[2rem] overflow-hidden flex flex-col justify-between min-h-64 relative">
+        <img
+          src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80"
+          alt="Aplicar a vacante"
+          loading="lazy"
+          class="absolute inset-0 w-full h-full object-cover opacity-20"
+        />
+        <div class="relative z-10 p-8 flex flex-col justify-between h-full">
+          <span class="text-white/30 text-xs font-medium tracking-wide">04</span>
+          <div>
+            <div class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-semibold tracking-tight">Aplica</h3>
+            <p class="text-white/50 text-sm mt-2">Abre la vacante y postúlate.</p>
+          </div>
         </div>
       </div>
 
     </div>
   </section>
-<!-- VACANTES -->
-<section class="max-w-7xl mx-auto px-5 md:px-8 pb-20">
-  <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
-    <div>
-      <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
-        Oportunidades recientes
-      </span>
 
-      <h2 class="text-4xl md:text-5xl font-semibold tracking-[-0.05em] mt-3">
-        Vacantes destacadas.
-      </h2>
-    </div>
-
-    <a
-      routerLink="/jobs"
-      class="bg-[#141414] text-white px-6 py-3 rounded-full font-medium hover:scale-[1.02] transition w-fit"
-    >
-      Ver todas →
-    </a>
-  </div>
-
-  @if (loading) {
-    <div class="bg-white rounded-[2rem] p-10 border border-black/5">
-      <app-loader></app-loader>
-    </div>
-  }
-
-  @if (!loading && error && latestJobs.length === 0) {
-    <div class="bg-white rounded-[2rem] p-10 text-center border border-black/5">
-      <p class="text-gray-500">{{ error }}</p>
-
-      <button
-        type="button"
-        (click)="loadLatestJobs()"
-        class="mt-5 bg-[#141414] text-white px-6 py-3 rounded-full hover:scale-[1.02] transition"
-      >
-        Reintentar
-      </button>
-    </div>
-  }
-
-  @if (!loading && !error && latestJobs.length > 0) {
-    <div class="relative bg-[#fbfaf7] border border-black/5 rounded-[2.5rem] p-4 md:p-6 shadow-[0_30px_80px_rgba(0,0,0,0.06)] overflow-hidden">
-
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-        <div>
-          <p class="text-sm font-semibold text-[#141414]">
-            Desliza para ver más oportunidades
-          </p>
-          <p class="text-sm text-[#6b665f]">
-            Vacantes recientes.
-          </p>
-        </div>
-
-        <div class="hidden md:flex items-center gap-2">
-          <button
-            type="button"
-            (click)="scrollCarousel('left')"
-            class="carousel-control"
-            aria-label="Mover a la izquierda"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-
-          <button
-            type="button"
-            (click)="scrollCarousel('right')"
-            class="carousel-control carousel-control-dark"
-            aria-label="Mover a la derecha"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </div>
+  <!-- VACANTES -->
+  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
+      <div>
+        <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
+          Oportunidades recientes
+        </span>
+        <h2 class="text-4xl md:text-5xl font-semibold tracking-[-0.05em] mt-3">
+          Vacantes destacadas.
+        </h2>
       </div>
-
-      <div
-        #jobsCarousel
-        class="jobs-carousel flex gap-5 overflow-x-auto scroll-smooth pb-4"
+      <a
+        routerLink="/jobs"
+        class="bg-[#141414] text-white px-6 py-3 rounded-full font-medium hover:scale-[1.02] transition w-fit"
       >
-        @for (job of latestJobs; track job.slug) {
-          <div class="carousel-item shrink-0 w-[88%] sm:w-[70%] md:w-[48%] xl:w-[32%]">
-            <app-job-card [job]="job"></app-job-card>
+        Ver todas →
+      </a>
+    </div>
+
+    @if (loading) {
+      <div class="bg-white rounded-[2rem] p-10 border border-black/5">
+        <app-loader></app-loader>
+      </div>
+    }
+
+    @if (!loading && error && latestJobs.length === 0) {
+      <div class="bg-white rounded-[2rem] p-10 text-center border border-black/5">
+        <p class="text-gray-500">{{ error }}</p>
+        <button
+          type="button"
+          (click)="loadLatestJobs()"
+          class="mt-5 bg-[#141414] text-white px-6 py-3 rounded-full hover:scale-[1.02] transition"
+        >
+          Reintentar
+        </button>
+      </div>
+    }
+
+    @if (!loading && !error && latestJobs.length > 0) {
+      <div class="relative bg-[#fbfaf7] border border-black/5 rounded-[2.5rem] p-4 md:p-6 shadow-[0_30px_80px_rgba(0,0,0,0.06)] overflow-hidden">
+
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+          <div>
+            <p class="text-sm font-semibold text-[#141414]">Desliza para ver más oportunidades</p>
+            <p class="text-sm text-[#6b665f]">Vacantes recientes.</p>
           </div>
-        }
-      </div>
+          <div class="hidden md:flex items-center gap-2">
+            <button
+              type="button"
+              (click)="scrollCarousel('left')"
+              class="carousel-control"
+              aria-label="Mover a la izquierda"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              (click)="scrollCarousel('right')"
+              class="carousel-control carousel-control-dark"
+              aria-label="Mover a la derecha"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
 
-      <div class="md:hidden flex justify-center gap-3 mt-4">
-        <button
-          type="button"
-          (click)="scrollCarousel('left')"
-          class="carousel-mobile-btn"
+        <div
+          #jobsCarousel
+          class="jobs-carousel flex gap-5 overflow-x-auto scroll-smooth pb-4"
         >
-          Anterior
-        </button>
+          @for (job of latestJobs; track job.slug) {
+            <div class="carousel-item shrink-0 w-[88%] sm:w-[70%] md:w-[48%] xl:w-[32%]">
+              <app-job-card [job]="job"></app-job-card>
+            </div>
+          }
+        </div>
 
-        <button
-          type="button"
-          (click)="scrollCarousel('right')"
-          class="carousel-mobile-btn carousel-mobile-btn-dark"
-        >
-          Siguiente
-        </button>
+        <div class="md:hidden flex justify-center gap-3 mt-4">
+          <button type="button" (click)="scrollCarousel('left')" class="carousel-mobile-btn">
+            Anterior
+          </button>
+          <button type="button" (click)="scrollCarousel('right')" class="carousel-mobile-btn carousel-mobile-btn-dark">
+            Siguiente
+          </button>
+        </div>
       </div>
-    </div>
-  }
+    }
 
-  @if (!loading && !error && latestJobs.length === 0) {
-    <div class="bg-white rounded-[2rem] p-10 text-center border border-black/5">
-      <p class="text-gray-500">No hay vacantes disponibles en este momento.</p>
-    </div>
-  }
-</section>
+    @if (!loading && !error && latestJobs.length === 0) {
+      <div class="bg-white rounded-[2rem] p-10 text-center border border-black/5">
+        <p class="text-gray-500">No hay vacantes disponibles en este momento.</p>
+      </div>
+    }
+  </section>
 
   <!-- CTA FINAL -->
   <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20">
     <div class="relative overflow-hidden rounded-[2.5rem] bg-[#141414] text-white p-8 md:p-14">
       <img
-        src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=1200"
-        alt="Equipo profesional"
+        src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80"
+        alt="Oficina moderna tech"
         loading="lazy"
-        referrerpolicy="no-referrer"
         class="absolute inset-0 w-full h-full object-cover opacity-20"
       />
-
       <div class="relative z-10 max-w-2xl">
         <h2 class="text-4xl md:text-6xl font-semibold tracking-[-0.06em] leading-none">
           Tu próximo empleo puede empezar hoy.
         </h2>
-
         <p class="text-white/70 mt-5 max-w-xl">
           Explora vacantes, guarda tus favoritas y construye una búsqueda laboral más organizada.
         </p>
-
         <a routerLink="/jobs" class="inline-flex mt-8 bg-white text-[#141414] px-7 py-4 rounded-full font-medium hover:scale-[1.02] transition">
           Comenzar búsqueda →
         </a>

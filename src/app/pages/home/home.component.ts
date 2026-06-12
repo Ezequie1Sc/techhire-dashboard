@@ -34,6 +34,16 @@ export class HomeComponent implements OnInit {
     'Cybersecurity'
   ];
 
+  techRoles = [
+    'Frontend',
+    'Backend',
+    'Mobile',
+    'DevOps',
+    'Data',
+    'AI/ML',
+    'Cloud'
+  ];
+
   constructor(
     private jobService: JobService,
     private cdr: ChangeDetectorRef
