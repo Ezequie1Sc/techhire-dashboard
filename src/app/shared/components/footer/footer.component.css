@@ -1,0 +1,32 @@
+:host {
+  display: block;
+}
+
+.footer-link {
+  color: rgba(255,255,255,.55);
+  transition: .25s;
+}
+
+.footer-link:hover {
+  color: white;
+  transform: translateX(4px);
+}
+
+.footer-tag {
+  padding: .55rem .9rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  font-size: .75rem;
+  color: rgba(255,255,255,.65);
+}
+.footer-category {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.9rem;
+  transition: all 0.25s ease;
+}
+
+.footer-category:hover {
+  color: #ffffff;
+  transform: translateX(4px);
+}
