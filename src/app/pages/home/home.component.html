@@ -65,20 +65,21 @@
       </div>
     </div>
   </section>
-
-  <!-- CATEGORÍAS -->
-  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-16">
-    <div class="flex flex-wrap justify-center gap-3">
-      @for (category of techCategories; track category) {
-        <a
-          href="#"
-          class="bg-white/80 border border-black/5 px-5 py-3 rounded-full text-sm font-medium text-[#5f5a53] hover:bg-[#141414] hover:text-white transition"
-        >
-          {{ category }}
-        </a>
-      }
-    </div>
-  </section>
+  
+<!-- CATEGORÍAS -->
+<section class="max-w-7xl mx-auto px-5 md:px-8 pb-16">
+  <div class="flex flex-wrap justify-center gap-2">
+    @for (category of techCategories; track category) {
+      <a
+        href="#"
+        class="px-4 py-2 text-sm font-medium text-[#5f5a53] hover:text-[#141414] transition-colors relative group"
+      >
+        {{ category }}
+        <span class="absolute bottom-0 left-0 w-full h-[2px] bg-[#141414] scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+      </a>
+    }
+  </div>
+</section>
 
   <!-- BENTO INFO -->
   <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20">
