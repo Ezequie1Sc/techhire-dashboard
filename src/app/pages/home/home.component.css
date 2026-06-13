@@ -94,3 +94,132 @@ button {
   color: #ffffff;
   transform: translateX(4px);
 }
+/* BENTO INFO — estilos */
+
+.bento-card {
+  border-radius: 22px;
+  padding: 1.75rem;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bento-white {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.bento-cream {
+  background: #f0ebe3;
+}
+
+.bento-dark {
+  background: #111111;
+}
+
+/* Intro card */
+.bento-eyebrow {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8a8177;
+}
+
+.bento-intro-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: #141414;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .bento-intro-title {
+    font-size: 2rem;
+  }
+}
+
+/* Step number */
+.bento-num {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: rgba(0, 0, 0, 0.2);
+}
+
+.bento-dark .bento-num {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* Step icon */
+.bento-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.bento-icon-dark {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.bento-icon-light {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+/* Step label */
+.bento-step-label {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0.5rem 0 0;
+}
+
+.bento-cream .bento-step-label {
+  color: #141414;
+}
+
+.bento-dark .bento-step-label {
+  color: #ffffff;
+}
+
+/* Central card */
+.bento-center-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+  color: #ffffff;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .bento-center-title {
+    font-size: 1.375rem;
+  }
+}
+
+.bento-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.bento-pill {
+  font-size: 0.65625rem;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.4);
+}
+.bento-card {
+  transition: all 0.3s ease;
+}
+
+.bento-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
