@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { finalize } from 'rxjs';
@@ -44,6 +44,8 @@ export class HomeComponent implements OnInit {
     'Cloud'
   ];
 
+  private isTouching = false;
+
   constructor(
     private jobService: JobService,
     private cdr: ChangeDetectorRef
@@ -51,6 +53,27 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadLatestJobs();
+  }
+
+  ngAfterViewInit(): void {
+    // Detectar eventos táctiles en el carrusel de categorías
+    const carousel = this.categoriesCarousel?.nativeElement;
+    if (carousel) {
+      carousel.addEventListener('touchstart', () => {
+        this.isTouching = true;
+        carousel.classList.add('touching');
+      });
+      
+      carousel.addEventListener('touchend', () => {
+        this.isTouching = false;
+        carousel.classList.remove('touching');
+      });
+      
+      carousel.addEventListener('touchcancel', () => {
+        this.isTouching = false;
+        carousel.classList.remove('touching');
+      });
+    }
   }
 
   loadLatestJobs(): void {
