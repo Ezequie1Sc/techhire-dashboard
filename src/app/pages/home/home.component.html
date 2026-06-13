@@ -7,13 +7,13 @@
       <!-- Hero Content -->
       <div class="grid lg:grid-cols-2 gap-8 items-center p-6 md:p-10 lg:p-14">
         <div>
-          
-
           <h1 class="text-5xl md:text-7xl font-semibold tracking-[-0.06em] leading-[0.95] max-w-2xl">
-Descubre oportunidades para construir el futuro.          </h1>
+            Descubre oportunidades para construir el futuro.
+          </h1>
 
           <p class="mt-6 text-[#6b665f] text-base md:text-lg max-w-xl leading-relaxed">
-Vacantes verificadas de empresas que buscan talento tecnológico como el tuyo.          </p>
+            Vacantes verificadas de empresas que buscan talento tecnológico como el tuyo.
+          </p>
 
           <div class="mt-8 flex flex-col sm:flex-row gap-3">
             <a routerLink="/jobs" class="bg-[#141414] text-white px-7 py-4 rounded-full font-medium hover:scale-[1.02] transition flex items-center justify-center gap-2">
@@ -29,6 +29,7 @@ Vacantes verificadas de empresas que buscan talento tecnológico como el tuyo.  
 
         <!-- Visual Bento -->
         <div class="grid grid-cols-2 gap-4">
+          <!-- Imagen principal -->
           <div class="col-span-2 rounded-[2rem] overflow-hidden h-64 relative group">
             <img
               src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80"
@@ -36,35 +37,29 @@ Vacantes verificadas de empresas que buscan talento tecnológico como el tuyo.  
               loading="eager"
               class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
             />
-            <div class="absolute inset-0 bg-black/20"></div>
-            <div class="absolute bottom-5 left-5 bg-white/90 backdrop-blur-md rounded-2xl px-5 py-3 shadow-lg">
-              <p class="text-sm font-semibold">+100 vacantes activas</p>
-              <p class="text-xs text-gray-500">Actualizadas desde API</p>
-            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
           </div>
 
-          <div class="rounded-[2rem] bg-[#e7ded2] p-6 min-h-48 flex flex-col justify-between">
-            <div class="w-11 h-11 bg-white rounded-full flex items-center justify-center text-[#141414]">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
-              </svg>
-            </div>
-            <div>
-              <h3 class="text-3xl font-semibold">Remote</h3>
-              <p class="text-sm text-[#6b665f] mt-1">Oportunidades globales</p>
-            </div>
+          <!-- Remote -->
+          <div class="rounded-[2rem] overflow-hidden h-48 relative group">
+            <img
+              src="./remotea.webp"
+              alt="Trabajo remoto global"
+              loading="lazy"
+              class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
           </div>
 
-          <div class="rounded-[2rem] overflow-hidden min-h-48 relative">
+          <!-- Diseñador UI/UX -->
+          <div class="rounded-[2rem] overflow-hidden h-48 relative group">
             <img
               src="https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&w=800&q=80"
-              alt="Diseñador UI/UX trabajando"
+              alt="Diseñador trabajando"
               loading="lazy"
-              class="w-full h-full object-cover"
+              class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
             />
-            <div class="absolute top-4 right-4 bg-white px-4 py-2 rounded-full text-xs font-semibold">
-              UI/UX
-            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
           </div>
         </div>
       </div>
@@ -344,6 +339,5 @@ Vacantes verificadas de empresas que buscan talento tecnológico como el tuyo.  
       </div>
     </div>
   </section>
-
 
 </div>
