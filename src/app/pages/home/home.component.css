@@ -103,15 +103,19 @@ button {
   transform: translateY(-2px);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
 }
-/* Carrusel de categorías */
+/* Carrusel de categorías - Mobile y Desktop */
 .categories-wrapper {
   position: relative;
 }
 
 .categories-track {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  padding: 4px 0 12px 0;
 }
 
 .categories-track::-webkit-scrollbar {
@@ -119,10 +123,74 @@ button {
 }
 
 .categories-track a {
+  flex-shrink: 0;
   scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
-/* Botones de navegación */
+/* Mobile: Scroll manual visible */
+@media (max-width: 767px) {
+  .categories-track {
+    animation: none !important;
+    cursor: grab;
+    padding: 4px 16px 12px 16px;
+    margin: 0 -16px;
+  }
+  
+  .categories-track:active {
+    cursor: grabbing;
+  }
+  
+  /* Indicador de scroll en mobile */
+  .categories-track::after {
+    content: '';
+    display: block;
+    flex-shrink: 0;
+    width: 16px;
+  }
+  
+  /* Botones de navegación ocultos en mobile */
+  .categories-nav-buttons {
+    display: none !important;
+  }
+}
+
+/* Desktop: Animación automática */
+@media (min-width: 768px) {
+  .categories-track {
+    animation: scrollCategories 30s linear infinite;
+    padding: 4px 0;
+    margin: 0;
+  }
+  
+  .categories-track:hover {
+    animation-play-state: paused;
+  }
+  
+  @keyframes scrollCategories {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+/* Botones de navegación desktop */
+.categories-nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+@media (max-width: 767px) {
+  .categories-nav-buttons {
+    display: none !important;
+  }
+}
+
 .carousel-control {
   width: 40px;
   height: 40px;
@@ -140,32 +208,4 @@ button {
 .carousel-control:hover {
   transform: scale(1.05);
   background: #f4f1ec;
-}
-
-/* Desktop: Animación automática */
-@media (min-width: 768px) {
-  .categories-track {
-    animation: scrollCategories 30s linear infinite;
-  }
-  
-  .categories-track:hover {
-    animation-play-state: paused;
-  }
-  
-  @keyframes scrollCategories {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
-  }
-}
-
-/* Mobile: Sin animación, solo scroll manual */
-@media (max-width: 767px) {
-  .categories-track {
-    animation: none;
-    padding-bottom: 8px;
-  }
 }
