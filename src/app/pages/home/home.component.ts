@@ -18,6 +18,7 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 })
 export class HomeComponent implements OnInit {
   @ViewChild('jobsCarousel') jobsCarousel!: ElementRef<HTMLDivElement>;
+  @ViewChild('categoriesCarousel') categoriesCarousel!: ElementRef<HTMLDivElement>;
 
   latestJobs: Job[] = [];
   loading = false;
@@ -30,7 +31,6 @@ export class HomeComponent implements OnInit {
     'Cloud',
     'DevOps',
     'Data',
-    'AI',
     'Cybersecurity'
   ];
 
@@ -79,11 +79,25 @@ export class HomeComponent implements OnInit {
       });
   }
 
+  // Scroll para vacantes
   scrollCarousel(direction: 'left' | 'right'): void {
     const carousel = this.jobsCarousel?.nativeElement;
     if (!carousel) return;
 
     const scrollAmount = carousel.clientWidth * 0.85;
+
+    carousel.scrollBy({
+      left: direction === 'right' ? scrollAmount : -scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+
+  // Scroll para categorías
+  scrollCategories(direction: 'left' | 'right'): void {
+    const carousel = this.categoriesCarousel?.nativeElement;
+    if (!carousel) return;
+
+    const scrollAmount = 200;
 
     carousel.scrollBy({
       left: direction === 'right' ? scrollAmount : -scrollAmount,
