@@ -158,7 +158,7 @@ button {
     transform: translateX(-50%);
   }
 }
-/* Carrusel de categorías - Mobile y Desktop */
+/* Carrusel de categorías - Estilo integrado */
 .categories-wrapper {
   position: relative;
 }
@@ -170,7 +170,7 @@ button {
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding: 4px 0 12px 0;
+  padding: 4px 0;
   cursor: grab;
 }
 
@@ -188,19 +188,17 @@ button {
   cursor: grabbing;
 }
 
-/* ANIMACIÓN EN AMBOS DISPOSITIVOS - MÁS RÁPIDA */
+/* ANIMACIÓN EN AMBOS DISPOSITIVOS */
 .categories-track {
   animation: scrollCategories 18s linear infinite;
 }
 
-/* Pausar animación al interactuar */
 .categories-track:hover,
 .categories-track:active,
 .categories-track:focus-within {
   animation-play-state: paused;
 }
 
-/* Pausar animación cuando el usuario está tocando (mobile) */
 .categories-track.touching {
   animation-play-state: paused;
 }
@@ -219,7 +217,7 @@ button {
   display: flex;
   justify-content: center;
   gap: 12px;
-  margin-top: 12px;
+  margin-top: 16px;
 }
 
 @media (max-width: 767px) {
