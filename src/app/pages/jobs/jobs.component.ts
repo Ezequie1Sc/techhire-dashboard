@@ -7,7 +7,6 @@ import { JobService } from '../../core/services/job.service';
 import { Job, JobResponse } from '../../models/job.model';
 
 import { JobCardComponent } from '../../shared/components/job-card/job-card.component';
-import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
 @Component({
   selector: 'app-jobs',
@@ -16,7 +15,7 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
     CommonModule,
     FormsModule,
     JobCardComponent,
-    LoaderComponent
+    
   ],
   templateUrl: './jobs.component.html',
   styleUrls: ['./jobs.component.css']

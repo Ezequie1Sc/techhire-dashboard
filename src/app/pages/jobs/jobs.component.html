@@ -177,12 +177,16 @@
       }
     </div>
 
-    <!-- Loading -->
-    @if (loading) {
-      <div class="bg-white rounded-[2rem] p-10 border border-black/5">
-        <app-loader></app-loader>
-      </div>
-    }
+   <!-- Loading -->
+@if (loading) {
+  <div class="bg-white rounded-[2rem] p-10 border border-black/5 flex justify-center items-center min-h-[200px]">
+    <div class="loader-pulse">
+      <div class="loader-ring"></div>
+      <div class="loader-ring"></div>
+      <div class="loader-ring"></div>
+    </div>
+  </div>
+}
 
     <!-- Error -->
     @if (!loading && error) {
