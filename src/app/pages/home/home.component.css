@@ -103,62 +103,7 @@ button {
   transform: translateY(-2px);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
 }
-/* Carrusel de categorías - Mobile y Desktop */
-.categories-wrapper {
-  position: relative;
-}
-
-.categories-track {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  padding: 4px 0 12px 0;
-  cursor: grab;
-}
-
-.categories-track::-webkit-scrollbar {
-  display: none;
-}
-
-.categories-track a {
-  flex-shrink: 0;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-}
-
-.categories-track:active {
-  cursor: grabbing;
-}
-
-/* ANIMACIÓN EN AMBOS DISPOSITIVOS */
-.categories-track {
-  animation: scrollCategories 30s linear infinite;
-}
-
-/* Pausar animación al interactuar */
-.categories-track:hover,
-.categories-track:active,
-.categories-track:focus-within {
-  animation-play-state: paused;
-}
-
-/* Pausar animación cuando el usuario está tocando (mobile) */
-.categories-track.touching {
-  animation-play-state: paused;
-}
-
-@keyframes scrollCategories {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-/* Asegurar que el contenedor oculte el desbordamiento */
+/* Carrusel de categorías - Estilo integrado */
 .categories-wrapper {
   overflow: hidden !important;
   position: relative;
@@ -169,7 +114,6 @@ button {
   gap: 12px;
   padding: 4px 0;
   cursor: grab;
-  /* Sin overflow-x: auto para que la animación funcione */
   overflow: visible !important;
 }
 
@@ -198,5 +142,32 @@ button {
   }
   100% {
     transform: translateX(-50%);
+  }
+}
+
+/* Botones de navegación - CENTRADOS */
+.carousel-control {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: #141414;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.carousel-control:hover {
+  transform: scale(1.05);
+  background: #f4f1ec;
+}
+
+/* Ocultar botones en mobile */
+@media (max-width: 767px) {
+  .flex.justify-center.gap-3.mt-4 {
+    display: none !important;
   }
 }
