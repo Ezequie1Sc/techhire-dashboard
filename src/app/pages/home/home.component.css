@@ -173,6 +173,76 @@ button {
   }
 }
 
+/* Carrusel de categorías - Mobile y Desktop */
+.categories-wrapper {
+  position: relative;
+}
+
+.categories-track {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 4px 0 12px 0;
+  cursor: grab;
+}
+
+.categories-track::-webkit-scrollbar {
+  display: none;
+}
+
+.categories-track a {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.categories-track:active {
+  cursor: grabbing;
+}
+
+/* ANIMACIÓN EN AMBOS DISPOSITIVOS - MÁS RÁPIDA */
+.categories-track {
+  animation: scrollCategories 18s linear infinite;
+}
+
+/* Pausar animación al interactuar */
+.categories-track:hover,
+.categories-track:active,
+.categories-track:focus-within {
+  animation-play-state: paused;
+}
+
+/* Pausar animación cuando el usuario está tocando (mobile) */
+.categories-track.touching {
+  animation-play-state: paused;
+}
+
+@keyframes scrollCategories {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Botones de navegación desktop */
+.categories-nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+@media (max-width: 767px) {
+  .categories-nav-buttons {
+    display: none !important;
+  }
+}
+
 .carousel-control {
   width: 40px;
   height: 40px;
