@@ -158,21 +158,6 @@ button {
     transform: translateX(-50%);
   }
 }
-
-/* Botones de navegación desktop */
-.categories-nav-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 12px;
-}
-
-@media (max-width: 767px) {
-  .categories-nav-buttons {
-    display: none !important;
-  }
-}
-
 /* Carrusel de categorías - Mobile y Desktop */
 .categories-wrapper {
   position: relative;
