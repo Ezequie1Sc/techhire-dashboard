@@ -7,12 +7,11 @@ import { JobService } from '../../core/services/job.service';
 import { Job } from '../../models/job.model';
 
 import { JobCardComponent } from '../../shared/components/job-card/job-card.component';
-import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterModule, CommonModule, JobCardComponent, LoaderComponent],
+  imports: [RouterModule, CommonModule, JobCardComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
