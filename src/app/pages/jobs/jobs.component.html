@@ -179,7 +179,7 @@
 
 <!-- Loading -->
 @if (loading) {
-  <div class="bg-white rounded-[2rem] p-10 border border-black/5 flex justify-center items-center min-h-[200px]">
+  <div class="bg-white rounded-[2rem] p-10 border border-black/5 flex flex-col justify-center items-center min-h-[200px] gap-4">
     <div class="loader-wave">
       <span></span>
       <span></span>
@@ -187,6 +187,9 @@
       <span></span>
       <span></span>
     </div>
+    <p class="text-sm text-[#6b665f] font-medium tracking-wide animate-pulse">
+      Cargando vacantes
+    </p>
   </div>
 }
 
