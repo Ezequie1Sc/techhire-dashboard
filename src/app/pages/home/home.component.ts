@@ -44,8 +44,6 @@ export class HomeComponent implements OnInit {
     'Cloud'
   ];
 
-  private isTouching = false;
-
   constructor(
     private jobService: JobService,
     private cdr: ChangeDetectorRef
@@ -56,22 +54,34 @@ export class HomeComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    // Detectar eventos táctiles en el carrusel de categorías
+    // Detectar eventos táctiles para pausar/reanudar animación
     const carousel = this.categoriesCarousel?.nativeElement;
     if (carousel) {
+      // Cuando el usuario toca la pantalla
       carousel.addEventListener('touchstart', () => {
-        this.isTouching = true;
-        carousel.classList.add('touching');
+        carousel.classList.add('is-touching');
       });
       
+      // Cuando el usuario deja de tocar
       carousel.addEventListener('touchend', () => {
-        this.isTouching = false;
-        carousel.classList.remove('touching');
+        setTimeout(() => {
+          carousel.classList.remove('is-touching');
+        }, 100); // Pequeño delay para permitir el scroll
       });
       
+      // Si el toque se cancela
       carousel.addEventListener('touchcancel', () => {
-        this.isTouching = false;
-        carousel.classList.remove('touching');
+        carousel.classList.remove('is-touching');
+      });
+      
+      // Scroll manual con el dedo
+      carousel.addEventListener('scroll', () => {
+        // Pequeño efecto visual de que el carrusel está siendo controlado
+        carousel.classList.add('is-touching');
+        clearTimeout((carousel as any)._scrollTimeout);
+        (carousel as any)._scrollTimeout = setTimeout(() => {
+          carousel.classList.remove('is-touching');
+        }, 1500);
       });
     }
   }
@@ -115,7 +125,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // Scroll para categorías
+  // Scroll para categorías (desktop)
   scrollCategories(direction: 'left' | 'right'): void {
     const carousel = this.categoriesCarousel?.nativeElement;
     if (!carousel) return;

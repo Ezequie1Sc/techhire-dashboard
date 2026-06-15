@@ -103,7 +103,7 @@ button {
   transform: translateY(-2px);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
 }
-/* Carrusel de categorías - Estilo integrado */
+/* Carrusel de categorías - Movimiento continuo en ambos dispositivos */
 .categories-wrapper {
   overflow: hidden !important;
   position: relative;
@@ -114,39 +114,27 @@ button {
   gap: 12px;
   padding: 4px 0;
   cursor: grab;
-  /* Cambiar a auto para permitir scroll en mobile */
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-}
-
-.categories-track::-webkit-scrollbar {
-  display: none;
+  overflow: visible !important;
 }
 
 .categories-track a {
   flex-shrink: 0;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
 }
 
 .categories-track:active {
   cursor: grabbing;
 }
 
-/* ANIMACIÓN SOLO EN DESKTOP */
-@media (min-width: 768px) {
-  .categories-track {
-    overflow: visible;
-    animation: scrollCategories 18s linear infinite;
-  }
-  
-  .categories-track:hover,
-  .categories-track:active,
-  .categories-track:focus-within {
-    animation-play-state: paused;
-  }
+/* ANIMACIÓN EN AMBOS DISPOSITIVOS - Movimiento continuo */
+.categories-track {
+  animation: scrollCategories 18s linear infinite;
+}
+
+/* Pausar al interactuar (hover, touch, focus) */
+.categories-track:hover,
+.categories-track:active,
+.categories-track:focus-within {
+  animation-play-state: paused;
 }
 
 @keyframes scrollCategories {
@@ -158,21 +146,34 @@ button {
   }
 }
 
-/* MOBILE: Sin animación, scroll manual con snap */
+/* Mobile específico - Scroll manual con animación */
 @media (max-width: 767px) {
   .categories-track {
-    animation: none !important;
+    /* Mantener animación pero permitir scroll manual */
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
     overflow-x: auto !important;
     padding: 4px 16px 12px 16px;
     margin: 0 -16px;
+    cursor: grab;
   }
   
-  /* Indicador visual de scroll */
-  .categories-track::after {
-    content: '';
-    display: block;
-    flex-shrink: 0;
-    width: 16px;
+  .categories-track::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .categories-track a {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+  
+  .categories-track:active {
+    cursor: grabbing;
+  }
+  
+  /* Pausar animación cuando el usuario está tocando */
+  .categories-track.is-touching {
+    animation-play-state: paused;
   }
 }
 
