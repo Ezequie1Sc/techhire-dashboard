@@ -13,9 +13,7 @@ export interface TranslateResponse {
 })
 export class TranslateService {
 
-  // Endpoint desplegado en Vercel
-  private readonly apiUrl =
-    'https://techhire-dashboard.vercel.app/api/translate';
+private readonly apiUrl = '/api/translate';
 
   constructor(private http: HttpClient) {}
 
