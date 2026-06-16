@@ -55,10 +55,6 @@ export class JobsComponent implements OnInit {
     'Todas',
     'Latam',
     'Europa',
-    'Norteamérica',
-    'Asia',
-    'África',
-    'Oceanía',
     'Remoto Global'
   ];
 
