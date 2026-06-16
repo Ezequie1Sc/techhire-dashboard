@@ -147,20 +147,65 @@
       @if (hasActiveFilters) {
         <div class="jobs-active-filters">
           <span class="jobs-active-title">Filtros activos:</span>
+          
           @if (searchTerm.trim()) {
-            <span>Búsqueda: {{ searchTerm }}</span>
+            <span class="jobs-active-filter">
+              Búsqueda: {{ searchTerm }}
+              <button type="button" (click)="searchTerm = ''; applyFilters()" class="jobs-filter-remove" aria-label="Eliminar filtro de búsqueda">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </span>
           }
+          
           @if (selectedCategory !== 'Todas') {
-            <span>Categoría: {{ selectedCategory }}</span>
+            <span class="jobs-active-filter">
+              Categoría: {{ selectedCategory }}
+              <button type="button" (click)="selectedCategory = 'Todas'; applyFilters()" class="jobs-filter-remove" aria-label="Eliminar filtro de categoría">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </span>
           }
+          
           @if (selectedMode !== 'Todas') {
-            <span>Modalidad: {{ selectedMode }}</span>
+            <span class="jobs-active-filter">
+              Modalidad: {{ selectedMode }}
+              <button type="button" (click)="selectedMode = 'Todas'; applyFilters()" class="jobs-filter-remove" aria-label="Eliminar filtro de modalidad">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </span>
           }
+          
           @if (selectedRegion !== 'Todas') {
-            <span>Región: {{ selectedRegion }}</span>
+            <span class="jobs-active-filter">
+              Región: {{ selectedRegion }}
+              <button type="button" (click)="selectedRegion = 'Todas'; applyFilters()" class="jobs-filter-remove" aria-label="Eliminar filtro de región">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </span>
           }
+          
           @if (selectedSort !== 'recientes') {
-            <span>Orden: {{ getSortLabel(selectedSort) }}</span>
+            <span class="jobs-active-filter">
+              Orden: {{ getSortLabel(selectedSort) }}
+              <button type="button" (click)="selectedSort = 'recientes'; applyFilters()" class="jobs-filter-remove" aria-label="Eliminar filtro de orden">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </span>
           }
         </div>
       }
