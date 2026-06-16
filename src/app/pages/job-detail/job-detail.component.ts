@@ -20,6 +20,7 @@ import { NotFoundComponent } from '../not-found/not-found.component';
     RouterModule,
     HttpClientModule,
     FormsModule,
+   
     NotFoundComponent
   ],
   templateUrl: './job-detail.component.html',
@@ -35,9 +36,11 @@ export class JobDetailComponent implements OnInit {
   currentLanguage: 'original' | 'es' | 'en' = 'original';
   translating = false;
   
-  // Guardar la descripción original
+  // Guardar título y descripción original
+  private originalTitle = '';
   private originalDescription = '';
-  // Guardar la traducción al inglés
+  // Guardar título y descripción en inglés
+  private englishTitle = '';
   private englishDescription = '';
 
   constructor(
@@ -70,7 +73,8 @@ export class JobDetailComponent implements OnInit {
 
         if (this.job) {
           this.isFavorite = this.favoriteService.isFavorite(slug);
-          // Guardar la descripción original
+          // Guardar título y descripción original
+          this.originalTitle = this.job.title;
           this.originalDescription = this.job.description;
           
           // Asegurar que el idioma actual sea 'original'
@@ -105,6 +109,7 @@ export class JobDetailComponent implements OnInit {
     switch (lang) {
       case 'original':
         // Volver al texto original
+        this.job.title = this.originalTitle;
         this.job.description = this.originalDescription;
         this.currentLanguage = 'original';
         this.translating = false;
@@ -113,33 +118,73 @@ export class JobDetailComponent implements OnInit {
       case 'es':
         // Traducir al español
         if (this.currentLanguage === 'original') {
-          // Si estamos en original, traducir a español
-          this.translateService.translate(this.job.description, 'es').subscribe({
-            next: (response) => {
+          // Traducir título y descripción
+          this.translateService.translate(this.originalTitle, 'es').subscribe({
+            next: (responseTitle) => {
               if (this.job) {
-                this.job.description = response.translatedText;
-                this.currentLanguage = 'es';
+                this.job.title = responseTitle.translatedText;
+                
+                // Traducir descripción
+                this.translateService.translate(this.originalDescription, 'es').subscribe({
+                  next: (responseDesc) => {
+                    if (this.job) {
+                      this.job.description = responseDesc.translatedText;
+                      this.currentLanguage = 'es';
+                      this.translating = false;
+                    }
+                  },
+                  error: () => {
+                    // Si falla descripción, restaurar
+                    if (this.job) {
+                      this.job.description = this.originalDescription;
+                      this.currentLanguage = 'original';
+                    }
+                    this.translating = false;
+                  }
+                });
               }
-              this.translating = false;
             },
             error: () => {
+              // Si falla título, restaurar
+              if (this.job) {
+                this.job.title = this.originalTitle;
+                this.job.description = this.originalDescription;
+                this.currentLanguage = 'original';
+              }
               this.translating = false;
             }
           });
-        } else if (this.currentLanguage === 'en' && this.originalDescription) {
+        } else if (this.currentLanguage === 'en' && this.originalTitle) {
           // Si estamos en inglés, volver a original y luego traducir a español
+          this.job.title = this.originalTitle;
           this.job.description = this.originalDescription;
-          this.translateService.translate(this.job.description, 'es').subscribe({
-            next: (response) => {
+          
+          this.translateService.translate(this.originalTitle, 'es').subscribe({
+            next: (responseTitle) => {
               if (this.job) {
-                this.job.description = response.translatedText;
-                this.currentLanguage = 'es';
+                this.job.title = responseTitle.translatedText;
+                
+                this.translateService.translate(this.originalDescription, 'es').subscribe({
+                  next: (responseDesc) => {
+                    if (this.job) {
+                      this.job.description = responseDesc.translatedText;
+                      this.currentLanguage = 'es';
+                      this.translating = false;
+                    }
+                  },
+                  error: () => {
+                    if (this.job) {
+                      this.job.description = this.originalDescription;
+                      this.currentLanguage = 'original';
+                    }
+                    this.translating = false;
+                  }
+                });
               }
-              this.translating = false;
             },
             error: () => {
-              // Si falla, restaurar original
               if (this.job) {
+                this.job.title = this.originalTitle;
                 this.job.description = this.originalDescription;
                 this.currentLanguage = 'original';
               }
@@ -153,47 +198,88 @@ export class JobDetailComponent implements OnInit {
         // Traducir al inglés
         if (this.currentLanguage === 'original') {
           // Si tenemos inglés guardado, usarlo
-          if (this.englishDescription) {
+          if (this.englishTitle && this.englishDescription) {
+            this.job.title = this.englishTitle;
             this.job.description = this.englishDescription;
             this.currentLanguage = 'en';
             this.translating = false;
           } else {
-            // Si no, traducir y guardar
-            this.translateService.translate(this.job.description, 'en').subscribe({
-              next: (response) => {
+            // Traducir título
+            this.translateService.translate(this.originalTitle, 'en').subscribe({
+              next: (responseTitle) => {
                 if (this.job) {
-                  this.englishDescription = response.translatedText;
-                  this.job.description = this.englishDescription;
-                  this.currentLanguage = 'en';
+                  this.englishTitle = responseTitle.translatedText;
+                  this.job.title = this.englishTitle;
+                  
+                  // Traducir descripción
+                  this.translateService.translate(this.originalDescription, 'en').subscribe({
+                    next: (responseDesc) => {
+                      if (this.job) {
+                        this.englishDescription = responseDesc.translatedText;
+                        this.job.description = this.englishDescription;
+                        this.currentLanguage = 'en';
+                        this.translating = false;
+                      }
+                    },
+                    error: () => {
+                      if (this.job) {
+                        this.job.description = this.originalDescription;
+                        this.currentLanguage = 'original';
+                      }
+                      this.translating = false;
+                    }
+                  });
                 }
-                this.translating = false;
               },
               error: () => {
+                if (this.job) {
+                  this.job.title = this.originalTitle;
+                  this.job.description = this.originalDescription;
+                  this.currentLanguage = 'original';
+                }
                 this.translating = false;
               }
             });
           }
-        } else if (this.currentLanguage === 'es' && this.originalDescription) {
+        } else if (this.currentLanguage === 'es' && this.originalTitle) {
           // Si estamos en español, volver a original y luego traducir a inglés
+          this.job.title = this.originalTitle;
           this.job.description = this.originalDescription;
           
-          if (this.englishDescription) {
+          if (this.englishTitle && this.englishDescription) {
+            this.job.title = this.englishTitle;
             this.job.description = this.englishDescription;
             this.currentLanguage = 'en';
             this.translating = false;
           } else {
-            this.translateService.translate(this.job.description, 'en').subscribe({
-              next: (response) => {
+            this.translateService.translate(this.originalTitle, 'en').subscribe({
+              next: (responseTitle) => {
                 if (this.job) {
-                  this.englishDescription = response.translatedText;
-                  this.job.description = this.englishDescription;
-                  this.currentLanguage = 'en';
+                  this.englishTitle = responseTitle.translatedText;
+                  this.job.title = this.englishTitle;
+                  
+                  this.translateService.translate(this.originalDescription, 'en').subscribe({
+                    next: (responseDesc) => {
+                      if (this.job) {
+                        this.englishDescription = responseDesc.translatedText;
+                        this.job.description = this.englishDescription;
+                        this.currentLanguage = 'en';
+                        this.translating = false;
+                      }
+                    },
+                    error: () => {
+                      if (this.job) {
+                        this.job.description = this.originalDescription;
+                        this.currentLanguage = 'original';
+                      }
+                      this.translating = false;
+                    }
+                  });
                 }
-                this.translating = false;
               },
               error: () => {
-                // Si falla, restaurar original
                 if (this.job) {
+                  this.job.title = this.originalTitle;
                   this.job.description = this.originalDescription;
                   this.currentLanguage = 'original';
                 }
