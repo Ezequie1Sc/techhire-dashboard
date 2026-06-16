@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
@@ -31,7 +31,7 @@ export class JobDetailComponent implements OnInit {
   error: string | null = null;
 
   selectedTranslation: TranslationView = 'original';
-  translatedDescription = '';
+  displayDescription = '';
   isTranslating = false;
   translationError: string | null = null;
 
@@ -40,7 +40,8 @@ export class JobDetailComponent implements OnInit {
     private jobService: JobService,
     private favoriteService: FavoriteService,
     private translateService: TranslateService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private zone: NgZone
   ) {}
 
   ngOnInit(): void {
@@ -68,6 +69,7 @@ export class JobDetailComponent implements OnInit {
 
         if (this.job) {
           this.isFavorite = this.favoriteService.isFavorite(slug);
+          this.displayDescription = this.job.description || '';
         }
 
         this.loading = false;
@@ -92,6 +94,7 @@ export class JobDetailComponent implements OnInit {
   showOriginal(): void {
     this.selectedTranslation = 'original';
     this.translationError = null;
+    this.displayDescription = this.job?.description || '';
     this.cdr.detectChanges();
   }
 
@@ -104,8 +107,8 @@ export class JobDetailComponent implements OnInit {
     this.translationError = null;
 
     if (cachedTranslation) {
-      this.translatedDescription = cachedTranslation;
       this.selectedTranslation = target;
+      this.displayDescription = cachedTranslation;
       this.isTranslating = false;
       this.cdr.detectChanges();
       return;
@@ -116,37 +119,33 @@ export class JobDetailComponent implements OnInit {
 
     this.translateService.translate(this.job.description, target).subscribe({
       next: (response) => {
-        const translatedText = response?.translatedText?.trim();
+        this.zone.run(() => {
+          const translatedText = response?.translatedText?.trim();
 
-        if (!translatedText) {
-          this.translationError = 'No se recibió una traducción válida.';
+          if (!translatedText) {
+            this.translationError = 'No se recibió una traducción válida.';
+            this.isTranslating = false;
+            this.cdr.detectChanges();
+            return;
+          }
+
+          this.selectedTranslation = target;
+          this.displayDescription = translatedText;
+          localStorage.setItem(cacheKey, translatedText);
+
           this.isTranslating = false;
           this.cdr.detectChanges();
-          return;
-        }
-
-        this.translatedDescription = translatedText;
-        this.selectedTranslation = target;
-        localStorage.setItem(cacheKey, translatedText);
-
-        this.isTranslating = false;
-        this.cdr.detectChanges();
+        });
       },
       error: (error) => {
-        console.error('Error al traducir:', error);
-        this.translationError = 'No se pudo traducir. Intenta otra vez.';
-        this.isTranslating = false;
-        this.cdr.detectChanges();
+        this.zone.run(() => {
+          console.error('Error al traducir:', error);
+          this.translationError = 'No se pudo traducir. Intenta otra vez.';
+          this.isTranslating = false;
+          this.cdr.detectChanges();
+        });
       }
     });
-  }
-
-  get visibleDescription(): string {
-    if (this.selectedTranslation === 'original') {
-      return this.job?.description || '';
-    }
-
-    return this.translatedDescription || this.job?.description || '';
   }
 
   get formattedDate(): string {
@@ -161,7 +160,7 @@ export class JobDetailComponent implements OnInit {
 
   private resetTranslation(): void {
     this.selectedTranslation = 'original';
-    this.translatedDescription = '';
+    this.displayDescription = '';
     this.isTranslating = false;
     this.translationError = null;
   }
