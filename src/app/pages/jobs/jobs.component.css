@@ -126,22 +126,9 @@ button {
   color: #9b9388;
 }
 
-/* Select Customizado */
+/* ===== SELECTORES PERSONALIZADOS - ESTILO MINIMALISTA ===== */
 .jobs-select-wrapper {
   position: relative;
-}
-
-.jobs-select-wrapper::after {
-  content: "";
-  position: absolute;
-  right: 1.15rem;
-  top: 50%;
-  width: 0.5rem;
-  height: 0.5rem;
-  border-right: 2px solid #6b665f;
-  border-bottom: 2px solid #6b665f;
-  transform: translateY(-65%) rotate(45deg);
-  pointer-events: none;
 }
 
 .jobs-select-wrapper select {
@@ -156,6 +143,7 @@ button {
   color: #141414;
   padding: 0 2.8rem 0 1.25rem;
   font-size: 0.88rem;
+  font-weight: 500;
   outline: none;
   cursor: pointer;
   transition: all 0.25s ease;
@@ -170,12 +158,47 @@ button {
   border-color: rgba(20, 20, 20, 0.18);
 }
 
+/* Flecha personalizada */
+.jobs-select-wrapper::after {
+  content: "";
+  position: absolute;
+  right: 1.15rem;
+  top: 50%;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-right: 2px solid #6b665f;
+  border-bottom: 2px solid #6b665f;
+  transform: translateY(-65%) rotate(45deg);
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+/* Rotar flecha al abrir */
+.jobs-select-wrapper select:focus + ::after {
+  transform: translateY(-35%) rotate(-135deg);
+}
+
+/* ===== OPCIONES PERSONALIZADAS ===== */
 .jobs-select-wrapper select option {
   background: #ffffff;
   color: #141414;
+  padding: 0.75rem 1rem;
+  font-weight: 400;
 }
 
-/* Bottom Row */
+/* Estilo para opción seleccionada */
+.jobs-select-wrapper select option:checked {
+  background: #f4f1ec;
+  color: #141414;
+  font-weight: 600;
+}
+
+/* Hover en opciones (funciona en algunos navegadores) */
+.jobs-select-wrapper select option:hover {
+  background: #f4f1ec;
+}
+
+/* ===== BOTTOM ROW ===== */
 .jobs-bottom-row {
   display: flex;
   align-items: center;
@@ -235,7 +258,7 @@ button {
   box-shadow: 0 8px 25px rgba(20, 20, 20, 0.15);
 }
 
-/* Active Filters */
+/* ===== ACTIVE FILTERS ===== */
 .jobs-active-filters {
   display: flex;
   flex-wrap: wrap;
@@ -245,11 +268,40 @@ button {
   font-size: 0.82rem;
 }
 
-.jobs-active-filters span {
+.jobs-active-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   background: #ffffff;
   border: 1px solid rgba(20, 20, 20, 0.06);
   border-radius: 999px;
   padding: 0.4rem 0.85rem;
+}
+
+.jobs-active-filter .jobs-filter-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(20, 20, 20, 0.06);
+  color: #6b665f;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.jobs-active-filter .jobs-filter-remove:hover {
+  background: #141414;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.jobs-active-filter .jobs-filter-remove svg {
+  width: 10px;
+  height: 10px;
 }
 
 .jobs-active-filters .jobs-active-title {
@@ -284,6 +336,12 @@ button {
 
   .jobs-filter-grid {
     grid-template-columns: 1fr;
+  }
+
+  .jobs-select-wrapper select {
+    height: 2.8rem;
+    font-size: 0.85rem;
+    padding: 0 2.5rem 0 1rem;
   }
 
   .jobs-bottom-row {
@@ -428,57 +486,4 @@ button {
 @keyframes blobMove {
   0%, 100% { transform: translateY(0) scale(1); }
   50% { transform: translateY(-24px) scale(1.05); }
-}
-/* Active Filters */
-.jobs-active-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1.25rem;
-  color: #6b665f;
-  font-size: 0.82rem;
-}
-
-.jobs-active-filter {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #ffffff;
-  border: 1px solid rgba(20, 20, 20, 0.06);
-  border-radius: 999px;
-  padding: 0.4rem 0.85rem;
-}
-
-.jobs-active-filter .jobs-filter-remove {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  border: none;
-  border-radius: 50%;
-  background: rgba(20, 20, 20, 0.06);
-  color: #6b665f;
-  cursor: pointer;
-  padding: 0;
-  transition: all 0.2s ease;
-}
-
-.jobs-active-filter .jobs-filter-remove:hover {
-  background: #141414;
-  color: #ffffff;
-  transform: scale(1.1);
-}
-
-.jobs-active-filter .jobs-filter-remove svg {
-  width: 10px;
-  height: 10px;
-}
-
-.jobs-active-filters .jobs-active-title {
-  background: transparent;
-  border: none;
-  color: #141414;
-  font-weight: 700;
-  padding-left: 0;
 }
