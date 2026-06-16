@@ -1,17 +1,6 @@
 @if (loading) {
   <div class="min-h-screen bg-[#f4f1ec] flex items-center justify-center px-5">
-    <div class="bg-white rounded-[2rem] p-10 border border-black/5 flex flex-col justify-center items-center min-h-[200px] gap-4">
-      <div class="loader-wave">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <p class="text-sm text-[#6b665f] font-medium tracking-wide animate-pulse">
-        Cargando vacante
-      </p>
-    </div>
+    <app-loader></app-loader>
   </div>
 }
 
@@ -73,54 +62,6 @@
                 </svg>
               </button>
             </div>
-            
-            <!-- Botón de traducción con 3 opciones -->
-            <div class="mt-4 flex flex-wrap items-center gap-2">
-              <div class="flex items-center bg-white border border-black/5 rounded-full p-1">
-                <button
-                  type="button"
-                  (click)="changeLanguage('original')"
-                  [disabled]="translating"
-                  class="px-4 py-1.5 rounded-full text-xs font-medium transition"
-                  [class.bg-[#141414]]="currentLanguage === 'original'"
-                  [class.text-white]="currentLanguage === 'original'"
-                  [class.text-[#6b665f]]="currentLanguage !== 'original'"
-                  [class.hover:bg-[#f4f1ec]]="currentLanguage !== 'original'"
-                >
-                  Original
-                </button>
-                <button
-                  type="button"
-                  (click)="changeLanguage('es')"
-                  [disabled]="translating"
-                  class="px-4 py-1.5 rounded-full text-xs font-medium transition"
-                  [class.bg-[#141414]]="currentLanguage === 'es'"
-                  [class.text-white]="currentLanguage === 'es'"
-                  [class.text-[#6b665f]]="currentLanguage !== 'es'"
-                  [class.hover:bg-[#f4f1ec]]="currentLanguage !== 'es'"
-                >
-                  🇪🇸 Español
-                </button>
-                <button
-                  type="button"
-                  (click)="changeLanguage('en')"
-                  [disabled]="translating"
-                  class="px-4 py-1.5 rounded-full text-xs font-medium transition"
-                  [class.bg-[#141414]]="currentLanguage === 'en'"
-                  [class.text-white]="currentLanguage === 'en'"
-                  [class.text-[#6b665f]]="currentLanguage !== 'en'"
-                  [class.hover:bg-[#f4f1ec]]="currentLanguage !== 'en'"
-                >
-                  🇺🇸 English
-                </button>
-              </div>
-              
-              @if (translating) {
-                <span class="text-xs text-[#6b665f] animate-pulse">
-                  Traduciendo...
-                </span>
-              }
-            </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 md:gap-4">
@@ -168,12 +109,67 @@
               </h2>
 
               <p class="text-[#6b665f] text-sm mt-2 max-w-2xl">
-                {{ currentLanguage === 'original' ? 'Texto original de la vacante.' : (currentLanguage === 'es' ? 'Resumen organizado de responsabilidades, requisitos y detalles de la vacante.' : 'Organized summary of responsibilities, requirements, and job details.') }}
+                Consulta la descripción original o tradúcela al español o inglés.
               </p>
             </div>
 
+            <div class="translation-panel">
+              <div class="translation-header">
+                <div>
+                  <span class="translation-label">Traducción</span>
+                  <p class="translation-text">
+                    La traducción se genera bajo demanda y se guarda temporalmente en tu navegador.
+                  </p>
+                </div>
+
+                @if (isTranslating) {
+                  <span class="translation-status">
+                    Traduciendo...
+                  </span>
+                }
+              </div>
+
+              <div class="translation-actions">
+                <button
+                  type="button"
+                  class="translation-btn"
+                  [class.active]="selectedTranslation === 'original'"
+                  [disabled]="isTranslating"
+                  (click)="showOriginal()"
+                >
+                  Original
+                </button>
+
+                <button
+                  type="button"
+                  class="translation-btn"
+                  [class.active]="selectedTranslation === 'es'"
+                  [disabled]="isTranslating"
+                  (click)="translateDescription('es')"
+                >
+                  Español
+                </button>
+
+                <button
+                  type="button"
+                  class="translation-btn"
+                  [class.active]="selectedTranslation === 'en'"
+                  [disabled]="isTranslating"
+                  (click)="translateDescription('en')"
+                >
+                  English
+                </button>
+              </div>
+
+              @if (translationError) {
+                <p class="translation-error">
+                  {{ translationError }}
+                </p>
+              }
+            </div>
+
             <article class="job-description-container">
-              <div [innerHTML]="job.description"></div>
+              <div [innerHTML]="visibleDescription"></div>
             </article>
           </div>
 

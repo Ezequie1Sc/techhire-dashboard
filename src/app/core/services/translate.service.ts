@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 export type TranslationTarget = 'es' | 'en';
 
-interface TranslateResponse {
+export interface TranslateResponse {
   translatedText: string;
 }
 
@@ -12,16 +12,14 @@ interface TranslateResponse {
   providedIn: 'root'
 })
 export class TranslateService {
-  private readonly apiUrl = 'https://libretranslate.com/translate';
+  private readonly apiUrl = '/api/translate';
 
   constructor(private http: HttpClient) {}
 
   translate(text: string, target: TranslationTarget): Observable<TranslateResponse> {
     return this.http.post<TranslateResponse>(this.apiUrl, {
-      q: text,
-      source: 'auto',
-      target,
-      format: 'html'
+      text,
+      target
     });
   }
 }

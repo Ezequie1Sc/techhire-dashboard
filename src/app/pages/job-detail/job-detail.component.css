@@ -201,4 +201,87 @@
   .job-description-container :where(h3, h4, h5, h6) {
     font-size: 1rem;
   }
+}.translation-panel {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 1.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.translation-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.translation-label {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.17em;
+  color: #8a8177;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.translation-text {
+  color: #6b665f;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.translation-status {
+  color: #6b665f;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.translation-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.translation-btn {
+  border: 1px solid rgba(20, 20, 20, 0.08);
+  background: #fbfaf7;
+  color: #6b665f;
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.translation-btn:hover,
+.translation-btn.active {
+  background: #141414;
+  color: #ffffff;
+  border-color: #141414;
+}
+
+.translation-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.translation-error {
+  margin: 0.85rem 0 0;
+  color: #dc2626;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .translation-header {
+    flex-direction: column;
+  }
+
+  .translation-btn {
+    flex: 1;
+  }
 }
