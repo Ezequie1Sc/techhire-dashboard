@@ -219,6 +219,58 @@
         </div>
       }
 
+      <div class="jobs-translation-row">
+  <div>
+    <span class="jobs-translation-title">Idioma de vacantes</span>
+    <p class="jobs-translation-text">
+      Traduce solo las vacantes visibles de esta página.
+    </p>
+  </div>
+
+  <div class="jobs-translation-actions">
+    <button
+      type="button"
+      class="jobs-translation-btn"
+      [class.active]="selectedJobsLanguage === 'original'"
+      [disabled]="translatingJobs"
+      (click)="changeJobsLanguage('original')"
+    >
+      Original
+    </button>
+
+    <button
+      type="button"
+      class="jobs-translation-btn"
+      [class.active]="selectedJobsLanguage === 'es'"
+      [disabled]="translatingJobs"
+      (click)="changeJobsLanguage('es')"
+    >
+      Español
+    </button>
+
+    <button
+      type="button"
+      class="jobs-translation-btn"
+      [class.active]="selectedJobsLanguage === 'en'"
+      [disabled]="translatingJobs"
+      (click)="changeJobsLanguage('en')"
+    >
+      English
+    </button>
+  </div>
+
+  @if (translatingJobs) {
+    <span class="jobs-translation-status">
+      Traduciendo vacantes...
+    </span>
+  }
+
+  @if (translationError) {
+    <span class="jobs-translation-error">
+      {{ translationError }}
+    </span>
+  }
+</div>
     </div>
 
     @if (loading) {

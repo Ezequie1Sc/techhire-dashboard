@@ -1,13 +1,16 @@
 import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { finalize } from 'rxjs';
+import { finalize, forkJoin, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 import { JobService } from '../../core/services/job.service';
+import { TranslateService, TranslationTarget } from '../../core/services/translate.service';
 import { Job, JobResponse } from '../../models/job.model';
 import { JobCardComponent } from '../../shared/components/job-card/job-card.component';
 
 type DropdownType = 'category' | 'mode' | 'region' | 'sort' | null;
+type JobsLanguage = 'original' | 'es' | 'en';
 
 @Component({
   selector: 'app-jobs',
@@ -30,6 +33,10 @@ export class JobsComponent implements OnInit {
   selectedRegion = 'Todas';
   selectedSort = 'recientes';
 
+  selectedJobsLanguage: JobsLanguage = 'original';
+  translatingJobs = false;
+  translationError: string | null = null;
+
   openDropdown: DropdownType = null;
 
   currentPage = 1;
@@ -49,6 +56,7 @@ export class JobsComponent implements OnInit {
 
   constructor(
     private jobService: JobService,
+    private translateService: TranslateService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -153,6 +161,71 @@ export class JobsComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
+  changeJobsLanguage(language: JobsLanguage): void {
+    this.selectedJobsLanguage = language;
+    this.translationError = null;
+    this.updatePagination();
+  }
+
+  private translateVisibleJobs(target: TranslationTarget): void {
+    if (!this.jobs.length) return;
+
+    this.translatingJobs = true;
+    this.translationError = null;
+    this.cdr.detectChanges();
+
+    const requests = this.jobs.map((job) => {
+      const cacheKey = `job_card_translation_${job.slug}_${target}`;
+      const cached = localStorage.getItem(cacheKey);
+
+      if (cached) {
+        return of({
+          ...job,
+          ...JSON.parse(cached)
+        });
+      }
+
+      const textToTranslate = [
+        job.title || '',
+        job.job_types?.join(' · ') || '',
+        job.tags?.join(' · ') || ''
+      ].join('\n');
+
+      return this.translateService.translate(textToTranslate, target).pipe(
+        map((response) => {
+          const parts = (response.translatedText || '').split('\n');
+
+          const translatedJob: Partial<Job> = {
+            title: parts[0] || job.title,
+            job_types: parts[1] ? parts[1].split(' · ').map(item => item.trim()) : job.job_types,
+            tags: parts[2] ? parts[2].split(' · ').map(item => item.trim()) : job.tags
+          };
+
+          localStorage.setItem(cacheKey, JSON.stringify(translatedJob));
+
+          return {
+            ...job,
+            ...translatedJob
+          };
+        }),
+        catchError(() => of(job))
+      );
+    });
+
+    forkJoin(requests).subscribe({
+      next: (translatedJobs) => {
+        this.jobs = translatedJobs;
+        this.translatingJobs = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.translationError = 'No se pudieron traducir las vacantes visibles.';
+        this.translatingJobs = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
   private checkCategory(job: Job, category: string): boolean {
     const searchableText = this.normalizeText(`
       ${job.title || ''}
@@ -226,9 +299,15 @@ export class JobsComponent implements OnInit {
 
   updatePagination(): void {
     this.totalPages = Math.max(1, Math.ceil(this.filteredJobs.length / this.itemsPerPage));
+
     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
+
     this.jobs = this.filteredJobs.slice(start, end);
+
+    if (this.selectedJobsLanguage !== 'original') {
+      this.translateVisibleJobs(this.selectedJobsLanguage);
+    }
   }
 
   clearFilters(): void {

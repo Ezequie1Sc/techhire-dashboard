@@ -336,3 +336,84 @@ button {
     margin-top: 0.55rem;
   }
 }
+.jobs-translation-row {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(20, 20, 20, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.jobs-translation-title {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #9b9388;
+}
+
+.jobs-translation-text {
+  margin: 0.25rem 0 0;
+  color: #6b665f;
+  font-size: 0.85rem;
+}
+
+.jobs-translation-actions {
+  display: flex;
+  gap: 0.5rem;
+  background: #ffffff;
+  border: 1px solid rgba(20, 20, 20, 0.06);
+  border-radius: 999px;
+  padding: 0.25rem;
+}
+
+.jobs-translation-btn {
+  border: none;
+  background: transparent;
+  color: #6b665f;
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.jobs-translation-btn.active {
+  background: #141414;
+  color: #ffffff;
+}
+
+.jobs-translation-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.jobs-translation-status {
+  color: #6b665f;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.jobs-translation-error {
+  color: #dc2626;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .jobs-translation-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .jobs-translation-actions {
+    width: 100%;
+  }
+
+  .jobs-translation-btn {
+    flex: 1;
+  }
+}
