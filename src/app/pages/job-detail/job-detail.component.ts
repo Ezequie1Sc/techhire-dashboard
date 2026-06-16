@@ -47,11 +47,12 @@ export class JobDetailComponent implements OnInit {
 
     if (slug) {
       this.loadJobDetails(slug);
-    } else {
-      this.job = undefined;
-      this.error = null;
-      this.loading = false;
+      return;
     }
+
+    this.job = undefined;
+    this.error = null;
+    this.loading = false;
   }
 
   loadJobDetails(slug: string): void {
@@ -108,15 +109,22 @@ export class JobDetailComponent implements OnInit {
 
     this.translateService.translate(this.job.description, target).subscribe({
       next: (response) => {
-        this.translatedDescription = response.translatedText || '';
+        const translatedText = response?.translatedText?.trim();
+
+        if (!translatedText) {
+          this.translationError = 'No se recibió una traducción válida.';
+          this.isTranslating = false;
+          return;
+        }
+
+        this.translatedDescription = translatedText;
         this.selectedTranslation = target;
-
-        localStorage.setItem(cacheKey, this.translatedDescription);
-
+        localStorage.setItem(cacheKey, translatedText);
         this.isTranslating = false;
       },
-      error: () => {
-        this.translationError = 'No se pudo traducir la descripción. Intenta nuevamente.';
+      error: (error) => {
+        console.error('Error al traducir:', error);
+        this.translationError = 'No se pudo traducir. Intenta otra vez o revisa el servicio de traducción.';
         this.isTranslating = false;
       }
     });
