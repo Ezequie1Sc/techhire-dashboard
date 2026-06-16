@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
@@ -39,7 +39,8 @@ export class JobDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private jobService: JobService,
     private favoriteService: FavoriteService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -70,11 +71,13 @@ export class JobDetailComponent implements OnInit {
         }
 
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.job = undefined;
         this.error = null;
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -89,6 +92,7 @@ export class JobDetailComponent implements OnInit {
   showOriginal(): void {
     this.selectedTranslation = 'original';
     this.translationError = null;
+    this.cdr.detectChanges();
   }
 
   translateDescription(target: TranslationTarget): void {
@@ -102,10 +106,13 @@ export class JobDetailComponent implements OnInit {
     if (cachedTranslation) {
       this.translatedDescription = cachedTranslation;
       this.selectedTranslation = target;
+      this.isTranslating = false;
+      this.cdr.detectChanges();
       return;
     }
 
     this.isTranslating = true;
+    this.cdr.detectChanges();
 
     this.translateService.translate(this.job.description, target).subscribe({
       next: (response) => {
@@ -114,18 +121,22 @@ export class JobDetailComponent implements OnInit {
         if (!translatedText) {
           this.translationError = 'No se recibió una traducción válida.';
           this.isTranslating = false;
+          this.cdr.detectChanges();
           return;
         }
 
         this.translatedDescription = translatedText;
         this.selectedTranslation = target;
         localStorage.setItem(cacheKey, translatedText);
+
         this.isTranslating = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al traducir:', error);
-        this.translationError = 'No se pudo traducir. Intenta otra vez o revisa el servicio de traducción.';
+        this.translationError = 'No se pudo traducir. Intenta otra vez.';
         this.isTranslating = false;
+        this.cdr.detectChanges();
       }
     });
   }
