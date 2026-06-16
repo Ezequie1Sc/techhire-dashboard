@@ -1,21 +1,18 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
 
 import { JobService } from '../../core/services/job.service';
 import { Job, JobResponse } from '../../models/job.model';
-
 import { JobCardComponent } from '../../shared/components/job-card/job-card.component';
+
+type DropdownType = 'category' | 'mode' | 'region' | 'sort' | null;
 
 @Component({
   selector: 'app-jobs',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    JobCardComponent,
-  ],
+  imports: [CommonModule, FormsModule, JobCardComponent],
   templateUrl: './jobs.component.html',
   styleUrls: ['./jobs.component.css']
 })
@@ -33,30 +30,15 @@ export class JobsComponent implements OnInit {
   selectedRegion = 'Todas';
   selectedSort = 'recientes';
 
+  openDropdown: DropdownType = null;
+
   currentPage = 1;
   totalPages = 1;
   itemsPerPage = 12;
 
-  categories = [
-    'Todas',
-    'Frontend',
-    'Backend',
-    'Full Stack',
-    'Mobile',
-    'DevOps',
-    'Data',
-    'Marketing',
-    'Security'
-  ];
-
+  categories = ['Todas', 'Frontend', 'Backend', 'Full Stack', 'Mobile', 'DevOps', 'Data', 'Marketing', 'Security'];
   modes = ['Todas', 'Remoto', 'Presencial', 'Híbrido'];
-
-  regions = [
-    'Todas',
-    'Latam',
-    'Europa',
-    'Remoto Global'
-  ];
+  regions = ['Todas', 'Latam', 'Europa', 'Remoto Global'];
 
   sortOptions = [
     { value: 'recientes', label: 'Más recientes' },
@@ -72,6 +54,40 @@ export class JobsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadJobs();
+  }
+
+  @HostListener('document:click')
+  closeDropdown(): void {
+    this.openDropdown = null;
+  }
+
+  toggleDropdown(dropdown: Exclude<DropdownType, null>, event: Event): void {
+    event.stopPropagation();
+    this.openDropdown = this.openDropdown === dropdown ? null : dropdown;
+  }
+
+  selectCategory(category: string): void {
+    this.selectedCategory = category;
+    this.openDropdown = null;
+    this.applyFilters();
+  }
+
+  selectMode(mode: string): void {
+    this.selectedMode = mode;
+    this.openDropdown = null;
+    this.applyFilters();
+  }
+
+  selectRegion(region: string): void {
+    this.selectedRegion = region;
+    this.openDropdown = null;
+    this.applyFilters();
+  }
+
+  selectSort(value: string): void {
+    this.selectedSort = value;
+    this.openDropdown = null;
+    this.applyFilters();
   }
 
   loadJobs(): void {
@@ -104,7 +120,6 @@ export class JobsComponent implements OnInit {
     const term = this.normalizeText(this.searchTerm);
 
     this.filteredJobs = this.allJobs.filter((job: Job) => {
-      // Búsqueda por texto
       const searchableText = this.normalizeText(`
         ${job.title || ''}
         ${job.company_name || ''}
@@ -116,17 +131,14 @@ export class JobsComponent implements OnInit {
 
       const matchesSearch = !term || searchableText.includes(term);
 
-      // Filtro por categoría
       const matchesCategory =
         this.selectedCategory === 'Todas' ||
         this.checkCategory(job, this.selectedCategory);
 
-      // Filtro por modalidad
       const matchesMode =
         this.selectedMode === 'Todas' ||
         this.checkMode(job, this.selectedMode);
 
-      // Filtro por región
       const matchesRegion =
         this.selectedRegion === 'Todas' ||
         this.checkRegion(job.location, this.selectedRegion);
@@ -134,9 +146,7 @@ export class JobsComponent implements OnInit {
       return matchesSearch && matchesCategory && matchesMode && matchesRegion;
     });
 
-    // Ordenamiento
     this.sortJobs();
-
     this.currentPage = 1;
     this.updatePagination();
     this.error = null;
@@ -149,9 +159,8 @@ export class JobsComponent implements OnInit {
       ${job.tags?.join(' ') || ''}
       ${job.job_types?.join(' ') || ''}
     `);
-    
-    const categoryNormalized = this.normalizeText(category);
-    return searchableText.includes(categoryNormalized);
+
+    return searchableText.includes(this.normalizeText(category));
   }
 
   private checkMode(job: Job, mode: string): boolean {
@@ -161,24 +170,31 @@ export class JobsComponent implements OnInit {
       case 'Presencial':
         return job.remote === false;
       case 'Híbrido':
-        return job.job_types?.some(type => this.normalizeText(type).includes('híbrido')) || false;
+        return job.job_types?.some(type => this.normalizeText(type).includes('hibrido')) || false;
       default:
         return false;
     }
   }
 
   private checkRegion(location: string | undefined, selectedRegion: string): boolean {
+    if (selectedRegion === 'Remoto Global') return true;
     if (!location) return false;
-    
-    // Si es Remoto Global, aceptamos cualquier vacante remote
-    if (selectedRegion === 'Remoto Global') {
-      return true;
-    }
-    
-    const locationLower = location.toLowerCase();
+
+    const locationLower = this.normalizeText(location);
+
     const regionMap: Record<string, string[]> = {
-      'Latam': ['méxico', 'argentina', 'brasil', 'chile', 'colombia', 'perú', 'uruguay', 'paraguay', 'bolivia', 'ecuador', 'venezuela', 'costa rica', 'panamá', 'guatemala', 'honduras', 'nicaragua', 'el salvador', 'república dominicana', 'puerto rico', 'cuba'],
-      'Europa': ['españa', 'madrid', 'barcelona', 'valencia', 'sevilla', 'bilbao', 'zaragoza', 'málaga', 'murcia', 'palma', 'las palmas', 'alemania', 'berlín', 'múnich', 'hamburgo', 'colonia', 'francfurt', 'stuttgart', 'düsseldorf', 'leipzig', 'dresde', 'hannover', 'núremberg', 'francia', 'parís', 'marsella', 'lyon', 'toulouse', 'burdeos', 'lille', 'rennes', 'reims', 'le havre', 'saint-étienne', 'montpellier', 'grenoble', 'dijon', 'nantes', 'strasburgo', 'italia', 'roma', 'milán', 'nápoles', 'turin', 'palermo', 'genova', 'bolonia', 'florencia', 'bari', 'catania', 'venecia', 'verona', 'mesina', 'padua', 'trieste', 'brescia', 'taranto', 'prato', 'regio de calabria', 'módena', 'reggio emilia', 'perugia', 'livorno', 'cagliari', 'ferrara', 'ravena', 'sassari', 'siena', 'trieste', 'trento', 'bolzano', 'como', 'bérgamo', 'vicenza', 'treviso', 'novara', 'piacenza', 'parma', 'carrara', 'la spezia', 'livorno', 'grosseto', 'arezzo', 'siena', 'perugia', 'terni', 'viterbo', 'latina', 'frosinone', 'rieti', 'l\'aquila', 'chieti', 'pescara', 'teramo', 'campobasso', 'isernia', 'foggia', 'andria', 'trani', 'barletta', 'bisceglie', 'molfetta', 'corato', 'molfetta', 'bisceglie', 'trani', 'andria', 'barletta', 'bari', 'matera', 'potenza', 'catanzaro', 'crotone', 'vibo valentia', 'cosenza', 'regio de calabria', 'caltanissetta', 'enna', 'catania', 'ragusa', 'siracusa', 'trapani', 'agrigento', 'palermo', 'messina', 'sassari', 'nuoro', 'oristano', 'cagliari']
+      Latam: [
+        'mexico', 'argentina', 'brasil', 'chile', 'colombia', 'peru',
+        'uruguay', 'paraguay', 'bolivia', 'ecuador', 'venezuela',
+        'costa rica', 'panama', 'guatemala', 'honduras', 'nicaragua',
+        'el salvador', 'republica dominicana', 'puerto rico', 'cuba'
+      ],
+      Europa: [
+        'espana', 'madrid', 'barcelona', 'valencia', 'alemania', 'berlin',
+        'francia', 'paris', 'italia', 'roma', 'milan', 'portugal',
+        'lisboa', 'reino unido', 'londres', 'irlanda', 'dublin',
+        'paises bajos', 'amsterdam', 'polonia', 'varsovia'
+      ]
     };
 
     return regionMap[selectedRegion]?.some(region => locationLower.includes(region)) || false;
@@ -187,36 +203,31 @@ export class JobsComponent implements OnInit {
   private sortJobs(): void {
     switch (this.selectedSort) {
       case 'recientes':
-        this.filteredJobs.sort((a, b) => {
-          const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
-          const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
-          return dateB - dateA;
-        });
+        this.filteredJobs.sort((a, b) =>
+          new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime()
+        );
         break;
+
       case 'antiguos':
-        this.filteredJobs.sort((a, b) => {
-          const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
-          const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
-          return dateA - dateB;
-        });
+        this.filteredJobs.sort((a, b) =>
+          new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime()
+        );
         break;
+
       case 'titulo_asc':
         this.filteredJobs.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
         break;
+
       case 'titulo_desc':
         this.filteredJobs.sort((a, b) => (b.title || '').localeCompare(a.title || ''));
-        break;
-      default:
         break;
     }
   }
 
   updatePagination(): void {
     this.totalPages = Math.max(1, Math.ceil(this.filteredJobs.length / this.itemsPerPage));
-
     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
-
     this.jobs = this.filteredJobs.slice(start, end);
   }
 
@@ -226,6 +237,7 @@ export class JobsComponent implements OnInit {
     this.selectedMode = 'Todas';
     this.selectedRegion = 'Todas';
     this.selectedSort = 'recientes';
+    this.openDropdown = null;
     this.currentPage = 1;
     this.applyFilters();
   }
@@ -257,8 +269,7 @@ export class JobsComponent implements OnInit {
   }
 
   getSortLabel(value: string): string {
-    const option = this.sortOptions.find(o => o.value === value);
-    return option ? option.label : value;
+    return this.sortOptions.find(option => option.value === value)?.label || value;
   }
 
   private normalizeText(value: string): string {
