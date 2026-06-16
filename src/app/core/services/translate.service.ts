@@ -12,22 +12,14 @@ export interface TranslateResponse {
   providedIn: 'root'
 })
 export class TranslateService {
-
-private readonly apiUrl = '/api/translate';
+  private readonly apiUrl = '/api/translate';
 
   constructor(private http: HttpClient) {}
 
-  translate(
-    text: string,
-    target: TranslationTarget
-  ): Observable<TranslateResponse> {
-
-    return this.http.post<TranslateResponse>(
-      this.apiUrl,
-      {
-        text,
-        target
-      }
-    );
+  translate(text: string, target: TranslationTarget): Observable<TranslateResponse> {
+    return this.http.post<TranslateResponse>(this.apiUrl, {
+      text,
+      target
+    });
   }
 }
