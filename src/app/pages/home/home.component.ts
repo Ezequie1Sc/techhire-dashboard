@@ -12,7 +12,8 @@ import { finalize, forkJoin, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { JobService } from '../../core/services/job.service';
-import { TranslateService, TranslationTarget } from '../../core/services/translate.service';
+import { TranslationService } from '../../core/i18n/translation.service';
+import { TranslateService } from '../../core/services/translate.service';
 import { Job } from '../../models/job.model';
 
 import { JobCardComponent } from '../../shared/components/job-card/job-card.component';
@@ -63,6 +64,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor(
     private jobService: JobService,
     private translateService: TranslateService,
+    public translationService: TranslationService,
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
@@ -145,7 +147,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.translateHomeJobs(language);
   }
 
-  private translateHomeJobs(target: TranslationTarget): void {
+  private translateHomeJobs(target: 'es' | 'en'): void {
     if (!this.originalLatestJobs.length) return;
 
     this.translatingHomeJobs = true;
@@ -206,6 +208,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  // Método para cambiar el idioma de la interfaz
+  changeInterfaceLanguage(lang: 'es' | 'en'): void {
+    this.translationService.setLanguage(lang);
+    this.cdr.detectChanges();
+  }
+
+  // Método auxiliar para traducciones
+  t(key: string): string {
+    return this.translationService.translate(key);
   }
 
   goToJobs(): void {

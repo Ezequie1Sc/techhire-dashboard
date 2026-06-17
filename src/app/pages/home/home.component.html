@@ -6,14 +6,11 @@
       <div class="grid lg:grid-cols-2 gap-8 items-center p-6 md:p-10 lg:p-14">
         <div>
           <h1 class="text-5xl md:text-7xl tracking-[-0.04em] leading-[1.05] max-w-2xl text-[#141414]">
-            <span class="font-normal">Descubre</span><br>
-            <span class="font-semibold">oportunidades</span><br>
-            <span class="font-normal">para construir el</span><br>
-            <span class="font-semibold">futuro</span>
+            <span class="font-normal">{{ t('home.heroTitle') }}</span>
           </h1>
 
           <p class="mt-6 text-[#6b665f] text-base md:text-lg max-w-xl leading-relaxed">
-            Vacantes verificadas de empresas que buscan talento tecnológico como el tuyo.
+            {{ t('home.heroDescription') }}
           </p>
 
           <div class="mt-8 flex flex-col sm:flex-row gap-3">
@@ -22,7 +19,7 @@
               (click)="goToJobs()"
               class="bg-[#141414] text-white px-7 py-4 rounded-full font-medium hover:scale-[1.02] transition flex items-center justify-center gap-2"
             >
-              Explorar vacantes
+              {{ t('home.exploreJobs') }}
               <span>→</span>
             </button>
 
@@ -31,7 +28,7 @@
               (click)="goToFavorites()"
               class="bg-white border border-black/10 text-[#141414] px-7 py-4 rounded-full font-medium hover:bg-[#f3f3f3] transition text-center"
             >
-              Ver favoritos
+              {{ t('home.viewFavorites') }}
             </button>
           </div>
         </div>
@@ -72,7 +69,7 @@
   <section class="max-w-7xl mx-auto px-5 md:px-8 pb-16">
     <div class="flex items-center gap-4 mb-6">
       <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
-        Explora por tecnología
+        {{ t('home.techSection') }}
       </span>
       <span class="flex-1 h-[1px] bg-black/5"></span>
     </div>
@@ -117,16 +114,16 @@
 
       <div class="lg:col-span-2 bg-white rounded-[2rem] p-8 md:p-10 border border-black/5 flex flex-col justify-between min-h-64">
         <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
-          Proceso simple
+          {{ t('home.processTitle') }}
         </span>
 
         <div>
           <h2 class="text-4xl md:text-5xl font-semibold tracking-[-0.05em] mt-4 leading-[1.05]">
-            Busca, guarda y aplica más rápido.
+            {{ t('home.processTitle') }}
           </h2>
 
           <p class="text-[#6b665f] mt-4 leading-relaxed text-sm">
-            Una experiencia limpia para encontrar oportunidades tecnológicas sin distracciones.
+            {{ t('home.processDescription') }}
           </p>
         </div>
       </div>
@@ -143,8 +140,8 @@
           <span class="text-white/30 text-xs font-medium tracking-wide">01</span>
 
           <div>
-            <h3 class="text-2xl font-semibold tracking-tight">Explora</h3>
-            <p class="text-white/50 text-sm mt-2">Consulta empleos desde la API.</p>
+            <h3 class="text-2xl font-semibold tracking-tight">{{ t('home.explore') }}</h3>
+            <p class="text-white/50 text-sm mt-2">{{ t('home.explore') }}</p>
           </div>
         </div>
       </div>
@@ -161,8 +158,8 @@
           <span class="text-black/25 text-xs font-medium tracking-wide">02</span>
 
           <div>
-            <h3 class="text-2xl font-semibold tracking-tight text-[#141414]">Filtra</h3>
-            <p class="text-[#6b665f] text-sm mt-2">Encuentra roles por categoría.</p>
+            <h3 class="text-2xl font-semibold tracking-tight text-[#141414]">{{ t('home.filter') }}</h3>
+            <p class="text-[#6b665f] text-sm mt-2">{{ t('home.filter') }}</p>
           </div>
         </div>
       </div>
@@ -179,8 +176,8 @@
           <span class="text-black/25 text-xs font-medium tracking-wide">03</span>
 
           <div>
-            <h3 class="text-2xl font-semibold tracking-tight text-[#141414]">Guarda</h3>
-            <p class="text-[#6b665f] text-sm mt-2">Marca tus vacantes favoritas.</p>
+            <h3 class="text-2xl font-semibold tracking-tight text-[#141414]">{{ t('home.save') }}</h3>
+            <p class="text-[#6b665f] text-sm mt-2">{{ t('home.save') }}</p>
           </div>
         </div>
       </div>
@@ -195,7 +192,7 @@
 
         <div class="relative z-10 p-8 md:p-10 flex flex-col justify-between h-full">
           <h3 class="text-white text-2xl md:text-3xl font-semibold tracking-[-0.04em] leading-tight">
-            Todas las disciplinas,<br>en un solo lugar.
+            {{ t('home.recentJobs') }}
           </h3>
         </div>
       </div>
@@ -212,8 +209,8 @@
           <span class="text-white/30 text-xs font-medium tracking-wide">04</span>
 
           <div>
-            <h3 class="text-2xl font-semibold tracking-tight">Aplica</h3>
-            <p class="text-white/50 text-sm mt-2">Abre la vacante y postúlate.</p>
+            <h3 class="text-2xl font-semibold tracking-tight">{{ t('home.apply') }}</h3>
+            <p class="text-white/50 text-sm mt-2">{{ t('home.apply') }}</p>
           </div>
         </div>
       </div>
@@ -226,11 +223,11 @@
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
       <div>
         <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
-          Oportunidades recientes
+          {{ t('home.recentJobs') }}
         </span>
 
         <h2 class="text-4xl md:text-5xl font-semibold tracking-[-0.05em] mt-3">
-          Vacantes destacadas.
+          {{ t('home.recentJobs') }}
         </h2>
       </div>
 
@@ -239,7 +236,7 @@
         (click)="goToJobs()"
         class="bg-[#141414] text-white px-6 py-3 rounded-full font-medium hover:scale-[1.02] transition w-fit"
       >
-        Ver todas →
+        {{ t('home.seeAll') }} →
       </button>
     </div>
 
@@ -254,7 +251,7 @@
         </div>
 
         <p class="text-sm text-[#6b665f] font-medium tracking-wide animate-pulse">
-          Cargando vacantes
+          {{ t('home.recentJobs') }}
         </p>
       </div>
     }
@@ -268,7 +265,7 @@
           (click)="loadLatestJobs()"
           class="mt-5 bg-[#141414] text-white px-6 py-3 rounded-full hover:scale-[1.02] transition"
         >
-          Reintentar
+          {{ t('home.recentJobs') }}
         </button>
       </div>
     }
@@ -279,11 +276,11 @@
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
           <div>
             <p class="text-sm font-semibold text-[#141414]">
-              Desliza para ver más oportunidades
+              {{ t('home.recentJobsDescription') }}
             </p>
 
             <p class="text-sm text-[#6b665f]">
-              Vacantes recientes.
+              {{ t('home.recentJobsDescription') }}
             </p>
           </div>
 
@@ -311,11 +308,11 @@
         <div class="home-translation-row">
           <div>
             <span class="home-translation-title">
-              Idioma de vacantes
+              {{ t('home.jobsLanguage') }}
             </span>
 
             <p class="home-translation-text">
-              Traduce los títulos y tecnologías de las vacantes recientes.
+              {{ t('home.recentJobsDescription') }}
             </p>
           </div>
 
@@ -353,7 +350,7 @@
 
           @if (translatingHomeJobs) {
             <span class="home-translation-status">
-              Traduciendo vacantes...
+              {{ t('home.recentJobsDescription') }}
             </span>
           }
 
@@ -377,11 +374,11 @@
 
         <div class="md:hidden flex justify-center gap-3 mt-4">
           <button type="button" (click)="scrollCarousel('left')" class="carousel-mobile-btn">
-            Anterior
+            {{ t('home.recentJobs') }}
           </button>
 
           <button type="button" (click)="scrollCarousel('right')" class="carousel-mobile-btn carousel-mobile-btn-dark">
-            Siguiente
+            {{ t('home.recentJobs') }}
           </button>
         </div>
       </div>
@@ -389,7 +386,7 @@
 
     @if (!loading && !error && latestJobs.length === 0) {
       <div class="bg-white rounded-[2rem] p-10 text-center border border-black/5">
-        <p class="text-gray-500">No hay vacantes disponibles en este momento.</p>
+        <p class="text-gray-500">{{ t('home.recentJobs') }}</p>
       </div>
     }
   </section>
@@ -406,11 +403,11 @@
 
       <div class="relative z-10 max-w-2xl">
         <h2 class="text-4xl md:text-6xl font-semibold tracking-[-0.06em] leading-none">
-          Tu próximo empleo puede empezar hoy.
+          {{ t('home.ctaTitle') }}
         </h2>
 
         <p class="text-white/70 mt-5 max-w-xl">
-          Explora vacantes, guarda tus favoritas y construye una búsqueda laboral más organizada.
+          {{ t('home.ctaDescription') }}
         </p>
 
         <button
@@ -418,7 +415,7 @@
           (click)="goToJobs()"
           class="inline-flex mt-8 bg-white text-[#141414] px-7 py-4 rounded-full font-medium hover:scale-[1.02] transition"
         >
-          Comenzar búsqueda →
+          {{ t('home.startSearch') }} →
         </button>
       </div>
     </div>
