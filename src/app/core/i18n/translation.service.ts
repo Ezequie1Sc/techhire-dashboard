@@ -30,7 +30,11 @@ export class TranslationService {
     let value: any = this.translations[this.lang];
 
     for (const key of keys) {
-      value = value?.[key];
+      if (value && value[key] !== undefined) {
+        value = value[key];
+      } else {
+        return path; // Si no encuentra la clave, retorna el path literal
+      }
     }
 
     return value || path;

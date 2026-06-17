@@ -63,6 +63,18 @@ export const ES = {
     previous: 'Anterior',
     next: 'Siguiente',
     page: 'Página',
-    of: 'de'
+    of: 'de',
+    // Claves para selectores
+    todos: 'Todas',
+    remoto: 'Remoto',
+    presencial: 'Presencial',
+    hibrido: 'Híbrido',
+    latam: 'Latam',
+    europa: 'Europa',
+    remoto_global: 'Remoto Global',
+    recientes: 'Más recientes',
+    antiguos: 'Más antiguos',
+    titulo_asc: 'Título A-Z',
+    titulo_desc: 'Título Z-A'
   }
 };

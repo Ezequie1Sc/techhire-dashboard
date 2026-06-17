@@ -63,6 +63,18 @@ export const EN = {
     previous: 'Previous',
     next: 'Next',
     page: 'Page',
-    of: 'of'
+    of: 'of',
+    // Claves para selectores
+    todos: 'All',
+    remoto: 'Remote',
+    presencial: 'On-site',
+    hibrido: 'Hybrid',
+    latam: 'Latam',
+    europa: 'Europe',
+    remoto_global: 'Global Remote',
+    recientes: 'Most recent',
+    antiguos: 'Oldest',
+    titulo_asc: 'Title A-Z',
+    titulo_desc: 'Title Z-A'
   }
 };
