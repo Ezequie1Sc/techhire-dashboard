@@ -10,7 +10,6 @@ import { TranslationService } from '../../core/i18n/translation.service';
 import { Job, JobResponse } from '../../models/job.model';
 import { JobCardComponent } from '../../shared/components/job-card/job-card.component';
 
-type DropdownType = 'category' | 'mode' | 'region' | 'sort' | null;
 type JobsLanguage = 'original' | 'es' | 'en';
 
 @Component({
@@ -38,7 +37,8 @@ export class JobsComponent implements OnInit {
   translatingJobs = false;
   translationError: string | null = null;
 
-  openDropdown: DropdownType = null;
+  // Control de visibilidad del panel de filtros avanzados
+  showAdvancedFilters = false;
 
   currentPage = 1;
   totalPages = 1;
@@ -66,37 +66,31 @@ export class JobsComponent implements OnInit {
     this.loadJobs();
   }
 
-  @HostListener('document:click')
-  closeDropdown(): void {
-    this.openDropdown = null;
+  toggleAdvancedFilters(): void {
+    this.showAdvancedFilters = !this.showAdvancedFilters;
   }
 
-  toggleDropdown(dropdown: Exclude<DropdownType, null>, event: Event): void {
-    event.stopPropagation();
-    this.openDropdown = this.openDropdown === dropdown ? null : dropdown;
+  closeAdvancedFilters(): void {
+    this.showAdvancedFilters = false;
   }
 
   selectCategory(category: string): void {
     this.selectedCategory = category;
-    this.openDropdown = null;
     this.applyFilters();
   }
 
   selectMode(mode: string): void {
     this.selectedMode = mode;
-    this.openDropdown = null;
     this.applyFilters();
   }
 
   selectRegion(region: string): void {
     this.selectedRegion = region;
-    this.openDropdown = null;
     this.applyFilters();
   }
 
   selectSort(value: string): void {
     this.selectedSort = value;
-    this.openDropdown = null;
     this.applyFilters();
   }
 
@@ -318,7 +312,7 @@ export class JobsComponent implements OnInit {
     this.selectedMode = 'Todas';
     this.selectedRegion = 'Todas';
     this.selectedSort = 'recientes';
-    this.openDropdown = null;
+    this.showAdvancedFilters = false;
     this.currentPage = 1;
     this.applyFilters();
   }
