@@ -76,5 +76,14 @@ export const ES = {
     antiguos: 'Más antiguos',
     titulo_asc: 'Título A-Z',
     titulo_desc: 'Título Z-A'
+  },
+   favorites: {
+    title: 'Vacantes guardadas.',
+    description: 'Todas las oportunidades que has marcado para revisar más tarde.',
+    saved: 'Guardadas',
+    clearAll: 'Limpiar favoritos',
+    emptyTitle: 'Sin favoritos',
+    emptyDescription: 'Guarda vacantes para revisarlas después y acceder rápidamente a ellas.',
+    exploreJobs: 'Explorar vacantes'
   }
 };

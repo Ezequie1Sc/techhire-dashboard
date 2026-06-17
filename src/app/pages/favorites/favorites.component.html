@@ -3,27 +3,21 @@
 
     <!-- Header -->
     <div class="mb-10">
-
-
       <div class="mt-5 flex flex-col lg:flex-row lg:justify-between lg:items-end gap-6">
 
         <div>
-          <h1
-            class="text-5xl md:text-7xl font-semibold tracking-[-0.06em] leading-none"
-          >
-            Vacantes guardadas.
+          <h1 class="text-5xl md:text-7xl font-semibold tracking-[-0.06em] leading-none">
+            {{ translation.translate('favorites.title') }}
           </h1>
 
           <p class="mt-4 text-[#6b665f] max-w-2xl">
-            Todas las oportunidades que has marcado para revisar más tarde.
+            {{ translation.translate('favorites.description') }}
           </p>
         </div>
 
-        <div
-          class="bg-[#141414] text-white rounded-[2rem] px-7 py-5 min-w-[220px]"
-        >
+        <div class="bg-[#141414] text-white rounded-[2rem] px-7 py-5 min-w-[220px]">
           <p class="text-white/50 text-xs uppercase tracking-[0.2em]">
-            Guardadas
+            {{ translation.translate('favorites.saved') }}
           </p>
 
           <p class="text-4xl font-semibold mt-1">
@@ -38,16 +32,13 @@
     @if (favorites.length > 0) {
 
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-
         @for (job of favorites; track job.slug) {
           <app-job-card [job]="job"></app-job-card>
         }
-
       </div>
 
       <!-- Actions -->
       <div class="mt-12 flex justify-center">
-
         <button
           (click)="clearAllFavorites()"
           class="inline-flex items-center gap-3 bg-white border border-black/5 px-8 py-4 rounded-full text-sm font-medium hover:bg-[#fbfaf7] transition"
@@ -67,22 +58,16 @@
             />
           </svg>
 
-          Limpiar favoritos
+          {{ translation.translate('favorites.clearAll') }}
         </button>
-
       </div>
     }
 
     <!-- Empty State -->
     @if (favorites.length === 0) {
+      <div class="bg-[#fbfaf7] border border-black/5 rounded-[3rem] p-12 md:p-20 text-center shadow-[0_30px_80px_rgba(0,0,0,0.06)]">
 
-      <div
-        class="bg-[#fbfaf7] border border-black/5 rounded-[3rem] p-12 md:p-20 text-center shadow-[0_30px_80px_rgba(0,0,0,0.06)]"
-      >
-
-        <div
-          class="w-24 h-24 mx-auto rounded-[2rem] bg-white border border-black/5 flex items-center justify-center animate-pulse"
-        >
+        <div class="w-24 h-24 mx-auto rounded-[2rem] bg-white border border-black/5 flex items-center justify-center animate-pulse">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="w-10 h-10 text-[#141414]"
@@ -99,27 +84,22 @@
           </svg>
         </div>
 
-        <h2
-          class="mt-8 text-4xl md:text-5xl font-semibold tracking-[-0.05em]"
-        >
-          Sin favoritos
+        <h2 class="mt-8 text-4xl md:text-5xl font-semibold tracking-[-0.05em]">
+          {{ translation.translate('favorites.emptyTitle') }}
         </h2>
 
-        <p
-          class="mt-4 text-[#6b665f] max-w-xl mx-auto leading-relaxed"
-        >
-          Guarda vacantes para revisarlas después y acceder rápidamente a ellas.
+        <p class="mt-4 text-[#6b665f] max-w-xl mx-auto leading-relaxed">
+          {{ translation.translate('favorites.emptyDescription') }}
         </p>
 
         <a
           routerLink="/jobs"
           class="inline-flex mt-8 bg-[#141414] text-white px-8 py-4 rounded-full font-medium hover:scale-[1.02] transition"
         >
-          Explorar vacantes
+          {{ translation.translate('favorites.exploreJobs') }}
         </a>
 
       </div>
-
     }
 
   </section>

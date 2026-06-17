@@ -76,5 +76,14 @@ export const EN = {
     antiguos: 'Oldest',
     titulo_asc: 'Title A-Z',
     titulo_desc: 'Title Z-A'
+  },
+   favorites: {
+    title: 'Saved jobs.',
+    description: 'All the opportunities you have bookmarked to review later.',
+    saved: 'Saved',
+    clearAll: 'Clear favorites',
+    emptyTitle: 'No favorites',
+    emptyDescription: 'Save jobs to review them later and access them quickly.',
+    exploreJobs: 'Explore jobs'
   }
 };
