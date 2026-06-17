@@ -3,36 +3,40 @@
   <!-- HERO -->
   <section class="max-w-7xl mx-auto px-5 md:px-8 pt-10 pb-16">
     <div class="rounded-[2rem] bg-[#fbfaf7] border border-black/5 shadow-[0_30px_80px_rgba(0,0,0,0.08)] overflow-hidden">
-
-      <!-- Hero Content -->
       <div class="grid lg:grid-cols-2 gap-8 items-center p-6 md:p-10 lg:p-14">
         <div>
-         <h1 class="text-5xl md:text-7xl tracking-[-0.04em] leading-[1.05] max-w-2xl text-[#141414]">
-          <span class="font-normal">Descubre</span><br>
-          <span class="font-semibold">oportunidades</span><br>
-          <span class="font-normal">para construir el</span><br>
-          <span class="font-semibold">futuro</span>
-        </h1>
+          <h1 class="text-5xl md:text-7xl tracking-[-0.04em] leading-[1.05] max-w-2xl text-[#141414]">
+            <span class="font-normal">Descubre</span><br>
+            <span class="font-semibold">oportunidades</span><br>
+            <span class="font-normal">para construir el</span><br>
+            <span class="font-semibold">futuro</span>
+          </h1>
 
           <p class="mt-6 text-[#6b665f] text-base md:text-lg max-w-xl leading-relaxed">
             Vacantes verificadas de empresas que buscan talento tecnológico como el tuyo.
           </p>
 
           <div class="mt-8 flex flex-col sm:flex-row gap-3">
-            <a routerLink="/jobs" class="bg-[#141414] text-white px-7 py-4 rounded-full font-medium hover:scale-[1.02] transition flex items-center justify-center gap-2">
+            <button
+              type="button"
+              (click)="goToJobs()"
+              class="bg-[#141414] text-white px-7 py-4 rounded-full font-medium hover:scale-[1.02] transition flex items-center justify-center gap-2"
+            >
               Explorar vacantes
               <span>→</span>
-            </a>
+            </button>
 
-            <a routerLink="/favorites" class="bg-white border border-black/10 text-[#141414] px-7 py-4 rounded-full font-medium hover:bg-[#f3f3f3] transition text-center">
+            <button
+              type="button"
+              (click)="goToFavorites()"
+              class="bg-white border border-black/10 text-[#141414] px-7 py-4 rounded-full font-medium hover:bg-[#f3f3f3] transition text-center"
+            >
               Ver favoritos
-            </a>
+            </button>
           </div>
         </div>
 
-        <!-- Visual Bento -->
         <div class="grid grid-cols-2 gap-4">
-          <!-- Imagen principal -->
           <div class="col-span-2 rounded-[2rem] overflow-hidden h-64 relative group">
             <img
               src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80"
@@ -40,10 +44,8 @@
               loading="eager"
               class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
           </div>
 
-          <!-- Remote -->
           <div class="rounded-[2rem] overflow-hidden h-48 relative group">
             <img
               src="./oficina-tech.jpg"
@@ -51,10 +53,8 @@
               loading="lazy"
               class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
           </div>
 
-          <!-- Diseñador UI/UX -->
           <div class="rounded-[2rem] overflow-hidden h-48 relative group">
             <img
               src="https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&w=800&q=80"
@@ -62,194 +62,50 @@
               loading="lazy"
               class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CATEGORÍAS - Carrusel infinito con botones centrados -->
+  <!-- CATEGORÍAS -->
   <section class="max-w-7xl mx-auto px-5 md:px-8 pb-16">
-    <!-- Título con estilo -->
     <div class="flex items-center gap-4 mb-6">
       <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
         Explora por tecnología
       </span>
       <span class="flex-1 h-[1px] bg-black/5"></span>
     </div>
-    
-    <!-- Contenedor con fondo -->
-    <div class="bg-[#fbfaf7] border border-black/5 rounded-[1.25rem] p-4 md:p-6 overflow-hidden">
-      <div class="relative">
-        <div class="categories-wrapper overflow-hidden">
-          <div 
-            #categoriesCarousel
-            class="categories-track flex gap-3"
-          >
-            <!-- Grupo 1 -->
-            @for (category of techCategories; track category) {
-              <a
-                href="#"
-                class="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-black/5 text-sm font-medium text-[#5f5a53] hover:bg-[#141414] hover:text-white hover:border-[#141414] transition-all duration-300 shadow-sm hover:shadow-md flex-shrink-0"
-              >
-                <span class="text-[#5f5a53] group-hover:text-white transition-colors">
-                  @if (category === 'Frontend') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
-                    </svg>
-                  }
-                  @else if (category === 'Backend') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
-                    </svg>
-                  }
-                  @else if (category === 'Mobile') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                    </svg>
-                  }
-                  @else if (category === 'Cloud') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
-                    </svg>
-                  }
-                  @else if (category === 'DevOps') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
-                    </svg>
-                  }
-                  @else if (category === 'Data') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                    </svg>
-                  }
-                  @else if (category === 'Cybersecurity') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                    </svg>
-                  }
-                </span>
-                {{ category }}
-              </a>
-            }
-            <!-- Grupo 2 (repetición para loop infinito) -->
-            @for (category of techCategories; track category) {
-              <a
-                href="#"
-                class="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-black/5 text-sm font-medium text-[#5f5a53] hover:bg-[#141414] hover:text-white hover:border-[#141414] transition-all duration-300 shadow-sm hover:shadow-md flex-shrink-0"
-              >
-                <span class="text-[#5f5a53] group-hover:text-white transition-colors">
-                  @if (category === 'Frontend') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
-                    </svg>
-                  }
-                  @else if (category === 'Backend') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
-                    </svg>
-                  }
-                  @else if (category === 'Mobile') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                    </svg>
-                  }
-                  @else if (category === 'Cloud') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
-                    </svg>
-                  }
-                  @else if (category === 'DevOps') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
-                    </svg>
-                  }
-                  @else if (category === 'Data') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                    </svg>
-                  }
-                  @else if (category === 'Cybersecurity') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                    </svg>
-                  }
-                </span>
-                {{ category }}
-              </a>
-            }
-            <!-- Grupo 3 (tercera repetición para asegurar loop perfecto) -->
-            @for (category of techCategories; track category) {
-              <a
-                href="#"
-                class="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-black/5 text-sm font-medium text-[#5f5a53] hover:bg-[#141414] hover:text-white hover:border-[#141414] transition-all duration-300 shadow-sm hover:shadow-md flex-shrink-0"
-              >
-                <span class="text-[#5f5a53] group-hover:text-white transition-colors">
-                  @if (category === 'Frontend') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
-                    </svg>
-                  }
-                  @else if (category === 'Backend') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
-                    </svg>
-                  }
-                  @else if (category === 'Mobile') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                    </svg>
-                  }
-                  @else if (category === 'Cloud') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
-                    </svg>
-                  }
-                  @else if (category === 'DevOps') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
-                    </svg>
-                  }
-                  @else if (category === 'Data') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                    </svg>
-                  }
-                  @else if (category === 'Cybersecurity') {
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                    </svg>
-                  }
-                </span>
-                {{ category }}
-              </a>
-            }
-          </div>
-        </div>
 
-        <!-- Botones de navegación CENTRADOS -->
-        <div class="flex justify-center gap-3 mt-4">
-          <button
-            type="button"
-            (click)="scrollCategories('left')"
-            class="carousel-control"
-            aria-label="Categorías anteriores"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <button
-            type="button"
-            (click)="scrollCategories('right')"
-            class="carousel-control"
-            aria-label="Categorías siguientes"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+    <div class="bg-[#fbfaf7] border border-black/5 rounded-[1.25rem] p-4 md:p-6 overflow-hidden">
+      <div class="categories-wrapper overflow-hidden">
+        <div #categoriesCarousel class="categories-track flex gap-3">
+          @for (category of techCategories; track category) {
+            <a
+              routerLink="/jobs"
+              class="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-black/5 text-sm font-medium text-[#5f5a53] hover:bg-[#141414] hover:text-white hover:border-[#141414] transition-all duration-300 shadow-sm hover:shadow-md flex-shrink-0"
+            >
+              {{ category }}
+            </a>
+          }
+
+          @for (category of techCategories; track category) {
+            <a
+              routerLink="/jobs"
+              class="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-black/5 text-sm font-medium text-[#5f5a53] hover:bg-[#141414] hover:text-white hover:border-[#141414] transition-all duration-300 shadow-sm hover:shadow-md flex-shrink-0"
+            >
+              {{ category }}
+            </a>
+          }
+
+          @for (category of techCategories; track category) {
+            <a
+              routerLink="/jobs"
+              class="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-black/5 text-sm font-medium text-[#5f5a53] hover:bg-[#141414] hover:text-white hover:border-[#141414] transition-all duration-300 shadow-sm hover:shadow-md flex-shrink-0"
+            >
+              {{ category }}
+            </a>
+          }
         </div>
       </div>
     </div>
@@ -259,22 +115,22 @@
   <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20">
     <div class="grid lg:grid-cols-4 gap-5">
 
-      <!-- Intro copy -->
       <div class="lg:col-span-2 bg-white rounded-[2rem] p-8 md:p-10 border border-black/5 flex flex-col justify-between min-h-64">
         <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
           Proceso simple
         </span>
+
         <div>
           <h2 class="text-4xl md:text-5xl font-semibold tracking-[-0.05em] mt-4 leading-[1.05]">
             Busca, guarda y aplica más rápido.
           </h2>
+
           <p class="text-[#6b665f] mt-4 leading-relaxed text-sm">
             Una experiencia limpia para encontrar oportunidades tecnológicas sin distracciones.
           </p>
         </div>
       </div>
 
-      <!-- 01 Explora -->
       <div class="bg-[#141414] text-white rounded-[2rem] overflow-hidden flex flex-col justify-between min-h-64 relative">
         <img
           src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80"
@@ -282,21 +138,17 @@
           loading="lazy"
           class="absolute inset-0 w-full h-full object-cover opacity-20"
         />
+
         <div class="relative z-10 p-8 flex flex-col justify-between h-full">
           <span class="text-white/30 text-xs font-medium tracking-wide">01</span>
+
           <div>
-            <div class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
-              </svg>
-            </div>
             <h3 class="text-2xl font-semibold tracking-tight">Explora</h3>
             <p class="text-white/50 text-sm mt-2">Consulta empleos desde la API.</p>
           </div>
         </div>
       </div>
 
-      <!-- 02 Filtra -->
       <div class="bg-[#ede7df] rounded-[2rem] overflow-hidden flex flex-col justify-between min-h-64 relative">
         <img
           src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=600&q=80"
@@ -304,21 +156,17 @@
           loading="lazy"
           class="absolute inset-0 w-full h-full object-cover opacity-15"
         />
+
         <div class="relative z-10 p-8 flex flex-col justify-between h-full">
           <span class="text-black/25 text-xs font-medium tracking-wide">02</span>
+
           <div>
-            <div class="w-11 h-11 rounded-full bg-black/[0.08] flex items-center justify-center mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#141414]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75 4.5 4.5m0 0-4.5 4.5m4.5-4.5H10.5"/>
-              </svg>
-            </div>
             <h3 class="text-2xl font-semibold tracking-tight text-[#141414]">Filtra</h3>
             <p class="text-[#6b665f] text-sm mt-2">Encuentra roles por categoría.</p>
           </div>
         </div>
       </div>
 
-      <!-- 03 Guarda -->
       <div class="bg-[#e4d9cc] rounded-[2rem] overflow-hidden flex flex-col justify-between min-h-64 relative">
         <img
           src="https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?auto=format&fit=crop&w=600&q=80"
@@ -326,21 +174,17 @@
           loading="lazy"
           class="absolute inset-0 w-full h-full object-cover opacity-15"
         />
+
         <div class="relative z-10 p-8 flex flex-col justify-between h-full">
           <span class="text-black/25 text-xs font-medium tracking-wide">03</span>
+
           <div>
-            <div class="w-11 h-11 rounded-full bg-black/[0.08] flex items-center justify-center mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#141414]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0z"/>
-              </svg>
-            </div>
             <h3 class="text-2xl font-semibold tracking-tight text-[#141414]">Guarda</h3>
             <p class="text-[#6b665f] text-sm mt-2">Marca tus vacantes favoritas.</p>
           </div>
         </div>
       </div>
 
-      <!-- Central card: perfiles tech -->
       <div class="lg:col-span-2 bg-[#141414] rounded-[2rem] overflow-hidden min-h-64 flex flex-col justify-between relative">
         <img
           src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1200&q=80"
@@ -348,18 +192,14 @@
           loading="lazy"
           class="absolute inset-0 w-full h-full object-cover opacity-25"
         />
+
         <div class="relative z-10 p-8 md:p-10 flex flex-col justify-between h-full">
-          
-          <div>
-            <h3 class="text-white text-2xl md:text-3xl font-semibold tracking-[-0.04em] leading-tight">
-              Todas las disciplinas,<br>en un solo lugar.
-            </h3>
-           
-          </div>
+          <h3 class="text-white text-2xl md:text-3xl font-semibold tracking-[-0.04em] leading-tight">
+            Todas las disciplinas,<br>en un solo lugar.
+          </h3>
         </div>
       </div>
 
-      <!-- 04 Aplica -->
       <div class="bg-[#141414] text-white rounded-[2rem] overflow-hidden flex flex-col justify-between min-h-64 relative">
         <img
           src="./remotea.webp"
@@ -367,14 +207,11 @@
           loading="lazy"
           class="absolute inset-0 w-full h-full object-cover opacity-20"
         />
+
         <div class="relative z-10 p-8 flex flex-col justify-between h-full">
           <span class="text-white/30 text-xs font-medium tracking-wide">04</span>
+
           <div>
-            <div class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
-              </svg>
-            </div>
             <h3 class="text-2xl font-semibold tracking-tight">Aplica</h3>
             <p class="text-white/50 text-sm mt-2">Abre la vacante y postúlate.</p>
           </div>
@@ -391,16 +228,19 @@
         <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
           Oportunidades recientes
         </span>
+
         <h2 class="text-4xl md:text-5xl font-semibold tracking-[-0.05em] mt-3">
           Vacantes destacadas.
         </h2>
       </div>
-      <a
-        routerLink="/jobs"
+
+      <button
+        type="button"
+        (click)="goToJobs()"
         class="bg-[#141414] text-white px-6 py-3 rounded-full font-medium hover:scale-[1.02] transition w-fit"
       >
         Ver todas →
-      </a>
+      </button>
     </div>
 
     @if (loading) {
@@ -412,6 +252,7 @@
           <span></span>
           <span></span>
         </div>
+
         <p class="text-sm text-[#6b665f] font-medium tracking-wide animate-pulse">
           Cargando vacantes
         </p>
@@ -421,6 +262,7 @@
     @if (!loading && error && latestJobs.length === 0) {
       <div class="bg-white rounded-[2rem] p-10 text-center border border-black/5">
         <p class="text-gray-500">{{ error }}</p>
+
         <button
           type="button"
           (click)="loadLatestJobs()"
@@ -436,9 +278,15 @@
 
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
           <div>
-            <p class="text-sm font-semibold text-[#141414]">Desliza para ver más oportunidades</p>
-            <p class="text-sm text-[#6b665f]">Vacantes recientes.</p>
+            <p class="text-sm font-semibold text-[#141414]">
+              Desliza para ver más oportunidades
+            </p>
+
+            <p class="text-sm text-[#6b665f]">
+              Vacantes recientes.
+            </p>
           </div>
+
           <div class="hidden md:flex items-center gap-2">
             <button
               type="button"
@@ -446,21 +294,74 @@
               class="carousel-control"
               aria-label="Mover a la izquierda"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-              </svg>
+              ←
             </button>
+
             <button
               type="button"
               (click)="scrollCarousel('right')"
               class="carousel-control carousel-control-dark"
               aria-label="Mover a la derecha"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
+              →
             </button>
           </div>
+        </div>
+
+        <div class="home-translation-row">
+          <div>
+            <span class="home-translation-title">
+              Idioma de vacantes
+            </span>
+
+            <p class="home-translation-text">
+              Traduce los títulos y tecnologías de las vacantes recientes.
+            </p>
+          </div>
+
+          <div class="home-translation-actions">
+            <button
+              type="button"
+              class="home-translation-btn"
+              [class.active]="selectedHomeJobsLanguage === 'original'"
+              [disabled]="translatingHomeJobs"
+              (click)="changeHomeJobsLanguage('original')"
+            >
+              Original
+            </button>
+
+            <button
+              type="button"
+              class="home-translation-btn"
+              [class.active]="selectedHomeJobsLanguage === 'es'"
+              [disabled]="translatingHomeJobs"
+              (click)="changeHomeJobsLanguage('es')"
+            >
+              Español
+            </button>
+
+            <button
+              type="button"
+              class="home-translation-btn"
+              [class.active]="selectedHomeJobsLanguage === 'en'"
+              [disabled]="translatingHomeJobs"
+              (click)="changeHomeJobsLanguage('en')"
+            >
+              English
+            </button>
+          </div>
+
+          @if (translatingHomeJobs) {
+            <span class="home-translation-status">
+              Traduciendo vacantes...
+            </span>
+          }
+
+          @if (homeTranslationError) {
+            <span class="home-translation-error">
+              {{ homeTranslationError }}
+            </span>
+          }
         </div>
 
         <div
@@ -478,6 +379,7 @@
           <button type="button" (click)="scrollCarousel('left')" class="carousel-mobile-btn">
             Anterior
           </button>
+
           <button type="button" (click)="scrollCarousel('right')" class="carousel-mobile-btn carousel-mobile-btn-dark">
             Siguiente
           </button>
@@ -501,16 +403,23 @@
         loading="lazy"
         class="absolute inset-0 w-full h-full object-cover opacity-20"
       />
+
       <div class="relative z-10 max-w-2xl">
         <h2 class="text-4xl md:text-6xl font-semibold tracking-[-0.06em] leading-none">
           Tu próximo empleo puede empezar hoy.
         </h2>
+
         <p class="text-white/70 mt-5 max-w-xl">
           Explora vacantes, guarda tus favoritas y construye una búsqueda laboral más organizada.
         </p>
-        <a routerLink="/jobs" class="inline-flex mt-8 bg-white text-[#141414] px-7 py-4 rounded-full font-medium hover:scale-[1.02] transition">
+
+        <button
+          type="button"
+          (click)="goToJobs()"
+          class="inline-flex mt-8 bg-white text-[#141414] px-7 py-4 rounded-full font-medium hover:scale-[1.02] transition"
+        >
           Comenzar búsqueda →
-        </a>
+        </button>
       </div>
     </div>
   </section>
