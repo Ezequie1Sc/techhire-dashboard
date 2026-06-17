@@ -85,5 +85,25 @@ export const ES = {
     emptyTitle: 'Sin favoritos',
     emptyDescription: 'Guarda vacantes para revisarlas después y acceder rápidamente a ellas.',
     exploreJobs: 'Explorar vacantes'
-  }
+  },
+  footer: {
+  slogan: 'Busca tu empleo ideal',
+
+  description:
+    'Plataforma para explorar vacantes tecnológicas, guardar oportunidades favoritas y aplicar de forma más organizada.',
+
+  navigation: 'Navegación',
+
+  home: 'Inicio',
+  jobs: 'Vacantes',
+  favorites: 'Favoritos',
+
+  specialties: 'Especialidades',
+
+  copyright:
+    '© 2026 Jobly. Todos los derechos reservados.',
+
+  builtFor:
+    'Construido para profesionales tecnológicos.'
+}
 };

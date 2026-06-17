@@ -4,84 +4,77 @@
     <div class="grid md:grid-cols-3 gap-10">
 
       <!-- Brand -->
-<div>
- <a routerLink="/" class="inline-flex items-center gap-4">
+      <div>
+        <a routerLink="/" class="inline-flex items-center gap-4">
+          <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-[0_10px_30px_rgba(255,255,255,0.08)]">
+            <img
+              src="/logo3.png"
+              alt="Jobly"
+              class="w-9 h-9 object-contain"
+            />
+          </div>
 
-  <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-[0_10px_30px_rgba(255,255,255,0.08)]">
-    <img
-      src="/logo3.png"
-      alt="Jobly"
-      class="w-9 h-9 object-contain"
-    />
-  </div>
+          <div>
+            <h3 class="text-3xl font-semibold tracking-[-0.05em] leading-none">
+              Jobly
+            </h3>
+            <p class="text-white/35 text-xs uppercase tracking-[0.25em] mt-2">
+              {{ translation.translate('footer.tagline') }}
+            </p>
+          </div>
+        </a>
 
-  <div>
-    <h3 class="text-3xl font-semibold tracking-[-0.05em] leading-none">
-      Jobly
-    </h3>
+        <p class="text-white/55 text-sm leading-relaxed max-w-sm mt-6">
+          {{ translation.translate('footer.description') }}
+        </p>
+      </div>
 
-    <p class="text-white/35 text-xs uppercase tracking-[0.25em] mt-2">
-      Busca tu empleo ideal
-    </p>
-  </div>
-
-</a>
-
-  <p class="text-white/55 text-sm leading-relaxed max-w-sm mt-6">
-    Plataforma para explorar vacantes tecnológicas, guardar oportunidades favoritas y aplicar de forma más organizada.
-  </p>
-</div>
       <!-- Navegación -->
       <div>
         <h4 class="text-sm uppercase tracking-[0.2em] text-white/40 mb-5">
-          Navegación
+          {{ translation.translate('footer.navigation') }}
         </h4>
 
         <div class="flex flex-col gap-3">
-          <a routerLink="/" class="footer-link">Inicio</a>
-          <a routerLink="/jobs" class="footer-link">Vacantes</a>
-          <a routerLink="/favorites" class="footer-link">Favoritos</a>
+          <a routerLink="/" class="footer-link">{{ translation.translate('footer.home') }}</a>
+          <a routerLink="/jobs" class="footer-link">{{ translation.translate('footer.jobs') }}</a>
+          <a routerLink="/favorites" class="footer-link">{{ translation.translate('footer.favorites') }}</a>
         </div>
       </div>
 
-     <!-- Especialidades -->
-<div>
-  <h4 class="text-sm font-semibold uppercase tracking-[0.2em] text-white/40">
-    Especialidades
-  </h4>
+      <!-- Especialidades -->
+      <div>
+        <h4 class="text-sm font-semibold uppercase tracking-[0.2em] text-white/40">
+          {{ translation.translate('footer.specialties') }}
+        </h4>
 
-  <div class="mt-5 grid grid-cols-2 gap-3 max-w-xs">
-    <a routerLink="/jobs" [queryParams]="{ category: 'Frontend' }" class="footer-category">
-      Frontend
-    </a>
-
-    <a routerLink="/jobs" [queryParams]="{ category: 'Backend' }" class="footer-category">
-      Backend
-    </a>
-
-    <a routerLink="/jobs" [queryParams]="{ category: 'Mobile' }" class="footer-category">
-      Mobile
-    </a>
-
-    <a routerLink="/jobs" [queryParams]="{ category: 'Cloud' }" class="footer-category">
-      Cloud
-    </a>
-
-    <a routerLink="/jobs" [queryParams]="{ category: 'DevOps' }" class="footer-category">
-      DevOps
-    </a>
-
-    <a routerLink="/jobs" [queryParams]="{ category: 'Data' }" class="footer-category">
-      Data
-    </a>
-  </div>
-</div>
+        <div class="mt-5 grid grid-cols-2 gap-3 max-w-xs">
+          <a routerLink="/jobs" [queryParams]="{ category: 'Frontend' }" class="footer-category">
+            {{ translation.translate('footer.frontend') }}
+          </a>
+          <a routerLink="/jobs" [queryParams]="{ category: 'Backend' }" class="footer-category">
+            {{ translation.translate('footer.backend') }}
+          </a>
+          <a routerLink="/jobs" [queryParams]="{ category: 'Mobile' }" class="footer-category">
+            {{ translation.translate('footer.mobile') }}
+          </a>
+          <a routerLink="/jobs" [queryParams]="{ category: 'Cloud' }" class="footer-category">
+            {{ translation.translate('footer.cloud') }}
+          </a>
+          <a routerLink="/jobs" [queryParams]="{ category: 'DevOps' }" class="footer-category">
+            {{ translation.translate('footer.devops') }}
+          </a>
+          <a routerLink="/jobs" [queryParams]="{ category: 'Data' }" class="footer-category">
+            {{ translation.translate('footer.data') }}
+          </a>
+        </div>
+      </div>
 
     </div>
 
     <div class="border-t border-white/10 mt-12 pt-6 flex flex-col md:flex-row justify-between gap-4 text-white/40 text-sm">
-      <span>© 2026 Jobly. Todos los derechos reservados.</span>
-      <span>Construido para profesionales tecnológicos.</span>
+      <span>{{ translation.translate('footer.copyright') }}</span>
+      <span>{{ translation.translate('footer.builtFor') }}</span>
     </div>
 
   </div>
