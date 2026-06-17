@@ -56,24 +56,61 @@
         <!-- Desktop Actions - Language + CTA -->
         <div class="hidden md:flex items-center gap-3">
 
-          <div class="language-switcher">
+          <!-- Language Dropdown -->
+          <div class="language-dropdown">
             <button
-              (click)="changeLanguage('es')"
-              class="language-btn"
-              [class.language-active]="translation.currentLanguage === 'es'"
-              title="Español"
+              type="button"
+              class="language-trigger"
+              (click)="toggleLanguageMenu()"
             >
-              🇲🇽
+              <img 
+                [src]="translation.currentLanguage === 'es' ? 'https://flagcdn.com/mx.svg' : 'https://flagcdn.com/us.svg'" 
+                alt="Idioma actual" 
+                class="language-flag" 
+              />
+              <span>{{ translation.currentLanguage === 'es' ? 'ES' : 'EN' }}</span>
+
+              <svg
+                class="language-chevron"
+                [class.rotate]="isLanguageOpen"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
             </button>
 
-            <button
-              (click)="changeLanguage('en')"
-              class="language-btn"
-              [class.language-active]="translation.currentLanguage === 'en'"
-              title="English"
-            >
-              🇺🇸
-            </button>
+            @if (isLanguageOpen) {
+              <div class="language-menu">
+                <button
+                  type="button"
+                  class="language-option"
+                  [class.active]="translation.currentLanguage === 'en'"
+                  (click)="changeLanguage('en')"
+                >
+                  <img src="https://flagcdn.com/us.svg" alt="English" class="language-flag" />
+                  <span>English</span>
+                  @if (translation.currentLanguage === 'en') {
+                    <span class="language-check">✓</span>
+                  }
+                </button>
+
+                <button
+                  type="button"
+                  class="language-option"
+                  [class.active]="translation.currentLanguage === 'es'"
+                  (click)="changeLanguage('es')"
+                >
+                  <img src="https://flagcdn.com/mx.svg" alt="Español" class="language-flag" />
+                  <span>Español</span>
+                  @if (translation.currentLanguage === 'es') {
+                    <span class="language-check">✓</span>
+                  }
+                </button>
+              </div>
+            }
           </div>
 
           <a

@@ -13,6 +13,7 @@ import { TranslationService } from '../../../core/i18n/translation.service';
 })
 export class NavbarComponent {
   isMenuOpen = false;
+  isLanguageOpen = false;
 
   constructor(public translation: TranslationService) {}
 
@@ -20,8 +21,23 @@ export class NavbarComponent {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
+  toggleLanguageMenu(): void {
+    this.isLanguageOpen = !this.isLanguageOpen;
+  }
+
   changeLanguage(lang: 'es' | 'en'): void {
     this.translation.setLanguage(lang);
+    this.isLanguageOpen = false;
     location.reload();
+  }
+
+  get currentFlag(): string {
+    return this.translation.currentLanguage === 'es'
+      ? 'https://flagcdn.com/mx.svg'
+      : 'https://flagcdn.com/us.svg';
+  }
+
+  get currentLabel(): string {
+    return this.translation.currentLanguage === 'es' ? 'ES' : 'EN';
   }
 }
