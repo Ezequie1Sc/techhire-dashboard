@@ -76,6 +76,7 @@ export const EN = {
     antiguos: 'Oldest',
     titulo_asc: 'Title A-Z',
     titulo_desc: 'Title Z-A'
+    
   },
    favorites: {
     title: 'Saved jobs.',
