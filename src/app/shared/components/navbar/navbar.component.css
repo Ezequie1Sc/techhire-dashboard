@@ -123,6 +123,53 @@ button {
   will-change: transform;
 }
 
+/* ===== LANGUAGE SELECTOR ===== */
+.language-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 999px;
+}
+
+.language-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  border: none;
+  background: transparent;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.language-btn:hover {
+  background: #f4f1ec;
+}
+
+.language-active {
+  background: #141414;
+  color: white;
+}
+
+.mobile-language-switcher {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.mobile-language-switcher .language-btn {
+  width: auto;
+  height: auto;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+}
+
 @media (max-width: 768px) {
   .navbar-shell {
     border-radius: 2rem;

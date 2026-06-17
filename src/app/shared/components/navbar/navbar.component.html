@@ -33,7 +33,7 @@
             [routerLinkActiveOptions]="{ exact: true }"
             class="nav-link"
           >
-            Inicio
+            {{ translation.currentLanguage === 'es' ? 'Inicio' : 'Home' }}
           </a>
 
           <a
@@ -41,7 +41,7 @@
             routerLinkActive="nav-active"
             class="nav-link"
           >
-            Vacantes
+            {{ translation.currentLanguage === 'es' ? 'Vacantes' : 'Jobs' }}
           </a>
 
           <a
@@ -49,17 +49,38 @@
             routerLinkActive="nav-active"
             class="nav-link"
           >
-            Favoritos
+            {{ translation.currentLanguage === 'es' ? 'Favoritos' : 'Favorites' }}
           </a>
         </div>
 
-        <!-- Desktop Action -->
+        <!-- Desktop Actions - Language + CTA -->
         <div class="hidden md:flex items-center gap-3">
+
+          <div class="language-switcher">
+            <button
+              (click)="changeLanguage('es')"
+              class="language-btn"
+              [class.language-active]="translation.currentLanguage === 'es'"
+              title="Español"
+            >
+              🇲🇽
+            </button>
+
+            <button
+              (click)="changeLanguage('en')"
+              class="language-btn"
+              [class.language-active]="translation.currentLanguage === 'en'"
+              title="English"
+            >
+              🇺🇸
+            </button>
+          </div>
+
           <a
             routerLink="/jobs"
             class="nav-cta"
           >
-            Explorar
+            {{ translation.translate('home.exploreJobs') }}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="w-4 h-4"
@@ -75,6 +96,7 @@
               />
             </svg>
           </a>
+
         </div>
 
         <!-- Mobile Button -->
@@ -124,6 +146,25 @@
     @if (isMenuOpen) {
       <div class="mobile-menu">
 
+        <!-- Mobile Language Switcher -->
+        <div class="mobile-language-switcher">
+          <button
+            (click)="changeLanguage('es')"
+            class="language-btn"
+            [class.language-active]="translation.currentLanguage === 'es'"
+          >
+            🇲🇽 Español
+          </button>
+
+          <button
+            (click)="changeLanguage('en')"
+            class="language-btn"
+            [class.language-active]="translation.currentLanguage === 'en'"
+          >
+            🇺🇸 English
+          </button>
+        </div>
+
         <a
           routerLink="/"
           routerLinkActive="mobile-active"
@@ -131,7 +172,7 @@
           class="mobile-link"
           (click)="isMenuOpen = false"
         >
-          <span>Inicio</span>
+          <span>{{ translation.currentLanguage === 'es' ? 'Inicio' : 'Home' }}</span>
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
           </svg>
@@ -143,7 +184,7 @@
           class="mobile-link"
           (click)="isMenuOpen = false"
         >
-          <span>Vacantes</span>
+          <span>{{ translation.currentLanguage === 'es' ? 'Vacantes' : 'Jobs' }}</span>
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
           </svg>
@@ -155,7 +196,7 @@
           class="mobile-link"
           (click)="isMenuOpen = false"
         >
-          <span>Favoritos</span>
+          <span>{{ translation.currentLanguage === 'es' ? 'Favoritos' : 'Favorites' }}</span>
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
           </svg>
@@ -166,7 +207,7 @@
           class="mobile-cta"
           (click)="isMenuOpen = false"
         >
-          Explorar vacantes
+          {{ translation.currentLanguage === 'es' ? 'Explorar vacantes' : 'Explore jobs' }}
         </a>
 
       </div>
