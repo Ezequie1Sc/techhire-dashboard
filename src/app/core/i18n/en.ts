@@ -87,23 +87,20 @@ export const EN = {
     exploreJobs: 'Explore jobs'
   },
   footer: {
-  slogan: 'Find your ideal job',
-
-  description:
-    'Platform to explore technology jobs, save favorite opportunities and apply in a more organized way.',
-
-  navigation: 'Navigation',
-
-  home: 'Home',
-  jobs: 'Jobs',
-  favorites: 'Favorites',
-
-  specialties: 'Specialties',
-
-  copyright:
-    '© 2026 Jobly. All rights reserved.',
-
-  builtFor:
-    'Built for technology professionals.'
-}
+    tagline: 'Find your ideal job',
+    description: 'Platform to explore tech job vacancies, save favorite opportunities and apply in a more organized way.',
+    navigation: 'Navigation',
+    home: 'Home',
+    jobs: 'Jobs',
+    favorites: 'Favorites',
+    specialties: 'Specialties',
+    frontend: 'Frontend',
+    backend: 'Backend',
+    mobile: 'Mobile',
+    cloud: 'Cloud',
+    devops: 'DevOps',
+    data: 'Data',
+    copyright: '© 2026 Jobly. All rights reserved.',
+    builtFor: 'Built for tech professionals.'
+  }
 };
