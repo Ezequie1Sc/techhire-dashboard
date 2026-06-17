@@ -33,53 +33,36 @@ export const EN = {
       'Explore opportunities, save favorites and organize your job search.',
 
     startSearch: 'Start Searching'
-    
-  }, 
+  },
   jobs: {
-  title: 'Vacantes disponibles.',
-  description: 'Explora oportunidades tecnológicas con una búsqueda más limpia, organizada y fácil de leer.',
-
-  results: 'Resultados',
-
-  searchJob: 'Buscar vacante',
-  searchPlaceholder: 'Título, empresa, tecnología o ubicación...',
-  searchButton: 'Buscar',
-
-  category: 'Categoría',
-  mode: 'Modalidad',
-  region: 'Región',
-  sortBy: 'Ordenar por',
-
-  clearFilters: 'Limpiar filtros',
-
-  activeFilters: 'Filtros activos:',
-  search: 'Búsqueda',
-  order: 'Orden',
-
-  jobsLanguage: 'Idioma de vacantes',
-  jobsLanguageDescription:
-    'Traduce solo las vacantes visibles de esta página.',
-
-  original: 'Original',
-  spanish: 'Español',
-  english: 'English',
-
-  translating: 'Traduciendo vacantes...',
-
-  loading: 'Cargando vacantes',
-
-  retry: 'Reintentar',
-
-  noResultsBadge: 'Sin resultados',
-
-  noResultsTitle: 'No encontramos vacantes',
-
-  noResultsDescription:
-    'No hay coincidencias para tu búsqueda actual. Prueba con otra tecnología, cambia la categoría o elimina algunos filtros.',
-
-  previous: 'Anterior',
-  next: 'Siguiente',
-  page: 'Página',
-  of: 'de'
-}
+    title: 'Available jobs.',
+    description: 'Explore technology opportunities with a cleaner, more organized and easier-to-read experience.',
+    results: 'Results',
+    searchJob: 'Search job',
+    searchPlaceholder: 'Title, company, technology or location...',
+    searchButton: 'Search',
+    category: 'Category',
+    mode: 'Work Mode',
+    region: 'Region',
+    sortBy: 'Sort By',
+    clearFilters: 'Clear Filters',
+    activeFilters: 'Active Filters:',
+    search: 'Search',
+    order: 'Order',
+    jobsLanguage: 'Jobs Language',
+    jobsLanguageDescription: 'Translate only the visible jobs on this page.',
+    original: 'Original',
+    spanish: 'Spanish',
+    english: 'English',
+    translating: 'Translating jobs...',
+    loading: 'Loading jobs',
+    retry: 'Retry',
+    noResultsBadge: 'No Results',
+    noResultsTitle: 'No jobs found',
+    noResultsDescription: 'There are no matches for your current search. Try another technology, change the category, or remove some filters.',
+    previous: 'Previous',
+    next: 'Next',
+    page: 'Page',
+    of: 'of'
+  }
 };
