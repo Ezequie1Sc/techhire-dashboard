@@ -417,3 +417,30 @@ button {
     flex: 1;
   }
 }
+/* ===== FILTER REMOVE BUTTONS ===== */
+.jobs-filter-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(20, 20, 20, 0.06);
+  color: #6b665f;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+  margin-left: 0.3rem;
+}
+
+.jobs-filter-remove:hover {
+  background: #141414;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.jobs-filter-remove svg {
+  width: 10px;
+  height: 10px;
+}
