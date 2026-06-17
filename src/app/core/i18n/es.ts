@@ -33,5 +33,53 @@ export const ES = {
       'Explora vacantes, guarda tus favoritas y construye una búsqueda laboral más organizada.',
 
     startSearch: 'Comenzar búsqueda'
-  }
+  },
+  jobs: {
+  title: 'Available jobs.',
+  description: 'Explore technology opportunities with a cleaner, more organized and easier-to-read experience.',
+
+  results: 'Results',
+
+  searchJob: 'Search job',
+  searchPlaceholder: 'Title, company, technology or location...',
+  searchButton: 'Search',
+
+  category: 'Category',
+  mode: 'Work Mode',
+  region: 'Region',
+  sortBy: 'Sort By',
+
+  clearFilters: 'Clear Filters',
+
+  activeFilters: 'Active Filters:',
+  search: 'Search',
+  order: 'Order',
+
+  jobsLanguage: 'Jobs Language',
+  jobsLanguageDescription:
+    'Translate only the visible jobs on this page.',
+
+  original: 'Original',
+  spanish: 'Spanish',
+  english: 'English',
+
+  translating: 'Translating jobs...',
+
+  loading: 'Loading jobs',
+
+  retry: 'Retry',
+
+  noResultsBadge: 'No Results',
+
+  noResultsTitle: 'No jobs found',
+
+  noResultsDescription:
+    'There are no matches for your current search. Try another technology, change the category, or remove some filters.',
+
+  previous: 'Previous',
+  next: 'Next',
+  page: 'Page',
+  of: 'of'
+}
+
 };

@@ -6,6 +6,7 @@ import { catchError, map } from 'rxjs/operators';
 
 import { JobService } from '../../core/services/job.service';
 import { TranslateService, TranslationTarget } from '../../core/services/translate.service';
+import { TranslationService } from '../../core/i18n/translation.service';
 import { Job, JobResponse } from '../../models/job.model';
 import { JobCardComponent } from '../../shared/components/job-card/job-card.component';
 
@@ -57,6 +58,7 @@ export class JobsComponent implements OnInit {
   constructor(
     private jobService: JobService,
     private translateService: TranslateService,
+    public translation: TranslationService,
     private cdr: ChangeDetectorRef
   ) {}
 
