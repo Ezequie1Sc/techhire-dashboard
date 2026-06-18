@@ -29,10 +29,8 @@
     <!-- Card Principal -->
     <div class="bg-[#fbfaf7] border border-black/5 rounded-[2.5rem] p-6 md:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)]">
       
-      <!-- Búsqueda + Botón de Filtros (Ahora juntos y visibles) -->
+      <!-- Búsqueda + Botón de Filtros -->
       <div class="flex flex-col sm:flex-row gap-3 mb-6">
-        
-        <!-- Barra de búsqueda -->
         <div class="relative flex-1">
           <input
             type="text"
@@ -46,7 +44,6 @@
           </svg>
         </div>
 
-        <!-- Botón de Filtros (Destacado) -->
         <button
           type="button"
           (click)="toggleAdvancedFilters()"
@@ -58,14 +55,12 @@
           </svg>
           {{ translation.translate('jobs.advancedFilters') }}
           
-          <!-- Badge opcional: muestra el número de filtros activos -->
           @if (hasActiveFilters) {
             <span class="ml-1 bg-white text-[#141414] text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full">
-              {{ (searchTerm.trim() ? 1 : 0) + (selectedCategory !== 'Todas' ? 1 : 0) + (selectedMode !== 'Todas' ? 1 : 0) + (selectedRegion !== 'Todas' ? 1 : 0) }}
+              {{ (searchTerm.trim() ? 1 : 0) + (selectedCategory !== 'Todas' ? 1 : 0) + (selectedMode !== 'Todas' ? 1 : 0) + (selectedRegion !== 'Todas' ? 1 : 0) + (selectedJobType !== 'Todas' ? 1 : 0) }}
             </span>
           }
         </button>
-
       </div>
 
       <!-- Chips de Categorías -->
@@ -87,7 +82,7 @@
         }
       </div>
 
-      <!-- Selector de Idioma (Ahora solo debajo, más limpio y pequeño) -->
+      <!-- Selector de Idioma -->
       <div class="flex items-center justify-end gap-2 mb-6">
         <span class="text-[10px] uppercase tracking-[0.1em] text-[#8a8177] font-bold mr-1">
           {{ translation.translate('jobs.jobsLanguage') }}
@@ -121,7 +116,7 @@
       <!-- Panel de Filtros Avanzados -->
       @if (showAdvancedFilters) {
         <div class="bg-white border border-black/5 rounded-2xl p-6 mb-6 shadow-sm animate-fadeIn">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pb-6">
             <!-- Modalidad -->
             <div>
               <label class="block text-xs font-bold uppercase tracking-[0.15em] text-[#9b9388] mb-3">
@@ -180,17 +175,40 @@
               </div>
             </div>
           </div>
-          <div class="mt-4 pt-4 border-t border-black/5 flex justify-end">
-            <button type="button" (click)="closeAdvancedFilters()" class="text-sm font-medium text-[#6b665f] hover:text-[#141414] transition">
-              Cerrar
+
+          <!-- Botones de acción DENTRO del panel -->
+          <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-black/5">
+            <button 
+              type="button" 
+              (click)="resetAllFilters()"
+              class="text-sm font-medium text-[#6b665f] hover:text-red-500 transition"
+            >
+              Restablecer todo
             </button>
+            
+            <div class="flex gap-3">
+              <button 
+                type="button" 
+                (click)="closeAdvancedFilters()" 
+                class="px-6 py-2.5 rounded-full border border-black/10 text-sm font-medium text-[#6b665f] hover:bg-[#f4f1ec] transition"
+              >
+                Cancelar
+              </button>
+              <button 
+                type="button" 
+                (click)="applyAndCloseFilters()" 
+                class="px-6 py-2.5 rounded-full bg-[#141414] text-white text-sm font-medium hover:scale-[1.02] transition shadow-sm"
+              >
+                Aplicar filtros
+              </button>
+            </div>
           </div>
         </div>
       }
 
-      <!-- Filtros Activos (Opcional) -->
+      <!-- Chips de Filtros Activos (Solo aparecen si hay algo seleccionado) -->
       @if (hasActiveFilters) {
-        <div class="flex flex-wrap items-center gap-2 mb-6">
+        <div class="flex flex-wrap items-center gap-2 mb-6 pb-4 border-b border-black/5">
           @if (searchTerm.trim()) {
             <span class="inline-flex items-center gap-1 px-3 py-1 bg-white border border-black/5 rounded-full text-xs font-medium text-[#141414]">
               {{ translation.translate('jobs.search') }}: {{ searchTerm }}
@@ -213,6 +231,12 @@
             <span class="inline-flex items-center gap-1 px-3 py-1 bg-white border border-black/5 rounded-full text-xs font-medium text-[#141414]">
               {{ translation.translate('jobs.' + selectedRegion.toLowerCase().replace(' ', '_')) }}
               <button type="button" (click)="clearRegion()" class="text-[#6b665f] hover:text-red-500 transition">×</button>
+            </span>
+          }
+          @if (selectedJobType !== 'Todas') {
+            <span class="inline-flex items-center gap-1 px-3 py-1 bg-white border border-black/5 rounded-full text-xs font-medium text-[#141414]">
+              {{ selectedJobType }}
+              <button type="button" (click)="clearJobType()" class="text-[#6b665f] hover:text-red-500 transition">×</button>
             </span>
           }
         </div>
