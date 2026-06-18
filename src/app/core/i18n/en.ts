@@ -56,7 +56,7 @@ export const EN = {
     todos: 'All',
     remoto: 'Remote',
     presencial: 'On-site',
-    hibrido: 'Hybrid',
+   híbrido: 'Hybrid',
     latam: 'Latam',
     europa: 'Europe',
     remoto_global: 'Global Remote',

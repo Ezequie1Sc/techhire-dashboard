@@ -56,7 +56,7 @@ export const ES = {
     todos: 'Todas',
     remoto: 'Remoto',
     presencial: 'Presencial',
-    hibrido: 'Híbrido',
+    híbrido: 'Híbrido',
     latam: 'Latam',
     europa: 'Europa',
     remoto_global: 'Remoto Global',
