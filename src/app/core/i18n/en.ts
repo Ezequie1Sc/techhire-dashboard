@@ -45,25 +45,18 @@ export const EN = {
     mode: 'Work Mode',
     region: 'Region',
     sortBy: 'Sort By',
-
-    // Clave nueva y corregida
-    advancedFilters: 'Filters',
-    clearFilters: 'Clear filters',
-
+    clearFilters: 'Clear Filters',
     activeFilters: 'Active Filters:',
     search: 'Search',
     order: 'Order',
-
     jobsLanguage: 'Jobs Language',
     jobsLanguageDescription: 'Translate only the visible jobs on this page.',
     original: 'Original',
     spanish: 'Spanish',
     english: 'English',
-
     translating: 'Translating jobs...',
     loading: 'Loading jobs',
     retry: 'Retry',
-
     noResultsBadge: 'No Results',
     noResultsTitle: 'No jobs found',
     noResultsDescription: 'There are no matches for your current search. Try another technology, change the category, or remove some filters.',
@@ -71,8 +64,7 @@ export const EN = {
     next: 'Next',
     page: 'Page',
     of: 'of',
-
-    // Selectores (Corregido)
+    // Claves para selectores
     todos: 'All',
     remoto: 'Remote',
     presencial: 'On-site',
@@ -84,6 +76,7 @@ export const EN = {
     antiguos: 'Oldest',
     titulo_asc: 'Title A-Z',
     titulo_desc: 'Title Z-A'
+    
   },
    favorites: {
     title: 'Saved jobs.',

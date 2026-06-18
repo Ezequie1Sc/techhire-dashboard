@@ -34,7 +34,7 @@ export const ES = {
 
     startSearch: 'Comenzar búsqueda'
   },
- jobs: {
+  jobs: {
     title: 'Vacantes disponibles.',
     description: 'Explora oportunidades tecnológicas con una búsqueda más limpia, organizada y fácil de leer.',
     results: 'Resultados',
@@ -45,25 +45,18 @@ export const ES = {
     mode: 'Modalidad',
     region: 'Región',
     sortBy: 'Ordenar por',
-    
-    // Clave nueva y corregida
-    advancedFilters: 'Filtros', 
     clearFilters: 'Limpiar filtros',
-
     activeFilters: 'Filtros activos:',
     search: 'Búsqueda',
     order: 'Orden',
-
     jobsLanguage: 'Idioma de vacantes',
     jobsLanguageDescription: 'Traduce solo las vacantes visibles de esta página.',
     original: 'Original',
     spanish: 'Español',
     english: 'English',
-
     translating: 'Traduciendo vacantes...',
     loading: 'Cargando vacantes',
     retry: 'Reintentar',
-
     noResultsBadge: 'Sin resultados',
     noResultsTitle: 'No encontramos vacantes',
     noResultsDescription: 'No hay coincidencias para tu búsqueda actual. Prueba con otra tecnología, cambia la categoría o elimina algunos filtros.',
@@ -71,12 +64,11 @@ export const ES = {
     next: 'Siguiente',
     page: 'Página',
     of: 'de',
-
-    // Selectores (Corregido: 'hibrido' -> 'hibrido' para que coincida con el HTML)
+    // Claves para selectores
     todos: 'Todas',
     remoto: 'Remoto',
     presencial: 'Presencial',
-    hibrido: 'Híbrido', 
+    hibrido: 'Híbrido',
     latam: 'Latam',
     europa: 'Europa',
     remoto_global: 'Remoto Global',
@@ -84,6 +76,15 @@ export const ES = {
     antiguos: 'Más antiguos',
     titulo_asc: 'Título A-Z',
     titulo_desc: 'Título Z-A'
+  },
+   favorites: {
+    title: 'Vacantes guardadas.',
+    description: 'Todas las oportunidades que has marcado para revisar más tarde.',
+    saved: 'Guardadas',
+    clearAll: 'Limpiar favoritos',
+    emptyTitle: 'Sin favoritos',
+    emptyDescription: 'Guarda vacantes para revisarlas después y acceder rápidamente a ellas.',
+    exploreJobs: 'Explorar vacantes'
   },
    footer: {
     tagline: 'Busca tu empleo ideal',

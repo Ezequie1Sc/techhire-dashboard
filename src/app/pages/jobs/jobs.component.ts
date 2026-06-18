@@ -94,6 +94,32 @@ export class JobsComponent implements OnInit {
     this.applyFilters();
   }
 
+  // Métodos para limpiar filtros individuales
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.applyFilters();
+  }
+
+  clearCategory(): void {
+    this.selectedCategory = 'Todas';
+    this.applyFilters();
+  }
+
+  clearMode(): void {
+    this.selectedMode = 'Todas';
+    this.applyFilters();
+  }
+
+  clearRegion(): void {
+    this.selectedRegion = 'Todas';
+    this.applyFilters();
+  }
+
+  clearSort(): void {
+    this.selectedSort = 'recientes';
+    this.applyFilters();
+  }
+
   loadJobs(): void {
     this.loading = true;
     this.error = null;

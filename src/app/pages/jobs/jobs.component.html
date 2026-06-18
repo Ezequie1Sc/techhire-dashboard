@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-[#f4f1ec] text-[#141414]">
   <section class="max-w-7xl mx-auto px-5 md:px-8 py-10">
 
-    <!-- Header & Results (En grande) -->
+    <!-- Header & Results -->
     <div class="mb-8 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
       <div>
         <h1 class="text-5xl md:text-7xl font-semibold tracking-[-0.06em] leading-none">
@@ -66,160 +66,208 @@
         }
       </div>
 
-      <!-- More Filters & Active Filters Row -->
-      <div class="flex flex-wrap items-center justify-between gap-4 mt-2">
-        <div class="flex flex-wrap items-center gap-3">
-          <button
-            type="button"
-            (click)="toggleAdvancedFilters()"
-            class="inline-flex items-center gap-2 text-sm font-medium text-[#6b665f] hover:text-[#141414] transition"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            {{ translation.translate('jobs.advancedFilters') }}
-          </button>
+      <!-- More Filters & Active Filters Row (Corregido) -->
+      <div class="flex flex-col gap-3 mt-2">
+        
+        <!-- Fila superior: Botón de filtros y limpiar -->
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div class="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              (click)="toggleAdvancedFilters()"
+              class="inline-flex items-center gap-2 text-sm font-medium text-[#6b665f] hover:text-[#141414] transition"
+              [class.text-[#141414]]="showAdvancedFilters"
+            >
+              <!-- Icono de filtros (Slider) -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+              </svg>
+              {{ translation.translate('jobs.advancedFilters') }}
+            </button>
+          </div>
 
-          @if (hasActiveFilters) {
+          <!-- Language Selector (Fuera del panel) -->
+          <div class="flex items-center gap-2">
+            <span class="text-xs uppercase tracking-[0.1em] text-[#8a8177] font-bold">
+              {{ translation.translate('jobs.jobsLanguage') }}
+            </span>
+            <div class="flex bg-white border border-black/5 rounded-full p-1 shadow-sm">
+              <button type="button" class="px-3 py-1 rounded-full text-xs font-medium transition"
+                [class.bg-[#141414]]="selectedJobsLanguage === 'original'"
+                [class.text-white]="selectedJobsLanguage === 'original'"
+                [class.text-[#6b665f]]="selectedJobsLanguage !== 'original'"
+                (click)="changeJobsLanguage('original')">
+                {{ translation.translate('jobs.original') }}
+              </button>
+              <button type="button" class="px-3 py-1 rounded-full text-xs font-medium transition"
+                [class.bg-[#141414]]="selectedJobsLanguage === 'es'"
+                [class.text-white]="selectedJobsLanguage === 'es'"
+                [class.text-[#6b665f]]="selectedJobsLanguage !== 'es'"
+                (click)="changeJobsLanguage('es')">
+                {{ translation.translate('jobs.spanish') }}
+              </button>
+              <button type="button" class="px-3 py-1 rounded-full text-xs font-medium transition"
+                [class.bg-[#141414]]="selectedJobsLanguage === 'en'"
+                [class.text-white]="selectedJobsLanguage === 'en'"
+                [class.text-[#6b665f]]="selectedJobsLanguage !== 'en'"
+                (click)="changeJobsLanguage('en')">
+                {{ translation.translate('jobs.english') }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fila inferior: Chips de filtros activos (Bien visibles y eliminables) -->
+        @if (hasActiveFilters) {
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-medium text-[#6b665f] mr-1">
+              {{ translation.translate('jobs.activeFilters') }}
+            </span>
+
+            @if (searchTerm.trim()) {
+              <span class="inline-flex items-center gap-1 px-3 py-1 bg-white border border-black/5 rounded-full text-xs font-medium text-[#141414]">
+                {{ translation.translate('jobs.search') }}: {{ searchTerm }}
+                <button type="button" (click)="clearSearch()" class="text-[#6b665f] hover:text-red-500 transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </span>
+            }
+
+            @if (selectedCategory !== 'Todas') {
+              <span class="inline-flex items-center gap-1 px-3 py-1 bg-white border border-black/5 rounded-full text-xs font-medium text-[#141414]">
+                {{ translation.translate('jobs.category') }}: {{ selectedCategory }}
+                <button type="button" (click)="clearCategory()" class="text-[#6b665f] hover:text-red-500 transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </span>
+            }
+
+            @if (selectedMode !== 'Todas') {
+              <span class="inline-flex items-center gap-1 px-3 py-1 bg-white border border-black/5 rounded-full text-xs font-medium text-[#141414]">
+                {{ translation.translate('jobs.mode') }}: {{ translation.translate('jobs.' + selectedMode.toLowerCase()) }}
+                <button type="button" (click)="clearMode()" class="text-[#6b665f] hover:text-red-500 transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </span>
+            }
+
+            @if (selectedRegion !== 'Todas') {
+              <span class="inline-flex items-center gap-1 px-3 py-1 bg-white border border-black/5 rounded-full text-xs font-medium text-[#141414]">
+                {{ translation.translate('jobs.region') }}: {{ translation.translate('jobs.' + selectedRegion.toLowerCase().replace(' ', '_')) }}
+                <button type="button" (click)="clearRegion()" class="text-[#6b665f] hover:text-red-500 transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </span>
+            }
+
+            @if (selectedSort !== 'recientes') {
+              <span class="inline-flex items-center gap-1 px-3 py-1 bg-white border border-black/5 rounded-full text-xs font-medium text-[#141414]">
+                {{ translation.translate('jobs.order') }}: {{ translation.translate('jobs.' + selectedSort) }}
+                <button type="button" (click)="clearSort()" class="text-[#6b665f] hover:text-red-500 transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </span>
+            }
+
+            <!-- Botón de limpiar todos (Más grande y visible) -->
             <button
               type="button"
               (click)="clearFilters()"
-              class="text-xs font-medium text-[#6b665f] hover:text-red-500 transition"
+              class="ml-2 px-4 py-1.5 bg-[#141414] text-white rounded-full text-xs font-medium hover:scale-105 transition"
             >
               {{ translation.translate('jobs.clearFilters') }}
             </button>
-          }
-        </div>
-
-        <!-- Language Selector (Fuera del panel) -->
-        <div class="flex items-center gap-2">
-          <span class="text-xs uppercase tracking-[0.1em] text-[#8a8177] font-bold">
-            {{ translation.translate('jobs.jobsLanguage') }}
-          </span>
-          <div class="flex bg-white border border-black/5 rounded-full p-1 shadow-sm">
-            <button
-              type="button"
-              class="px-3 py-1 rounded-full text-xs font-medium transition"
-              [class.bg-[#141414]]="selectedJobsLanguage === 'original'"
-              [class.text-white]="selectedJobsLanguage === 'original'"
-              [class.text-[#6b665f]]="selectedJobsLanguage !== 'original'"
-              (click)="changeJobsLanguage('original')"
-            >
-              {{ translation.translate('jobs.original') }}
-            </button>
-            <button
-              type="button"
-              class="px-3 py-1 rounded-full text-xs font-medium transition"
-              [class.bg-[#141414]]="selectedJobsLanguage === 'es'"
-              [class.text-white]="selectedJobsLanguage === 'es'"
-              [class.text-[#6b665f]]="selectedJobsLanguage !== 'es'"
-              (click)="changeJobsLanguage('es')"
-            >
-              {{ translation.translate('jobs.spanish') }}
-            </button>
-            <button
-              type="button"
-              class="px-3 py-1 rounded-full text-xs font-medium transition"
-              [class.bg-[#141414]]="selectedJobsLanguage === 'en'"
-              [class.text-white]="selectedJobsLanguage === 'en'"
-              [class.text-[#6b665f]]="selectedJobsLanguage !== 'en'"
-              (click)="changeJobsLanguage('en')"
-            >
-              {{ translation.translate('jobs.english') }}
-            </button>
           </div>
-        </div>
+        }
+
+        <!-- Advanced Filters Panel -->
+        @if (showAdvancedFilters) {
+          <div class="bg-white border border-black/5 rounded-2xl p-6 mt-2 shadow-sm animate-fadeIn">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              
+              <!-- Mode -->
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-[0.15em] text-[#9b9388] mb-3">
+                  {{ translation.translate('jobs.mode') }}
+                </label>
+                <div class="flex flex-col gap-2">
+                  @for (mode of modes; track mode) {
+                    <button type="button" (click)="selectMode(mode)"
+                      class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition hover:bg-[#f4f1ec]"
+                      [class.bg-[#f4f1ec]]="selectedMode === mode"
+                      [class.font-medium]="selectedMode === mode">
+                      <span class="w-4 h-4 rounded-full border border-[#6b665f] flex items-center justify-center"
+                        [class.border-[#141414]]="selectedMode === mode">
+                        @if (selectedMode === mode) { <span class="w-2 h-2 rounded-full bg-[#141414]"></span> }
+                      </span>
+                      {{ mode === 'Todas' ? translation.translate('jobs.todos') : translation.translate('jobs.' + mode.toLowerCase()) }}
+                    </button>
+                  }
+                </div>
+              </div>
+
+              <!-- Region -->
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-[0.15em] text-[#9b9388] mb-3">
+                  {{ translation.translate('jobs.region') }}
+                </label>
+                <div class="flex flex-col gap-2">
+                  @for (region of regions; track region) {
+                    <button type="button" (click)="selectRegion(region)"
+                      class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition hover:bg-[#f4f1ec]"
+                      [class.bg-[#f4f1ec]]="selectedRegion === region"
+                      [class.font-medium]="selectedRegion === region">
+                      <span class="w-4 h-4 rounded-full border border-[#6b665f] flex items-center justify-center"
+                        [class.border-[#141414]]="selectedRegion === region">
+                        @if (selectedRegion === region) { <span class="w-2 h-2 rounded-full bg-[#141414]"></span> }
+                      </span>
+                      {{ region === 'Todas' ? translation.translate('jobs.todos') : translation.translate('jobs.' + region.toLowerCase().replace(' ', '_')) }}
+                    </button>
+                  }
+                </div>
+              </div>
+
+              <!-- Sort -->
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-[0.15em] text-[#9b9388] mb-3">
+                  {{ translation.translate('jobs.sortBy') }}
+                </label>
+                <div class="flex flex-col gap-2">
+                  @for (option of sortOptions; track option.value) {
+                    <button type="button" (click)="selectSort(option.value)"
+                      class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition hover:bg-[#f4f1ec]"
+                      [class.bg-[#f4f1ec]]="selectedSort === option.value"
+                      [class.font-medium]="selectedSort === option.value">
+                      <span class="w-4 h-4 rounded-full border border-[#6b665f] flex items-center justify-center"
+                        [class.border-[#141414]]="selectedSort === option.value">
+                        @if (selectedSort === option.value) { <span class="w-2 h-2 rounded-full bg-[#141414]"></span> }
+                      </span>
+                      {{ option.label }}
+                    </button>
+                  }
+                </div>
+              </div>
+
+            </div>
+            <div class="mt-4 pt-4 border-t border-black/5 flex justify-end">
+              <button type="button" (click)="closeAdvancedFilters()" class="text-sm font-medium text-[#6b665f] hover:text-[#141414] transition">
+                Cerrar
+              </button>
+            </div>
+          </div>
+        }
+
       </div>
-
-      <!-- Advanced Filters Panel -->
-      @if (showAdvancedFilters) {
-        <div class="bg-white border border-black/5 rounded-2xl p-6 mt-2 shadow-sm animate-fadeIn">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            <!-- Mode -->
-            <div>
-              <label class="block text-xs font-bold uppercase tracking-[0.15em] text-[#9b9388] mb-3">
-                {{ translation.translate('jobs.mode') }}
-              </label>
-              <div class="flex flex-col gap-2">
-                @for (mode of modes; track mode) {
-                  <button
-                    type="button"
-                    (click)="selectMode(mode)"
-                    class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition"
-                    [class.bg-[#f4f1ec]]="selectedMode === mode"
-                    [class.font-medium]="selectedMode === mode"
-                  >
-                    <span class="w-4 h-4 rounded-full border border-[#6b665f] flex items-center justify-center" [class.border-[#141414]]="selectedMode === mode">
-                      @if (selectedMode === mode) {
-                        <span class="w-2 h-2 rounded-full bg-[#141414]"></span>
-                      }
-                    </span>
-                    {{ mode === 'Todas' ? translation.translate('jobs.todos') : translation.translate('jobs.' + mode.toLowerCase()) }}
-                  </button>
-                }
-              </div>
-            </div>
-
-            <!-- Region -->
-            <div>
-              <label class="block text-xs font-bold uppercase tracking-[0.15em] text-[#9b9388] mb-3">
-                {{ translation.translate('jobs.region') }}
-              </label>
-              <div class="flex flex-col gap-2">
-                @for (region of regions; track region) {
-                  <button
-                    type="button"
-                    (click)="selectRegion(region)"
-                    class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition"
-                    [class.bg-[#f4f1ec]]="selectedRegion === region"
-                    [class.font-medium]="selectedRegion === region"
-                  >
-                    <span class="w-4 h-4 rounded-full border border-[#6b665f] flex items-center justify-center" [class.border-[#141414]]="selectedRegion === region">
-                      @if (selectedRegion === region) {
-                        <span class="w-2 h-2 rounded-full bg-[#141414]"></span>
-                      }
-                    </span>
-                    {{ region === 'Todas' ? translation.translate('jobs.todos') : translation.translate('jobs.' + region.toLowerCase().replace(' ', '_')) }}
-                  </button>
-                }
-              </div>
-            </div>
-
-            <!-- Sort -->
-            <div>
-              <label class="block text-xs font-bold uppercase tracking-[0.15em] text-[#9b9388] mb-3">
-                {{ translation.translate('jobs.sortBy') }}
-              </label>
-              <div class="flex flex-col gap-2">
-                @for (option of sortOptions; track option.value) {
-                  <button
-                    type="button"
-                    (click)="selectSort(option.value)"
-                    class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition"
-                    [class.bg-[#f4f1ec]]="selectedSort === option.value"
-                    [class.font-medium]="selectedSort === option.value"
-                  >
-                    <span class="w-4 h-4 rounded-full border border-[#6b665f] flex items-center justify-center" [class.border-[#141414]]="selectedSort === option.value">
-                      @if (selectedSort === option.value) {
-                        <span class="w-2 h-2 rounded-full bg-[#141414]"></span>
-                      }
-                    </span>
-                    {{ option.label }}
-                  </button>
-                }
-              </div>
-            </div>
-
-          </div>
-          <div class="mt-4 pt-4 border-t border-black/5 flex justify-end">
-            <button type="button" (click)="closeAdvancedFilters()" class="text-sm font-medium text-[#6b665f] hover:text-[#141414] transition">
-              Cerrar
-            </button>
-          </div>
-        </div>
-      }
 
     </div>
 
