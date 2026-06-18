@@ -70,9 +70,9 @@ export class JobsComponent implements OnInit {
     this.showAdvancedFilters = !this.showAdvancedFilters;
   }
 
-  closeAdvancedFilters(): void {
-    this.showAdvancedFilters = false;
-  }
+ closeAdvancedFilters() {
+  this.showAdvancedFilters = false;
+}
 
   selectCategory(category: string): void {
     this.selectedCategory = category;
@@ -380,4 +380,5 @@ export class JobsComponent implements OnInit {
       .replace(/[\u0300-\u036f]/g, '')
       .trim();
   }
+  
 }
