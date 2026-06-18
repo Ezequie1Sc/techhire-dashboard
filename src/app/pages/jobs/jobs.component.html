@@ -82,37 +82,6 @@
         }
       </div>
 
-      <!-- Selector de Idioma -->
-      <div class="flex items-center justify-end gap-2 mb-6">
-        <span class="text-[10px] uppercase tracking-[0.1em] text-[#8a8177] font-bold mr-1">
-          {{ translation.translate('jobs.jobsLanguage') }}
-        </span>
-        <button type="button" 
-          class="px-3 py-1 rounded-full text-[10px] font-medium transition"
-          [class.bg-[#141414]]="selectedJobsLanguage === 'original'"
-          [class.text-white]="selectedJobsLanguage === 'original'"
-          [class.text-[#6b665f]]="selectedJobsLanguage !== 'original'"
-          (click)="changeJobsLanguage('original')">
-          {{ translation.translate('jobs.original') }}
-        </button>
-        <button type="button" 
-          class="px-3 py-1 rounded-full text-[10px] font-medium transition"
-          [class.bg-[#141414]]="selectedJobsLanguage === 'es'"
-          [class.text-white]="selectedJobsLanguage === 'es'"
-          [class.text-[#6b665f]]="selectedJobsLanguage !== 'es'"
-          (click)="changeJobsLanguage('es')">
-          {{ translation.translate('jobs.spanish') }}
-        </button>
-        <button type="button" 
-          class="px-3 py-1 rounded-full text-[10px] font-medium transition"
-          [class.bg-[#141414]]="selectedJobsLanguage === 'en'"
-          [class.text-white]="selectedJobsLanguage === 'en'"
-          [class.text-[#6b665f]]="selectedJobsLanguage !== 'en'"
-          (click)="changeJobsLanguage('en')">
-          {{ translation.translate('jobs.english') }}
-        </button>
-      </div>
-
       <!-- Panel de Filtros Avanzados -->
       @if (showAdvancedFilters) {
         <div class="bg-white border border-black/5 rounded-2xl p-6 mb-6 shadow-sm animate-fadeIn">
@@ -206,41 +175,111 @@
         </div>
       }
 
-      <!-- Chips de Filtros Activos (Solo aparecen si hay algo seleccionado) -->
-      @if (hasActiveFilters) {
-        <div class="flex flex-wrap items-center gap-2 mb-6 pb-4 border-b border-black/5">
-          @if (searchTerm.trim()) {
-            <span class="inline-flex items-center gap-1 px-3 py-1 bg-white border border-black/5 rounded-full text-xs font-medium text-[#141414]">
-              {{ translation.translate('jobs.search') }}: {{ searchTerm }}
-              <button type="button" (click)="clearSearch()" class="text-[#6b665f] hover:text-red-500 transition">×</button>
-            </span>
-          }
-          @if (selectedCategory !== 'Todas') {
-            <span class="inline-flex items-center gap-1 px-3 py-1 bg-white border border-black/5 rounded-full text-xs font-medium text-[#141414]">
-              {{ selectedCategory }}
-              <button type="button" (click)="clearCategory()" class="text-[#6b665f] hover:text-red-500 transition">×</button>
-            </span>
-          }
-          @if (selectedMode !== 'Todas') {
-            <span class="inline-flex items-center gap-1 px-3 py-1 bg-white border border-black/5 rounded-full text-xs font-medium text-[#141414]">
-              {{ translation.translate('jobs.' + selectedMode.toLowerCase()) }}
-              <button type="button" (click)="clearMode()" class="text-[#6b665f] hover:text-red-500 transition">×</button>
-            </span>
-          }
-          @if (selectedRegion !== 'Todas') {
-            <span class="inline-flex items-center gap-1 px-3 py-1 bg-white border border-black/5 rounded-full text-xs font-medium text-[#141414]">
-              {{ translation.translate('jobs.' + selectedRegion.toLowerCase().replace(' ', '_')) }}
-              <button type="button" (click)="clearRegion()" class="text-[#6b665f] hover:text-red-500 transition">×</button>
-            </span>
-          }
-          @if (selectedJobType !== 'Todas') {
-            <span class="inline-flex items-center gap-1 px-3 py-1 bg-white border border-black/5 rounded-full text-xs font-medium text-[#141414]">
-              {{ selectedJobType }}
-              <button type="button" (click)="clearJobType()" class="text-[#6b665f] hover:text-red-500 transition">×</button>
-            </span>
-          }
+      <!-- Selector de Idioma con Banderas y Chips de Filtros Activos (Juntos y alineados) -->
+      <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
+        
+        <!-- Selector de idioma (Nuevo diseño con banderas) -->
+        <div class="flex flex-wrap items-center gap-1 sm:gap-2">
+          <span class="text-[10px] uppercase tracking-[0.1em] text-[#8a8177] font-bold mr-1">
+            {{ translation.translate('jobs.jobsLanguage') }}
+          </span>
+          
+          <button 
+            type="button"
+            (click)="changeJobsLanguage('es')"
+            class="px-3 py-1.5 rounded-full text-[11px] font-medium transition flex items-center gap-1.5"
+            [class.bg-[#141414]]="selectedJobsLanguage === 'es'"
+            [class.text-white]="selectedJobsLanguage === 'es'"
+            [class.text-[#6b665f]]="selectedJobsLanguage !== 'es'"
+            [class.border]="selectedJobsLanguage !== 'es'"
+            [class.border-black/5]="selectedJobsLanguage !== 'es'"
+          >
+            <span class="text-sm">🇲🇽</span> Español
+          </button>
+
+          <button 
+            type="button"
+            (click)="changeJobsLanguage('en')"
+            class="px-3 py-1.5 rounded-full text-[11px] font-medium transition flex items-center gap-1.5"
+            [class.bg-[#141414]]="selectedJobsLanguage === 'en'"
+            [class.text-white]="selectedJobsLanguage === 'en'"
+            [class.text-[#6b665f]]="selectedJobsLanguage !== 'en'"
+            [class.border]="selectedJobsLanguage !== 'en'"
+            [class.border-black/5]="selectedJobsLanguage !== 'en'"
+          >
+            <span class="text-sm">🇺🇸</span> English
+          </button>
+
+          <button 
+            type="button"
+            (click)="changeJobsLanguage('original')"
+            class="px-3 py-1.5 rounded-full text-[11px] font-medium transition flex items-center gap-1.5"
+            [class.bg-[#141414]]="selectedJobsLanguage === 'original'"
+            [class.text-white]="selectedJobsLanguage === 'original'"
+            [class.text-[#6b665f]]="selectedJobsLanguage !== 'original'"
+            [class.border]="selectedJobsLanguage !== 'original'"
+            [class.border-black/5]="selectedJobsLanguage !== 'original'"
+          >
+            Original
+          </button>
         </div>
-      }
+
+        <!-- Chips de Filtros Activos (A la derecha, más grandes y elegantes) -->
+        @if (hasActiveFilters) {
+          <div class="flex flex-wrap items-center gap-2">
+            @if (searchTerm.trim()) {
+              <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-white border border-black/5 rounded-full text-xs font-medium text-[#141414] shadow-sm">
+                {{ translation.translate('jobs.search') }}: {{ searchTerm }}
+                <button type="button" (click)="clearSearch()" class="text-[#6b665f] hover:text-red-500 transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </span>
+            }
+            @if (selectedCategory !== 'Todas') {
+              <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-white border border-black/5 rounded-full text-xs font-medium text-[#141414] shadow-sm">
+                {{ selectedCategory }}
+                <button type="button" (click)="clearCategory()" class="text-[#6b665f] hover:text-red-500 transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </span>
+            }
+            @if (selectedMode !== 'Todas') {
+              <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-white border border-black/5 rounded-full text-xs font-medium text-[#141414] shadow-sm">
+                {{ translation.translate('jobs.' + selectedMode.toLowerCase()) }}
+                <button type="button" (click)="clearMode()" class="text-[#6b665f] hover:text-red-500 transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </span>
+            }
+            @if (selectedRegion !== 'Todas') {
+              <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-white border border-black/5 rounded-full text-xs font-medium text-[#141414] shadow-sm">
+                {{ translation.translate('jobs.' + selectedRegion.toLowerCase().replace(' ', '_')) }}
+                <button type="button" (click)="clearRegion()" class="text-[#6b665f] hover:text-red-500 transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </span>
+            }
+            @if (selectedJobType !== 'Todas') {
+              <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-white border border-black/5 rounded-full text-xs font-medium text-[#141414] shadow-sm">
+                {{ selectedJobType }}
+                <button type="button" (click)="clearJobType()" class="text-[#6b665f] hover:text-red-500 transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </span>
+            }
+          </div>
+        }
+      </div>
 
       <!-- Grid de Vacantes -->
       @if (!loading && !error && jobs.length > 0) {

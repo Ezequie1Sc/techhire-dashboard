@@ -74,13 +74,11 @@ export class JobsComponent implements OnInit {
     this.showAdvancedFilters = false;
   }
 
-  // Método para aplicar y cerrar el panel
   applyAndCloseFilters(): void {
     this.applyFilters();
     this.showAdvancedFilters = false;
   }
 
-  // Método para resetear todo desde el panel
   resetAllFilters(): void {
     this.searchTerm = '';
     this.selectedCategory = 'Todas';
