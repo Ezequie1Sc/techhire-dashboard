@@ -1,37 +1,22 @@
 export const ES = {
   home: {
     heroTitle: 'Descubre oportunidades para construir el futuro',
-    heroDescription:
-      'Vacantes verificadas de empresas que buscan talento tecnológico como el tuyo.',
-
+    heroDescription: 'Vacantes verificadas de empresas que buscan talento tecnológico como el tuyo.',
     exploreJobs: 'Explorar vacantes',
     viewFavorites: 'Ver favoritos',
-
     techSection: 'Explora por tecnología',
-
     processTitle: 'Busca, guarda y aplica más rápido.',
-    processDescription:
-      'Una experiencia limpia para encontrar oportunidades tecnológicas sin distracciones.',
-
+    processDescription: 'Una experiencia limpia para encontrar oportunidades tecnológicas sin distracciones.',
     explore: 'Explora',
     filter: 'Filtra',
     save: 'Guarda',
     apply: 'Aplica',
-
     recentJobs: 'Vacantes destacadas',
-    recentJobsDescription:
-      'Desliza para ver más oportunidades.',
-
+    recentJobsDescription: 'Desliza para ver más oportunidades.',
     seeAll: 'Ver todas',
-
     jobsLanguage: 'Idioma de vacantes',
-
-    ctaTitle:
-      'Tu próximo empleo puede empezar hoy.',
-
-    ctaDescription:
-      'Explora vacantes, guarda tus favoritas y construye una búsqueda laboral más organizada.',
-
+    ctaTitle: 'Tu próximo empleo puede empezar hoy.',
+    ctaDescription: 'Explora vacantes, guarda tus favoritas y construye una búsqueda laboral más organizada.',
     startSearch: 'Comenzar búsqueda'
   },
   jobs: {
@@ -45,10 +30,13 @@ export const ES = {
     mode: 'Modalidad',
     region: 'Región',
     sortBy: 'Ordenar por',
+    // Clave faltante agregada
+    advancedFilters: 'Filtros',
     clearFilters: 'Limpiar filtros',
     activeFilters: 'Filtros activos:',
     search: 'Búsqueda',
     order: 'Orden',
+    // Claves de idioma dentro de jobs (estaban en home)
     jobsLanguage: 'Idioma de vacantes',
     jobsLanguageDescription: 'Traduce solo las vacantes visibles de esta página.',
     original: 'Original',
@@ -64,7 +52,7 @@ export const ES = {
     next: 'Siguiente',
     page: 'Página',
     of: 'de',
-    // Claves para selectores
+    // Selectores
     todos: 'Todas',
     remoto: 'Remoto',
     presencial: 'Presencial',
@@ -77,7 +65,7 @@ export const ES = {
     titulo_asc: 'Título A-Z',
     titulo_desc: 'Título Z-A'
   },
-   favorites: {
+  favorites: {
     title: 'Vacantes guardadas.',
     description: 'Todas las oportunidades que has marcado para revisar más tarde.',
     saved: 'Guardadas',
@@ -86,7 +74,7 @@ export const ES = {
     emptyDescription: 'Guarda vacantes para revisarlas después y acceder rápidamente a ellas.',
     exploreJobs: 'Explorar vacantes'
   },
-   footer: {
+  footer: {
     tagline: 'Busca tu empleo ideal',
     description: 'Plataforma para explorar vacantes tecnológicas, guardar oportunidades favoritas y aplicar de forma más organizada.',
     navigation: 'Navegación',

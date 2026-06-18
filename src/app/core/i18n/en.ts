@@ -1,37 +1,22 @@
 export const EN = {
   home: {
     heroTitle: 'Discover opportunities to build the future',
-    heroDescription:
-      'Verified job opportunities from companies looking for tech talent like you.',
-
+    heroDescription: 'Verified job opportunities from companies looking for tech talent like you.',
     exploreJobs: 'Explore Jobs',
     viewFavorites: 'View Favorites',
-
     techSection: 'Explore by technology',
-
     processTitle: 'Search, save and apply faster.',
-    processDescription:
-      'A clean experience to discover technology opportunities without distractions.',
-
+    processDescription: 'A clean experience to discover technology opportunities without distractions.',
     explore: 'Explore',
     filter: 'Filter',
     save: 'Save',
     apply: 'Apply',
-
     recentJobs: 'Featured Jobs',
-    recentJobsDescription:
-      'Swipe to discover more opportunities.',
-
+    recentJobsDescription: 'Swipe to discover more opportunities.',
     seeAll: 'View All',
-
     jobsLanguage: 'Jobs Language',
-
-    ctaTitle:
-      'Your next job could start today.',
-
-    ctaDescription:
-      'Explore opportunities, save favorites and organize your job search.',
-
+    ctaTitle: 'Your next job could start today.',
+    ctaDescription: 'Explore opportunities, save favorites and organize your job search.',
     startSearch: 'Start Searching'
   },
   jobs: {
@@ -45,10 +30,13 @@ export const EN = {
     mode: 'Work Mode',
     region: 'Region',
     sortBy: 'Sort By',
+    // Clave faltante agregada
+    advancedFilters: 'Filters',
     clearFilters: 'Clear Filters',
     activeFilters: 'Active Filters:',
     search: 'Search',
     order: 'Order',
+    // Claves de idioma dentro de jobs (estaban en home)
     jobsLanguage: 'Jobs Language',
     jobsLanguageDescription: 'Translate only the visible jobs on this page.',
     original: 'Original',
@@ -64,7 +52,7 @@ export const EN = {
     next: 'Next',
     page: 'Page',
     of: 'of',
-    // Claves para selectores
+    // Selectores
     todos: 'All',
     remoto: 'Remote',
     presencial: 'On-site',
@@ -76,9 +64,8 @@ export const EN = {
     antiguos: 'Oldest',
     titulo_asc: 'Title A-Z',
     titulo_desc: 'Title Z-A'
-    
   },
-   favorites: {
+  favorites: {
     title: 'Saved jobs.',
     description: 'All the opportunities you have bookmarked to review later.',
     saved: 'Saved',
