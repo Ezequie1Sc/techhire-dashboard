@@ -299,3 +299,129 @@ button {
     font-size: 1.5rem;
   }
 }
+
+/* ===== TRADUCCIÓN EN HOME (Corregido) ===== */
+.home-translation-row {
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  background: #ffffff;
+  border: 1px solid rgba(20, 20, 20, 0.06);
+  border-radius: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.home-translation-title {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #9b9388;
+}
+
+.home-translation-text {
+  margin: 0.25rem 0 0;
+  color: #6b665f;
+  font-size: 0.85rem;
+}
+
+.home-translation-actions {
+  display: flex;
+  gap: 0.35rem;
+  background: #fbfaf7;
+  border: 1px solid rgba(20, 20, 20, 0.06);
+  border-radius: 999px;
+  padding: 0.25rem 0.4rem;
+}
+
+.home-translation-btn {
+  border: none;
+  background: transparent;
+  color: #6b665f;
+  border-radius: 999px;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.home-translation-btn:hover:not(:disabled) {
+  background: #ffffff;
+  color: #141414;
+}
+
+.home-translation-btn.active {
+  background: #141414;
+  color: #ffffff;
+}
+
+.home-translation-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.home-translation-status {
+  color: #6b665f;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.home-translation-error {
+  color: #dc2626;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* Loader Wave */
+.loader-wave {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 40px;
+}
+
+.loader-wave span {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #141414;
+  animation: waveMove 1.2s ease-in-out infinite;
+}
+
+.loader-wave span:nth-child(1) { animation-delay: 0s; }
+.loader-wave span:nth-child(2) { animation-delay: 0.1s; }
+.loader-wave span:nth-child(3) { animation-delay: 0.2s; }
+.loader-wave span:nth-child(4) { animation-delay: 0.3s; }
+.loader-wave span:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes waveMove {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-translation-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .home-translation-actions {
+    width: 100%;
+  }
+
+  .home-translation-btn {
+    flex: 1;
+  }
+}
