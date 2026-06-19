@@ -136,7 +136,7 @@
 
         </div>
 
-        <!-- Mobile Button -->
+        <!-- Mobile Button (Hamburguesa o X) -->
         <button
           type="button"
           (click)="toggleMenu()"
@@ -179,66 +179,63 @@
       </div>
     </div>
 
-    <!-- Mobile Menu -->
+    <!-- Mobile Menu (Nuevo diseño) -->
     @if (isMenuOpen) {
       <div class="mobile-menu">
-
-        <!-- Mobile Language Switcher -->
-        <div class="mobile-language-switcher">
+        
+        <!-- 1. Selector de idioma con banderas (a la izquierda y limpias) -->
+        <div class="mobile-language-selector">
           <button
             (click)="changeLanguage('es')"
-            class="language-btn"
-            [class.language-active]="translation.currentLanguage === 'es'"
+            class="mobile-lang-btn"
+            [class.active]="translation.currentLanguage === 'es'"
           >
-            🇲🇽 Español
+            <span class="lang-flag">🇲🇽</span>
+            <span class="lang-text">Español</span>
           </button>
 
           <button
             (click)="changeLanguage('en')"
-            class="language-btn"
-            [class.language-active]="translation.currentLanguage === 'en'"
+            class="mobile-lang-btn"
+            [class.active]="translation.currentLanguage === 'en'"
           >
-            🇺🇸 English
+            <span class="lang-flag">🇺🇸</span>
+            <span class="lang-text">English</span>
           </button>
         </div>
 
-        <a
-          routerLink="/"
-          routerLinkActive="mobile-active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="mobile-link"
-          (click)="isMenuOpen = false"
-        >
-          <span>{{ translation.currentLanguage === 'es' ? 'Inicio' : 'Home' }}</span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </a>
+        <!-- 2. Enlaces de navegación -->
+        <div class="mobile-nav-links">
+          <a
+            routerLink="/"
+            routerLinkActive="mobile-active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="mobile-link"
+            (click)="isMenuOpen = false"
+          >
+            <span>{{ translation.currentLanguage === 'es' ? 'Inicio' : 'Home' }}</span>
+          </a>
 
-        <a
-          routerLink="/jobs"
-          routerLinkActive="mobile-active"
-          class="mobile-link"
-          (click)="isMenuOpen = false"
-        >
-          <span>{{ translation.currentLanguage === 'es' ? 'Vacantes' : 'Jobs' }}</span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </a>
+          <a
+            routerLink="/jobs"
+            routerLinkActive="mobile-active"
+            class="mobile-link"
+            (click)="isMenuOpen = false"
+          >
+            <span>{{ translation.currentLanguage === 'es' ? 'Vacantes' : 'Jobs' }}</span>
+          </a>
 
-        <a
-          routerLink="/favorites"
-          routerLinkActive="mobile-active"
-          class="mobile-link"
-          (click)="isMenuOpen = false"
-        >
-          <span>{{ translation.currentLanguage === 'es' ? 'Favoritos' : 'Favorites' }}</span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </a>
+          <a
+            routerLink="/favorites"
+            routerLinkActive="mobile-active"
+            class="mobile-link"
+            (click)="isMenuOpen = false"
+          >
+            <span>{{ translation.currentLanguage === 'es' ? 'Favoritos' : 'Favorites' }}</span>
+          </a>
+        </div>
 
+        <!-- 3. Botón CTA (Explorar vacantes) -->
         <a
           routerLink="/jobs"
           class="mobile-cta"
