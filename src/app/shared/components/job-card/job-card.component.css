@@ -3,6 +3,58 @@
   height: 100%;
 }
 
+/* --- 1. ENTRADA DE LA TARJETA (Animación al cargar) --- */
+.job-card {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: jobCardFadeIn 0.5s cubic-bezier(0.2, 0, 0, 1) forwards;
+}
+
+@keyframes jobCardFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- 2. HOVER DE LA TARJETA (Elevación premium) --- */
+.job-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* --- 3. TÍTULO (Cambio de color sutil al hacer hover) --- */
+.job-card:hover .job-title {
+  color: #5d554b;
+}
+
+.job-title {
+  transition: color 0.2s ease;
+}
+
+/* --- 4. BOTÓN DE FAVORITOS (Latido al hacer clic) --- */
+.favorite-btn {
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1), background 0.25s ease, color 0.25s ease;
+}
+
+.favorite-btn:active {
+  transform: scale(1.2);
+}
+
+/* --- 5. BOTÓN DE FLECHA (Desplazamiento y cambio de color) --- */
+.job-arrow-btn {
+  transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.job-card:hover .job-arrow-btn {
+  transform: translateX(4px);
+  background: #141414;
+  color: white;
+  border-color: #141414;
+}
+
+/* --- Utilidades para limitar texto --- */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-box-orient: vertical;

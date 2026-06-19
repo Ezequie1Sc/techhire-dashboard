@@ -1,6 +1,6 @@
 <a
   [routerLink]="['/jobs', job.slug]"
-  class="group block h-full rounded-[2rem] bg-[#fbfaf7] border border-black/5 p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(0,0,0,0.10)]"
+  class="job-card group block h-full rounded-[2rem] bg-[#fbfaf7] border border-black/5 p-5 transition-all duration-300"
 >
   <div class="flex flex-col h-full">
 
@@ -21,11 +21,10 @@
         </div>
       </div>
 
-      <!-- Favorite -->
       <button
         type="button"
         (click)="toggleFavorite($event)"
-        class="w-11 h-11 rounded-full bg-white border border-black/5 flex items-center justify-center transition hover:scale-105 hover:bg-[#f4f1ec]"
+        class="favorite-btn w-11 h-11 rounded-full bg-white border border-black/5 flex items-center justify-center transition hover:scale-105 hover:bg-[#f4f1ec]"
         [class.text-red-500]="isFavorite"
         [class.text-[#b8afa4]]="!isFavorite"
         aria-label="Agregar a favoritos"
@@ -50,8 +49,7 @@
     <!-- Contenido central -->
     <div class="flex flex-col flex-1 mt-4">
       
-      <!-- Job title -->
-      <h3 class="text-2xl font-semibold tracking-[-0.04em] leading-tight text-[#141414] mb-3 group-hover:text-[#5d554b] transition-colors line-clamp-2">
+      <h3 class="job-title text-2xl font-semibold tracking-[-0.04em] leading-tight text-[#141414] mb-3 line-clamp-2">
         {{ job.title }}
       </h3>
 
@@ -107,7 +105,7 @@
         </p>
       </div>
 
-      <div class="w-12 h-12 rounded-full bg-white border border-black/5 flex items-center justify-center transition-all duration-300 group-hover:bg-[#141414] group-hover:text-white group-hover:border-[#141414] group-hover:-translate-y-0.5 group-hover:scale-105 shadow-sm">
+      <div class="job-arrow-btn w-12 h-12 rounded-full bg-white border border-black/5 flex items-center justify-center shadow-sm">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
         </svg>
