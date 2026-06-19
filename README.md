@@ -21,18 +21,11 @@ Jobly es una plataforma web enfocada en facilitar la búsqueda de empleo para de
 La plataforma reúne oportunidades laborales provenientes de distintas fuentes en una experiencia moderna, rápida e intuitiva. Su objetivo es simplificar el proceso de búsqueda de empleo y acercar a los usuarios a nuevas oportunidades profesionales mediante una interfaz limpia y accesible.
 
 ---
-
-## Capturas de Pantalla
-
-### Página Principal
-
-<img src="./public/hero.png" alt="Página principal de Jobly" width="100%" />
-
 <br>
 
 ### Exploración de Vacantes
 
-<img src="./public/vacantes.png" alt="Listado de vacantes" width="100%" />
+<img src="./public/vacantes1.png" alt="Listado de vacantes" width="100%" />
 
 ---
 
