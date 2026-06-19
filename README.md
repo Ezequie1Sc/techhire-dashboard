@@ -18,36 +18,52 @@ Plataforma moderna de búsqueda de empleo diseñada para conectar talento tecnol
 
 Jobly es una plataforma web enfocada en facilitar la búsqueda de empleo para desarrolladores, estudiantes y profesionales del sector tecnológico.
 
-La aplicación reúne vacantes de diferentes fuentes en una experiencia rápida, intuitiva y accesible, permitiendo a los usuarios descubrir oportunidades laborales de manera eficiente.
+La plataforma reúne oportunidades laborales provenientes de distintas fuentes en una experiencia moderna, rápida e intuitiva. Su objetivo es simplificar el proceso de búsqueda de empleo y acercar a los usuarios a nuevas oportunidades profesionales mediante una interfaz limpia y accesible.
 
 ---
 
-## Características principales
+## Capturas de Pantalla
+
+### Página Principal
+
+<img src="./public/hero.png" alt="Página principal de Jobly" width="100%" />
+
+<br>
+
+### Exploración de Vacantes
+
+<img src="./public/vacantes.png" alt="Listado de vacantes" width="100%" />
+
+---
+
+## Características Principales
 
 * Búsqueda de vacantes en tiempo real.
-* Sistema de favoritos.
+* Sistema de favoritos para guardar oportunidades.
 * Vacantes remotas, híbridas y presenciales.
+* Filtros de búsqueda avanzados.
 * Interfaz moderna y minimalista.
 * Diseño totalmente responsive.
 * Soporte multilenguaje.
 * Experiencia optimizada para dispositivos móviles y escritorio.
+* Navegación rápida y accesible.
 
 ---
 
-## Tecnologías utilizadas
+## Tecnologías Utilizadas
 
 | Tecnología     | Uso                      |
 | -------------- | ------------------------ |
 | Angular 18     | Desarrollo Frontend      |
 | TypeScript     | Lógica de la aplicación  |
-| Tailwind CSS   | Estilos y diseño         |
+| Tailwind CSS   | Diseño y estilos         |
 | RxJS           | Programación reactiva    |
 | Vercel         | Despliegue y alojamiento |
 | APIs de empleo | Obtención de vacantes    |
 
 ---
 
-## Arquitectura del proyecto
+## Arquitectura del Proyecto
 
 ```bash
 src/
@@ -65,13 +81,27 @@ src/
 
 ## Instalación
 
+Clona el repositorio:
+
 ```bash
-git clone https://github.com/Ezequie1Sc/jobly.git
+git clone https://github.com/Ezequie1Sc/jobly-jobs.git
+```
 
-cd jobly
+Accede al directorio del proyecto:
 
+```bash
+cd jobly-jobs
+```
+
+Instala las dependencias:
+
+```bash
 npm install
+```
 
+Inicia el servidor de desarrollo:
+
+```bash
 ng serve
 ```
 
@@ -83,17 +113,39 @@ http://localhost:4200
 
 ---
 
-## Filosofía de diseño
+## Filosofía de Diseño
 
-Jobly fue desarrollado siguiendo principios de diseño centrados en la simplicidad, la accesibilidad y la experiencia del usuario.
+Jobly fue desarrollado siguiendo principios de simplicidad, accesibilidad y experiencia de usuario.
 
-Su interfaz busca reducir distracciones y permitir que las oportunidades laborales sean el centro de atención.
+La interfaz busca reducir distracciones, facilitar la navegación y permitir que las oportunidades laborales sean el centro de atención. Cada componente fue diseñado con un enfoque moderno, priorizando la claridad visual y el rendimiento.
 
 ---
 
 ## Objetivo
 
-Crear una plataforma moderna que ayude a profesionales y estudiantes a descubrir oportunidades laborales de calidad, conectando talento con empresas de forma sencilla y eficiente.
+Crear una plataforma moderna que ayude a estudiantes, desarrolladores y profesionales a descubrir oportunidades laborales de calidad, conectando talento con empresas de forma sencilla, rápida y eficiente.
+
+---
+
+## Demo
+
+Sitio web:
+
+https://jobly-jobs.vercel.app/
+
+Repositorio:
+
+https://github.com/Ezequie1Sc/jobly-jobs
+
+---
+
+## Contribuciones
+
+Las contribuciones son bienvenidas.
+
+Si deseas mejorar la plataforma, corregir errores, optimizar el rendimiento o proponer nuevas funcionalidades, puedes realizar un fork del proyecto y enviar un Pull Request.
+
+Toda sugerencia o crítica constructiva será apreciada.
 
 ---
 
@@ -101,18 +153,23 @@ Crear una plataforma moderna que ayude a profesionales y estudiantes a descubrir
 
 **Orlando Ezequiel Salazar Cruz**
 
-Ingeniero en Sistemas Computacionales | Desarrollador de Software
+Ingeniero en Sistemas Computacionales
+Desarrollador de Software
 
-GitHub: Ezequie1Sc
+GitHub: https://github.com/Ezequie1Sc
+
+LinkedIn: https://www.linkedin.com/in/ezequiel-salazar-194975340/
 
 ---
 
 ## Licencia
 
-Este proyecto se encuentra bajo la licencia MIT.
+Este proyecto se distribuye bajo la licencia MIT.
+
+---
 
 <div align="center">
 
-**Jobly — Conectando talento con oportunidades.**
+### Jobly — Conectando talento con oportunidades.
 
 </div>
