@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-[#f4f1ec] text-[#141414] overflow-hidden">
 
   <!-- HERO -->
-  <section class="max-w-7xl mx-auto px-5 md:px-8 pt-10 pb-16">
+  <section class="max-w-7xl mx-auto px-5 md:px-8 pt-10 pb-16 animate-fade-in-up">
     <div class="rounded-[2rem] bg-[#fbfaf7] border border-black/5 shadow-[0_30px_80px_rgba(0,0,0,0.08)] overflow-hidden">
       <div class="grid lg:grid-cols-2 gap-8 items-center p-6 md:p-10 lg:p-14">
         <div>
@@ -17,16 +17,16 @@
             <button
               type="button"
               (click)="goToJobs()"
-              class="bg-[#141414] text-white px-7 py-4 rounded-full font-medium hover:scale-[1.02] transition flex items-center justify-center gap-2"
+              class="bg-[#141414] text-white px-7 py-4 rounded-full font-medium hover:scale-[1.02] transition-all duration-300 ease-out flex items-center justify-center gap-2 group"
             >
               {{ t('home.exploreJobs') }}
-              <span>→</span>
+              <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
             </button>
 
             <button
               type="button"
               (click)="goToFavorites()"
-              class="bg-white border border-black/10 text-[#141414] px-7 py-4 rounded-full font-medium hover:bg-[#f3f3f3] transition text-center"
+              class="bg-white border border-black/10 text-[#141414] px-7 py-4 rounded-full font-medium hover:bg-[#f3f3f3] transition-all duration-300 ease-out text-center"
             >
               {{ t('home.viewFavorites') }}
             </button>
@@ -39,7 +39,7 @@
               src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80"
               alt="Equipo tech colaborando"
               loading="eager"
-              class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
+              class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
           </div>
 
@@ -48,7 +48,7 @@
               src="./oficina-tech.jpg"
               alt="Trabajo remoto global"
               loading="lazy"
-              class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
+              class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
           </div>
 
@@ -57,7 +57,7 @@
               src="https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&w=800&q=80"
               alt="Diseñador trabajando"
               loading="lazy"
-              class="w-full h-full object-cover group-hover:scale-105 transition duration-700"
+              class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
           </div>
         </div>
@@ -66,7 +66,7 @@
   </section>
 
   <!-- CATEGORÍAS -->
-  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-16">
+  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-16 animate-fade-in-up animate-delay-1">
     <div class="flex items-center gap-4 mb-6">
       <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
         {{ t('home.techSection') }}
@@ -80,25 +80,24 @@
           @for (category of techCategories; track category) {
             <a
               routerLink="/jobs"
-              class="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-black/5 text-sm font-medium text-[#5f5a53] hover:bg-[#141414] hover:text-white hover:border-[#141414] transition-all duration-300 shadow-sm hover:shadow-md flex-shrink-0"
+              class="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-black/5 text-sm font-medium text-[#5f5a53] hover:bg-[#141414] hover:text-white hover:border-[#141414] transition-all duration-300 ease-out shadow-sm hover:shadow-md flex-shrink-0"
             >
               {{ category }}
             </a>
           }
-
+          <!-- Repeticiones para el carrusel -->
           @for (category of techCategories; track category) {
             <a
               routerLink="/jobs"
-              class="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-black/5 text-sm font-medium text-[#5f5a53] hover:bg-[#141414] hover:text-white hover:border-[#141414] transition-all duration-300 shadow-sm hover:shadow-md flex-shrink-0"
+              class="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-black/5 text-sm font-medium text-[#5f5a53] hover:bg-[#141414] hover:text-white hover:border-[#141414] transition-all duration-300 ease-out shadow-sm hover:shadow-md flex-shrink-0"
             >
               {{ category }}
             </a>
           }
-
           @for (category of techCategories; track category) {
             <a
               routerLink="/jobs"
-              class="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-black/5 text-sm font-medium text-[#5f5a53] hover:bg-[#141414] hover:text-white hover:border-[#141414] transition-all duration-300 shadow-sm hover:shadow-md flex-shrink-0"
+              class="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-black/5 text-sm font-medium text-[#5f5a53] hover:bg-[#141414] hover:text-white hover:border-[#141414] transition-all duration-300 ease-out shadow-sm hover:shadow-md flex-shrink-0"
             >
               {{ category }}
             </a>
@@ -109,11 +108,11 @@
   </section>
 
   <!-- BENTO INFO -->
-  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20">
+  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20 animate-fade-in-up animate-delay-2">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
 
-      <!-- Card Grande Blanca (Intro) -->
-      <article class="md:col-span-2 bg-white rounded-[2rem] p-8 md:p-10 border border-black/5 flex flex-col justify-between min-h-[256px]">
+      <!-- Card Grande Blanca -->
+      <article class="md:col-span-2 bg-white rounded-[2rem] p-8 md:p-10 border border-black/5 flex flex-col justify-between min-h-[256px] transition-all duration-300 ease-out hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)]">
         <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
           {{ t('home.processTitle') }}
         </span>
@@ -129,13 +128,9 @@
         </div>
       </article>
 
-      <!-- 01 Explora -->
+      <!-- Features Cards -->
       <article class="feature-card md:col-span-1 min-h-[256px]">
-        <img
-          src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80"
-          alt="Explorar empleos"
-          loading="lazy"
-        />
+        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80" alt="Explorar empleos" loading="lazy" />
         <div>
           <span class="text-white/30 text-xs font-medium tracking-wide">01</span>
           <h3 class="text-2xl font-semibold tracking-tight">{{ t('home.explore') }}</h3>
@@ -143,13 +138,8 @@
         </div>
       </article>
 
-      <!-- 02 Filtra -->
       <article class="feature-card md:col-span-1 min-h-[256px]">
-        <img
-          src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=600&q=80"
-          alt="Filtrar por categoría"
-          loading="lazy"
-        />
+        <img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=600&q=80" alt="Filtrar por categoría" loading="lazy" />
         <div>
           <span class="text-white/30 text-xs font-medium tracking-wide">02</span>
           <h3 class="text-2xl font-semibold tracking-tight">{{ t('home.filter') }}</h3>
@@ -157,13 +147,8 @@
         </div>
       </article>
 
-      <!-- 03 Guarda -->
       <article class="feature-card md:col-span-1 min-h-[256px]">
-        <img
-          src="https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?auto=format&fit=crop&w=600&q=80"
-          alt="Guardar favoritos"
-          loading="lazy"
-        />
+        <img src="https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?auto=format&fit=crop&w=600&q=80" alt="Guardar favoritos" loading="lazy" />
         <div>
           <span class="text-white/30 text-xs font-medium tracking-wide">03</span>
           <h3 class="text-2xl font-semibold tracking-tight">{{ t('home.save') }}</h3>
@@ -171,13 +156,9 @@
         </div>
       </article>
 
-      <!-- 04 Vacantes destacadas (Protagonista) -->
+      <!-- Vacantes destacadas -->
       <article class="feature-card md:col-span-2 min-h-[256px]">
-        <img
-          src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1200&q=80"
-          alt="Vacantes destacadas"
-          loading="lazy"
-        />
+        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1200&q=80" alt="Vacantes destacadas" loading="lazy" />
         <div>
           <h3 class="text-white text-2xl md:text-3xl font-semibold tracking-[-0.04em] leading-tight">
             {{ t('home.recentJobs') }}
@@ -185,13 +166,8 @@
         </div>
       </article>
 
-      <!-- 05 Aplica -->
       <article class="feature-card md:col-span-1 min-h-[256px]">
-        <img
-          src="./remotea.webp"
-          alt="Aplicar a vacante"
-          loading="lazy"
-        />
+        <img src="./remotea.webp" alt="Aplicar a vacante" loading="lazy" />
         <div>
           <span class="text-white/30 text-xs font-medium tracking-wide">04</span>
           <h3 class="text-2xl font-semibold tracking-tight">{{ t('home.apply') }}</h3>
@@ -203,7 +179,7 @@
   </section>
 
   <!-- VACANTES -->
-  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20">
+  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20 animate-fade-in-up animate-delay-3">
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
       <div>
         <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
@@ -218,7 +194,7 @@
       <button
         type="button"
         (click)="goToJobs()"
-        class="bg-[#141414] text-white px-6 py-3 rounded-full font-medium hover:scale-[1.02] transition w-fit"
+        class="bg-[#141414] text-white px-6 py-3 rounded-full font-medium hover:scale-[1.02] transition-all duration-300 ease-out w-fit"
       >
         {{ t('home.seeAll') }} →
       </button>
@@ -227,13 +203,8 @@
     @if (loading) {
       <div class="bg-white rounded-[2rem] p-10 border border-black/5 flex flex-col justify-center items-center min-h-[200px] gap-4">
         <div class="loader-wave">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
+          <span></span><span></span><span></span><span></span><span></span>
         </div>
-
         <p class="text-sm text-[#6b665f] font-medium tracking-wide animate-pulse">
           {{ t('home.recentJobs') }}
         </p>
@@ -243,12 +214,7 @@
     @if (!loading && error && latestJobs.length === 0) {
       <div class="bg-white rounded-[2rem] p-10 text-center border border-black/5">
         <p class="text-gray-500">{{ error }}</p>
-
-        <button
-          type="button"
-          (click)="loadLatestJobs()"
-          class="mt-5 bg-[#141414] text-white px-6 py-3 rounded-full hover:scale-[1.02] transition"
-        >
+        <button type="button" (click)="loadLatestJobs()" class="mt-5 bg-[#141414] text-white px-6 py-3 rounded-full hover:scale-[1.02] transition-all duration-300 ease-out">
           {{ t('home.recentJobs') }}
         </button>
       </div>
@@ -262,93 +228,35 @@
             <p class="text-sm font-semibold text-[#141414]">
               {{ t('home.recentJobsDescription') }}
             </p>
-
             <p class="text-sm text-[#6b665f]">
               {{ t('home.recentJobsDescription') }}
             </p>
           </div>
 
           <div class="hidden md:flex items-center gap-2">
-            <button
-              type="button"
-              (click)="scrollCarousel('left')"
-              class="carousel-control"
-              aria-label="Mover a la izquierda"
-            >
-              ←
-            </button>
-
-            <button
-              type="button"
-              (click)="scrollCarousel('right')"
-              class="carousel-control carousel-control-dark"
-              aria-label="Mover a la derecha"
-            >
-              →
-            </button>
+            <button type="button" (click)="scrollCarousel('left')" class="carousel-control hover:scale-105 transition-all duration-300 ease-out">←</button>
+            <button type="button" (click)="scrollCarousel('right')" class="carousel-control carousel-control-dark hover:scale-105 transition-all duration-300 ease-out">→</button>
           </div>
         </div>
 
-        <!-- SELECTOR DE IDIOMA CORREGIDO -->
+        <!-- SELECTOR DE IDIOMA -->
         <div class="home-translation-row">
           <div>
-            <span class="home-translation-title">
-              {{ t('home.jobsLanguage') }}
-            </span>
-            <p class="home-translation-text">
-              {{ t('home.jobsLanguageDescription') }}
-            </p>
+            <span class="home-translation-title">{{ t('home.jobsLanguage') }}</span>
+            <p class="home-translation-text">{{ t('home.jobsLanguageDescription') }}</p>
           </div>
 
           <div class="home-translation-actions">
-            <button
-              type="button"
-              class="home-translation-btn"
-              [class.active]="selectedHomeJobsLanguage === 'original'"
-              [disabled]="translatingHomeJobs"
-              (click)="changeHomeJobsLanguage('original')"
-            >
-              {{ t('home.original') }}
-            </button>
-
-            <button
-              type="button"
-              class="home-translation-btn"
-              [class.active]="selectedHomeJobsLanguage === 'es'"
-              [disabled]="translatingHomeJobs"
-              (click)="changeHomeJobsLanguage('es')"
-            >
-              {{ t('home.spanish') }}
-            </button>
-
-            <button
-              type="button"
-              class="home-translation-btn"
-              [class.active]="selectedHomeJobsLanguage === 'en'"
-              [disabled]="translatingHomeJobs"
-              (click)="changeHomeJobsLanguage('en')"
-            >
-              {{ t('home.english') }}
-            </button>
+            <button type="button" class="home-translation-btn" [class.active]="selectedHomeJobsLanguage === 'original'" [disabled]="translatingHomeJobs" (click)="changeHomeJobsLanguage('original')">{{ t('home.original') }}</button>
+            <button type="button" class="home-translation-btn" [class.active]="selectedHomeJobsLanguage === 'es'" [disabled]="translatingHomeJobs" (click)="changeHomeJobsLanguage('es')">{{ t('home.spanish') }}</button>
+            <button type="button" class="home-translation-btn" [class.active]="selectedHomeJobsLanguage === 'en'" [disabled]="translatingHomeJobs" (click)="changeHomeJobsLanguage('en')">{{ t('home.english') }}</button>
           </div>
 
-          @if (translatingHomeJobs) {
-            <span class="home-translation-status">
-              {{ t('home.recentJobsDescription') }}
-            </span>
-          }
-
-          @if (homeTranslationError) {
-            <span class="home-translation-error">
-              {{ homeTranslationError }}
-            </span>
-          }
+          @if (translatingHomeJobs) { <span class="home-translation-status">{{ t('home.recentJobsDescription') }}</span> }
+          @if (homeTranslationError) { <span class="home-translation-error">{{ homeTranslationError }}</span> }
         </div>
 
-        <div
-          #jobsCarousel
-          class="jobs-carousel flex gap-5 overflow-x-auto scroll-smooth pb-4"
-        >
+        <div #jobsCarousel class="jobs-carousel flex gap-5 overflow-x-auto scroll-smooth pb-4">
           @for (job of latestJobs; track job.slug) {
             <div class="carousel-item shrink-0 w-[88%] sm:w-[70%] md:w-[48%] xl:w-[32%]">
               <app-job-card [job]="job"></app-job-card>
@@ -357,13 +265,8 @@
         </div>
 
         <div class="md:hidden flex justify-center gap-3 mt-4">
-          <button type="button" (click)="scrollCarousel('left')" class="carousel-mobile-btn">
-            {{ t('home.recentJobs') }}
-          </button>
-
-          <button type="button" (click)="scrollCarousel('right')" class="carousel-mobile-btn carousel-mobile-btn-dark">
-            {{ t('home.recentJobs') }}
-          </button>
+          <button type="button" (click)="scrollCarousel('left')" class="carousel-mobile-btn transition-all duration-200 ease-out hover:scale-105">{{ t('home.recentJobs') }}</button>
+          <button type="button" (click)="scrollCarousel('right')" class="carousel-mobile-btn carousel-mobile-btn-dark transition-all duration-200 ease-out hover:scale-105">{{ t('home.recentJobs') }}</button>
         </div>
       </div>
     }
@@ -374,32 +277,20 @@
       </div>
     }
   </section>
-  
 
   <!-- CTA FINAL -->
-  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20">
+  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20 animate-fade-in-up animate-delay-4">
     <div class="relative overflow-hidden rounded-[2.5rem] bg-[#141414] text-white p-8 md:p-14">
-      <img
-        src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80"
-        alt="Oficina moderna tech"
-        loading="lazy"
-        class="absolute inset-0 w-full h-full object-cover opacity-20"
-      />
-
+      <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80" alt="Oficina moderna tech" loading="lazy" class="absolute inset-0 w-full h-full object-cover opacity-20" />
+      
       <div class="relative z-10 flex flex-col items-center text-center max-w-3xl mx-auto">
         <h2 class="text-4xl md:text-6xl font-semibold tracking-[-0.06em] leading-none">
           {{ t('home.ctaTitle') }}
         </h2>
-
         <p class="text-white/70 mt-5 max-w-2xl">
           {{ t('home.ctaDescription') }}
         </p>
-
-        <button
-          type="button"
-          (click)="goToJobs()"
-          class="inline-flex mt-8 bg-white text-[#141414] px-7 py-4 rounded-full font-medium hover:scale-[1.02] transition"
-        >
+        <button type="button" (click)="goToJobs()" class="inline-flex mt-8 bg-white text-[#141414] px-7 py-4 rounded-full font-medium hover:scale-[1.02] transition-all duration-300 ease-out">
           {{ t('home.startSearch') }} →
         </button>
       </div>
