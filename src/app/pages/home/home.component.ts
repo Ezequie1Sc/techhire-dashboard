@@ -119,10 +119,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
       )
       .subscribe({
         next: (response) => {
-          const jobs = (response.data || []).slice(0, 8);
+          // 1. Obtener todos los datos de la respuesta
+          const allJobs = response.data || [];
 
-          this.originalLatestJobs = jobs.map(job => ({ ...job }));
-          this.latestJobs = jobs.map(job => ({ ...job }));
+          // 2.  ORDENAR POR FECHA (Los más recientes primero)
+          const sortedJobs = allJobs.sort((a, b) => {
+            const dateA = a.created_at || 0;
+            const dateB = b.created_at || 0;
+            return dateB - dateA; // Orden descendente
+          });
+
+          // 3. Tomar solo los primeros 8 trabajos (los más recientes)
+          const latest = sortedJobs.slice(0, 8);
+
+          // 4. Guardar en las variables del componente
+          this.originalLatestJobs = latest.map(job => ({ ...job }));
+          this.latestJobs = latest.map(job => ({ ...job }));
 
           if (this.latestJobs.length === 0) {
             this.error = 'No se encontraron vacantes disponibles.';
