@@ -11,6 +11,73 @@ button {
   will-change: transform;
 }
 
+/* ===== ANIMACIONES GLOBALES MODERNAS ===== */
+
+/* 1. Entrada suave de la página */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 2. Entrada del panel de filtros */
+@keyframes filterSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-fadeIn {
+  animation: filterSlideIn 0.35s cubic-bezier(0.2, 0, 0, 1) forwards;
+}
+
+/* 3. Loader Wave (Puntitos que suben y bajan como serpiente) */
+.loader-wave {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 40px;
+}
+
+.loader-wave span {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #141414;
+  animation: waveMove 1.2s ease-in-out infinite;
+}
+
+.loader-wave span:nth-child(1) { animation-delay: 0s; }
+.loader-wave span:nth-child(2) { animation-delay: 0.1s; }
+.loader-wave span:nth-child(3) { animation-delay: 0.2s; }
+.loader-wave span:nth-child(4) { animation-delay: 0.3s; }
+.loader-wave span:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes waveMove {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.1);
+    opacity: 1;
+  }
+}
+
+/* ===== PANEL DE FILTROS ===== */
+
 .jobs-filter-panel {
   background: #fbfaf7;
   border: 1px solid rgba(20, 20, 20, 0.06);
@@ -18,6 +85,7 @@ button {
   padding: 1.75rem;
   margin-bottom: 2.5rem;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+  animation: fadeInUp 0.6s cubic-bezier(0.2, 0, 0, 1) forwards;
 }
 
 .jobs-search-row {
@@ -155,6 +223,7 @@ button {
   border-radius: 1.2rem;
   padding: 0.4rem;
   box-shadow: 0 18px 45px rgba(20, 20, 20, 0.12);
+  animation: filterSlideIn 0.2s ease-out forwards;
 }
 
 .custom-select-option {
@@ -258,6 +327,35 @@ button {
   padding: 0.45rem 0.85rem;
 }
 
+/* ===== BOTONES DE ELIMINAR FILTROS ===== */
+.jobs-filter-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(20, 20, 20, 0.06);
+  color: #6b665f;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+  margin-left: 0.3rem;
+}
+
+.jobs-filter-remove:hover {
+  background: #141414;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.jobs-filter-remove svg {
+  width: 10px;
+  height: 10px;
+}
+
+/* ===== TRADUCCIÓN ===== */
 .jobs-translation-row {
   margin-bottom: 1.25rem;
   padding: 1rem;
@@ -303,6 +401,7 @@ button {
   font-size: 0.78rem;
   font-weight: 700;
   cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .jobs-translation-btn.active {
@@ -327,40 +426,7 @@ button {
   font-weight: 700;
 }
 
-.loader-wave {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  height: 40px;
-}
-
-.loader-wave span {
-  display: block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #141414;
-  animation: waveMove 1.2s ease-in-out infinite;
-}
-
-.loader-wave span:nth-child(1) { animation-delay: 0s; }
-.loader-wave span:nth-child(2) { animation-delay: 0.1s; }
-.loader-wave span:nth-child(3) { animation-delay: 0.2s; }
-.loader-wave span:nth-child(4) { animation-delay: 0.3s; }
-.loader-wave span:nth-child(5) { animation-delay: 0.4s; }
-
-@keyframes waveMove {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-    opacity: 0.4;
-  }
-  50% {
-    transform: translateY(-20px) scale(1.1);
-    opacity: 1;
-  }
-}
-
+/* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
   .jobs-filter-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -415,97 +481,5 @@ button {
 
   .jobs-translation-btn {
     flex: 1;
-  }
-}
-/* ===== FILTER REMOVE BUTTONS ===== */
-.jobs-filter-remove {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  border: none;
-  border-radius: 50%;
-  background: rgba(20, 20, 20, 0.06);
-  color: #6b665f;
-  cursor: pointer;
-  padding: 0;
-  transition: all 0.2s ease;
-  margin-left: 0.3rem;
-}
-
-.jobs-filter-remove:hover {
-  background: #141414;
-  color: #ffffff;
-  transform: scale(1.1);
-}
-
-.jobs-filter-remove svg {
-  width: 10px;
-  height: 10px;
-
-}
-:host {
-  display: block;
-}
-
-input,
-button {
-  font-family: inherit;
-}
-
-button {
-  will-change: transform;
-}
-
-/* Animación para el panel avanzado */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.3s ease-out forwards;
-}
-
-/* Loader Wave */
-.loader-wave {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  height: 40px;
-}
-
-.loader-wave span {
-  display: block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #141414;
-  animation: waveMove 1.2s ease-in-out infinite;
-}
-
-.loader-wave span:nth-child(1) { animation-delay: 0s; }
-.loader-wave span:nth-child(2) { animation-delay: 0.1s; }
-.loader-wave span:nth-child(3) { animation-delay: 0.2s; }
-.loader-wave span:nth-child(4) { animation-delay: 0.3s; }
-.loader-wave span:nth-child(5) { animation-delay: 0.4s; }
-
-@keyframes waveMove {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-    opacity: 0.4;
-  }
-  50% {
-    transform: translateY(-20px) scale(1.1);
-    opacity: 1;
-  }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  button {
-    will-change: auto;
   }
 }
