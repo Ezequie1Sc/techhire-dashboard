@@ -1,59 +1,118 @@
-# TechhireDashboard
+<div align="center">
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.0.
+# Jobly
 
-## Development server
+### Descubre oportunidades. Construye tu futuro.
 
-To start a local development server, run:
+Plataforma moderna de búsqueda de empleo diseñada para conectar talento tecnológico con oportunidades laborales en toda Latinoamérica.
+
+<br>
+
+<img src="./public/hero.png" alt="Vista previa de Jobly" width="100%" />
+
+</div>
+
+---
+
+## Acerca del proyecto
+
+Jobly es una plataforma web enfocada en facilitar la búsqueda de empleo para desarrolladores, estudiantes y profesionales del sector tecnológico.
+
+La aplicación reúne vacantes de diferentes fuentes en una experiencia rápida, intuitiva y accesible, permitiendo a los usuarios descubrir oportunidades laborales de manera eficiente.
+
+---
+
+## Características principales
+
+* Búsqueda de vacantes en tiempo real.
+* Sistema de favoritos.
+* Vacantes remotas, híbridas y presenciales.
+* Interfaz moderna y minimalista.
+* Diseño totalmente responsive.
+* Soporte multilenguaje.
+* Experiencia optimizada para dispositivos móviles y escritorio.
+
+---
+
+## Tecnologías utilizadas
+
+| Tecnología     | Uso                      |
+| -------------- | ------------------------ |
+| Angular 18     | Desarrollo Frontend      |
+| TypeScript     | Lógica de la aplicación  |
+| Tailwind CSS   | Estilos y diseño         |
+| RxJS           | Programación reactiva    |
+| Vercel         | Despliegue y alojamiento |
+| APIs de empleo | Obtención de vacantes    |
+
+---
+
+## Arquitectura del proyecto
 
 ```bash
+src/
+├── app/
+│   ├── core/
+│   ├── models/
+│   ├── pages/
+│   ├── shared/
+│   └── services/
+├── assets/
+└── environments/
+```
+
+---
+
+## Instalación
+
+```bash
+git clone https://github.com/Ezequie1Sc/jobly.git
+
+cd jobly
+
+npm install
+
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+La aplicación estará disponible en:
 
 ```bash
-ng generate component component-name
+http://localhost:4200
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## Filosofía de diseño
 
-## Building
+Jobly fue desarrollado siguiendo principios de diseño centrados en la simplicidad, la accesibilidad y la experiencia del usuario.
 
-To build the project run:
+Su interfaz busca reducir distracciones y permitir que las oportunidades laborales sean el centro de atención.
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Objetivo
 
-## Running unit tests
+Crear una plataforma moderna que ayude a profesionales y estudiantes a descubrir oportunidades laborales de calidad, conectando talento con empresas de forma sencilla y eficiente.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+---
 
-```bash
-ng test
-```
+## Autor
 
-## Running end-to-end tests
+**Orlando Ezequiel Salazar Cruz**
 
-For end-to-end (e2e) testing, run:
+Ingeniero en Sistemas Computacionales | Desarrollador de Software
 
-```bash
-ng e2e
-```
+GitHub: Ezequie1Sc
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+## Licencia
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Este proyecto se encuentra bajo la licencia MIT.
+
+<div align="center">
+
+**Jobly — Conectando talento con oportunidades.**
+
+</div>
