@@ -176,7 +176,7 @@ button {
     animation-play-state: paused;
   }
 }
-/* ===== FEATURE CARDS MINIMALISTAS ===== */
+/* ===== FEATURE CARDS ===== */
 
 .feature-card {
   position: relative;
@@ -189,12 +189,18 @@ button {
 .feature-card img {
   position: absolute;
   inset: 0;
+
   width: 100%;
   height: 100%;
+
   object-fit: cover;
   object-position: center;
 
-  filter: saturate(0.8) brightness(0.88) contrast(0.95);
+  /* Menos color, pero sin matar la imagen */
+  filter:
+    saturate(0.72)
+    brightness(0.82)
+    contrast(0.95);
 
   transition:
     transform 0.6s ease,
@@ -203,33 +209,42 @@ button {
 
 .feature-card:hover img {
   transform: scale(1.03);
-  filter: saturate(0.9) brightness(0.92) contrast(1);
+
+  filter:
+    saturate(0.8)
+    brightness(0.86)
+    contrast(1);
 }
 
+/* Overlay elegante */
 .feature-card::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.50) 0%,
-    rgba(0, 0, 0, 0.15) 45%,
-    rgba(0, 0, 0, 0.03) 75%,
-    transparent 100%
-  );
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(20, 20, 20, 0.72) 0%,
+      rgba(20, 20, 20, 0.42) 35%,
+      rgba(20, 20, 20, 0.18) 65%,
+      transparent 100%
+    );
+
   z-index: 1;
   pointer-events: none;
 }
 
+/* Contenido */
 .feature-card > div {
   position: absolute;
   left: 28px;
   right: 28px;
   bottom: 26px;
   z-index: 2;
-  color: #ffffff;
 }
 
+/* Número */
 .feature-card span {
   display: block;
   margin-bottom: 0.65rem;
@@ -242,33 +257,52 @@ button {
   color: rgba(255, 255, 255, 0.48);
 }
 
+/* Título moderno */
 .feature-card h3 {
   margin: 0 0 0.35rem;
-  font-size: 1.42rem;
+
+  font-size: 1.4rem;
   font-weight: 600;
   line-height: 1.05;
   letter-spacing: -0.045em;
+
   color: #ffffff;
 }
 
+/* Descripción */
 .feature-card p {
   margin: 0;
+
   max-width: 220px;
 
   font-size: 0.84rem;
   font-weight: 400;
   line-height: 1.45;
-  letter-spacing: -0.01em;
 
-  color: rgba(255, 255, 255, 0.68);
+  color: rgba(255, 255, 255, 0.72);
 }
 
-/* Card grande: Vacantes destacadas */
+/* Vacantes destacadas */
 .feature-card.md\:col-span-2 h3 {
-  max-width: 420px;
   font-size: 1.8rem;
-  line-height: 1;
+  max-width: 420px;
   letter-spacing: -0.055em;
+}
+
+/* Hover */
+.feature-card:hover {
+  transform: translateY(-2px);
+}
+
+.feature-card {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.08);
 }
 
 /* Mobile */
@@ -285,7 +319,7 @@ button {
   }
 
   .feature-card h3 {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
   }
 
   .feature-card p {
