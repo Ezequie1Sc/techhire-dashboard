@@ -19,6 +19,11 @@ export const ES = {
     recentJobsDescription: 'Desliza para ver más oportunidades.',
     seeAll: 'Ver todas',
     jobsLanguage: 'Idioma de vacantes',
+    jobsLanguageDescription: 'Traduce los títulos y tecnologías de las vacantes recientes.',
+    original: 'Original',
+    spanish: 'Español',
+    english: 'English',
+    
     ctaTitle: 'Tu próximo empleo puede empezar hoy.',
     ctaDescription: 'Explora vacantes, guarda tus favoritas y construye una búsqueda laboral más organizada.',
     startSearch: 'Comenzar búsqueda'

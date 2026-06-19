@@ -19,6 +19,11 @@ export const EN = {
     recentJobsDescription: 'Swipe to discover more opportunities.',
     seeAll: 'View All',
     jobsLanguage: 'Jobs Language',
+    jobsLanguageDescription: 'Translate the titles and technologies of recent jobs.',
+    original: 'Original',
+    spanish: 'Spanish',
+    english: 'English',
+    
     ctaTitle: 'Your next job could start today.',
     ctaDescription: 'Explore opportunities, save favorites and organize your job search.',
     startSearch: 'Start Searching'
