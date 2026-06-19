@@ -1,5 +1,13 @@
 const { adzuna } = require('../config/env');
 
+const ADZUNA_COUNTRIES = [
+  { code: 'mx', label: 'México' },
+  { code: 'br', label: 'Brasil' },
+  { code: 'ar', label: 'Argentina' },
+  { code: 'cl', label: 'Chile' },
+  { code: 'co', label: 'Colombia' }
+];
+
 async function getAdzunaJobs(pages) {
   const appId = adzuna.appId;
   const appKey = adzuna.appKey;
@@ -9,50 +17,62 @@ async function getAdzunaJobs(pages) {
     throw new Error('Faltan variables ADZUNA_APP_ID o ADZUNA_APP_KEY');
   }
 
-  const requests = pages.map((page) => {
-    const url =
-      `https://api.adzuna.com/v1/api/jobs/mx/search/${page}` +
-      `?app_id=${encodeURIComponent(appId)}` +
-      `&app_key=${encodeURIComponent(appKey)}` +
-      `&results_per_page=${perPage}` +
-      `&what=developer`;
+  const requests = ADZUNA_COUNTRIES.flatMap((country) =>
+    pages.map((page) => {
+      const url =
+        `https://api.adzuna.com/v1/api/jobs/${country.code}/search/${page}` +
+        `?app_id=${encodeURIComponent(appId)}` +
+        `&app_key=${encodeURIComponent(appKey)}` +
+        `&results_per_page=${perPage}` +
+        `&what=developer`;
 
-    return fetch(url, {
-      headers: {
-        Accept: 'application/json',
-        'User-Agent': 'Jobly'
-      }
-    }).then(async (response) => {
-      if (!response.ok) {
-        throw new Error(`Adzuna HTTP ${response.status}`);
-      }
+      return fetch(url, {
+        headers: {
+          Accept: 'application/json',
+          'User-Agent': 'Jobly'
+        }
+      })
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error(`Adzuna ${country.code.toUpperCase()} HTTP ${response.status}`);
+          }
 
-      return response.json();
-    });
-  });
+          return response.json();
+        })
+        .then((data) => ({
+          country,
+          results: Array.isArray(data.results) ? data.results : []
+        }));
+    })
+  );
 
   const responses = await Promise.allSettled(requests);
 
   const rawJobs = responses.flatMap((response) => {
     if (response.status !== 'fulfilled') return [];
-    return Array.isArray(response.value.results) ? response.value.results : [];
+
+    return response.value.results.map((job) => ({
+      ...job,
+      source_country: response.value.country
+    }));
   });
 
   return rawJobs.map((job) => {
     const title = job.title || 'Vacante sin título';
+    const countryName = job.source_country?.label || 'LATAM';
 
     return {
-      slug: `adzuna-${job.id}-${slugify(title)}`,
+      slug: `adzuna-${job.source_country?.code || 'latam'}-${job.id}-${slugify(title)}`,
       title,
       company_name: job.company?.display_name || 'Empresa no especificada',
-      location: job.location?.display_name || 'México',
+      location: job.location?.display_name || countryName,
       remote: isRemoteText(`${job.title || ''} ${job.description || ''} ${job.location?.display_name || ''}`),
       url: job.redirect_url || '',
       description: job.description || '',
       tags: buildCleanTags([
         job.category?.label,
         job.location?.display_name,
-        'México',
+        countryName,
         'Adzuna'
       ]),
       job_types: [job.category?.label || 'General'],
@@ -78,7 +98,8 @@ function isRemoteText(text) {
     cleanText.includes('remote') ||
     cleanText.includes('remoto') ||
     cleanText.includes('home office') ||
-    cleanText.includes('trabajo desde casa')
+    cleanText.includes('trabajo desde casa') ||
+    cleanText.includes('work from home')
   );
 }
 
