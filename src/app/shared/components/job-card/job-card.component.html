@@ -2,57 +2,31 @@
   [routerLink]="['/jobs', job.slug]"
   class="group block h-full rounded-[2rem] bg-[#fbfaf7] border border-black/5 p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(0,0,0,0.10)]"
 >
-  <!-- Contenedor Flex para controlar la altura -->
   <div class="flex flex-col h-full">
 
-    <!-- Header -->
+    <!-- Header (Empresa + Favorito) -->
     <div class="flex items-start justify-between gap-4">
       <div class="flex items-center gap-3 min-w-0">
         <div class="w-12 h-12 rounded-2xl bg-[#141414] text-white flex items-center justify-center text-lg font-semibold shrink-0">
           {{ job.company_name.charAt(0) }}
         </div>
-
         <div class="min-w-0">
-          <p class="text-sm font-medium text-[#6b665f] truncate">
-            {{ job.company_name }}
-          </p>
-          <p class="text-xs text-[#9b9388] truncate">
-            {{ job.location || 'Ubicación no especificada' }}
-          </p>
+          <p class="text-sm font-medium text-[#6b665f] truncate">{{ job.company_name }}</p>
+          <p class="text-xs text-[#9b9388] truncate">{{ job.location || 'Ubicación no especificada' }}</p>
         </div>
       </div>
-
       <!-- Favorite -->
-      <button
-        type="button"
-        (click)="toggleFavorite($event)"
-        class="w-11 h-11 rounded-full bg-white border border-black/5 flex items-center justify-center transition hover:scale-105 hover:bg-[#f4f1ec]"
-        [class.text-red-500]="isFavorite"
-        [class.text-[#b8afa4]]="!isFavorite"
-        aria-label="Agregar a favoritos"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-5 h-5"
-          [attr.fill]="isFavorite ? 'currentColor' : 'none'"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-          />
+      <button type="button" (click)="toggleFavorite($event)" class="w-11 h-11 rounded-full bg-white border border-black/5 flex items-center justify-center transition hover:scale-105 hover:bg-[#f4f1ec]" [class.text-red-500]="isFavorite" [class.text-[#b8afa4]]="!isFavorite">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" [attr.fill]="isFavorite ? 'currentColor' : 'none'" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
         </svg>
       </button>
     </div>
 
-    <!-- Contenido central (Crece con flex-1) -->
+    <!-- Contenido central -->
     <div class="flex flex-col flex-1 mt-4">
-      
       <!-- Job title -->
-      <h3 class="text-2xl font-semibold tracking-[-0.04em] leading-tight text-[#141414] mb-3 group-hover:text-[#5d554b] transition-colors line-clamp-2">
+      <h3 class="text-2xl font-semibold tracking-[-0.04em] leading-tight text-[#141414] mb-4 group-hover:text-[#5d554b] transition-colors line-clamp-2">
         {{ job.title }}
       </h3>
 
@@ -60,56 +34,49 @@
       <div class="flex flex-wrap gap-2 mb-4">
         @if (job.remote) {
           <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#141414] text-white text-xs font-medium">
-            <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-            Remoto
+            <span class="w-1.5 h-1.5 rounded-full bg-white"></span> Remoto
           </span>
         }
-
         @for (type of job.job_types.slice(0, 2); track type) {
-          <span class="px-3 py-1.5 rounded-full bg-white border border-black/5 text-[#6b665f] text-xs font-medium">
-            {{ type }}
-          </span>
+          <span class="px-3 py-1.5 rounded-full bg-white border border-black/5 text-[#6b665f] text-xs font-medium">{{ type }}</span>
         }
       </div>
 
-      <!-- Description (Ocupa el espacio restante para empujar el footer) -->
+      <!-- Description -->
       <div class="flex-1 mb-4">
-        <p
-          class="text-sm text-[#6b665f] leading-relaxed line-clamp-3"
-          [innerHTML]="job.description"
-        ></p>
+        <p class="text-sm text-[#6b665f] leading-relaxed line-clamp-3" [innerHTML]="job.description"></p>
       </div>
 
-      <!-- Tags -->
-      <div class="flex flex-wrap gap-2 mb-5">
+      <!-- Tags (Estilo mejorado) -->
+      <div class="flex flex-wrap gap-2">
         @for (tag of job.tags.slice(0, 3); track tag) {
-          <span class="px-3 py-1.5 rounded-xl bg-[#f0ece5] text-[#5f5a53] text-xs font-medium">
+          <span class="px-3 py-1.5 rounded-full bg-white border border-black/5 text-[#5f5a53] text-xs font-medium shadow-sm">
             {{ tag }}
           </span>
         }
-
         @if (job.tags.length > 3) {
-          <span class="px-3 py-1.5 rounded-xl bg-[#f0ece5] text-[#8a8177] text-xs font-medium">
+          <span class="px-3 py-1.5 rounded-full bg-white border border-black/5 text-[#8a8177] text-xs font-medium shadow-sm">
             +{{ job.tags.length - 3 }}
           </span>
         }
       </div>
-
     </div>
 
-    <!-- Footer (Siempre abajo) -->
-    <div class="pt-5 border-t border-black/5 flex items-center justify-between gap-4 mt-auto">
-      <div>
-        <p class="text-xs text-[#9b9388] mb-1">
-          Publicado
-        </p>
-        <p class="text-sm font-medium text-[#141414]">
-          {{ formattedDate }}
-        </p>
+    <!-- Footer (Sin borde superior, más limpio) -->
+    <div class="pt-4 flex items-center justify-between gap-4">
+      <!-- Fecha sin caja, solo texto -->
+      <div class="flex items-center gap-2 text-[#9b9388] text-xs">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        {{ formattedDate }}
       </div>
 
-      <div class="w-12 h-12 rounded-full bg-[#141414] text-white flex items-center justify-center transition group-hover:rotate-[-35deg] group-hover:scale-105">
-        →
+      <!-- Botón de flecha mejorado (Fondo blanco, se vuelve negro al hover) -->
+      <div class="w-11 h-11 rounded-full bg-white border border-black/5 flex items-center justify-center transition group-hover:bg-[#141414] group-hover:text-white group-hover:rotate-[-35deg] group-hover:border-[#141414] shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+        </svg>
       </div>
     </div>
 
