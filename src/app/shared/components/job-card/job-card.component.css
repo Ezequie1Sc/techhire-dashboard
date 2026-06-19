@@ -3,14 +3,21 @@
   height: 100%;
 }
 
+/* SOLUCIÓN PARA QUE EL TEXTO NO ROMPA EL DISEÑO */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2; /* <--- Agregada la propiedad estándar */
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3; /* <--- Agregada la propiedad estándar */
   overflow: hidden;
+  text-overflow: ellipsis;
 }
