@@ -29,13 +29,13 @@
     <!-- Card Principal -->
     <div class="bg-[#fbfaf7] border border-black/5 rounded-[2.5rem] p-6 md:p-8 shadow-[0_20px_60px_rgba(0,0,0,0.06)]">
       
-      <!-- Búsqueda + Botón de Filtros -->
+      <!-- Búsqueda Automática + Botón de Filtros -->
       <div class="flex flex-col sm:flex-row gap-3 mb-6">
         <div class="relative flex-1">
           <input
             type="text"
             [(ngModel)]="searchTerm"
-            (keyup.enter)="applyFilters()"
+            (input)="applyFilters()" 
             [placeholder]="translation.translate('jobs.searchPlaceholder')"
             class="w-full h-14 bg-white border border-black/5 rounded-full pl-14 pr-4 text-base outline-none focus:ring-2 focus:ring-[#141414]/10 transition shadow-sm"
           />
@@ -279,7 +279,7 @@
         }
       </div>
 
-      <!-- ✅ LOADER WAVE (Igual que en el Home) -->
+      <!-- LOADER WAVE -->
       @if (loading) {
         <div class="bg-white rounded-[2rem] p-10 border border-black/5 flex flex-col justify-center items-center min-h-[200px] gap-4">
           <div class="loader-wave">
@@ -295,7 +295,7 @@
         </div>
       }
 
-      <!-- ✅ MENSAJE DE ERROR -->
+      <!-- MENSAJE DE ERROR -->
       @if (!loading && error) {
         <div class="bg-white rounded-[2rem] p-10 text-center border border-black/5">
           <p class="text-red-500 font-medium">{{ error }}</p>
@@ -305,7 +305,7 @@
         </div>
       }
 
-      <!-- ✅ GRID DE VACANTES -->
+      <!-- GRID DE VACANTES -->
       @if (!loading && !error && jobs.length > 0) {
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           @for (job of jobs; track job.slug) {
@@ -314,19 +314,25 @@
         </div>
       }
 
-      <!-- ✅ ESTADO VACÍO (Cuando no hay resultados) -->
+      <!-- ✅ ESTADO VACÍO CON SVG MINIMALISTA (Sin badge) -->
       @if (!loading && !error && filteredJobs.length === 0) {
         <div class="relative overflow-hidden bg-[#fbfaf7] rounded-[2.5rem] border border-black/5 py-16 px-6 text-center shadow-[0_20px_60px_rgba(0,0,0,0.06)]">
           <div class="relative z-10 max-w-xl mx-auto">
-            <span class="inline-flex items-center gap-2 bg-white border border-black/5 px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-[0.2em] text-[#8a8177]">
-              {{ translation.translate('jobs.noResultsBadge') }}
-            </span>
+            
+            <!-- SVG Minimalista (Lupa con X) -->
+            <div class="flex justify-center mb-6">
+              <svg class="w-24 h-24 text-[#141414]/10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+                <path d="M9 9l4 4m0-4l-4 4" stroke="#141414" stroke-width="2.5" />
+              </svg>
+            </div>
 
-            <h3 class="text-4xl md:text-5xl font-semibold tracking-[-0.05em] text-[#141414] mt-6">
+            <h3 class="text-4xl md:text-5xl font-semibold tracking-[-0.05em] text-[#141414]">
               {{ translation.translate('jobs.noResultsTitle') }}
             </h3>
 
-            <p class="text-[#6b665f] mt-4 leading-relaxed">
+            <p class="text-[#6b665f] mt-4 leading-relaxed max-w-md mx-auto">
               {{ translation.translate('jobs.noResultsDescription') }}
             </p>
 
@@ -337,7 +343,7 @@
         </div>
       }
 
-      <!-- ✅ PAGINACIÓN -->
+      <!-- PAGINACIÓN -->
       @if (!loading && !error && filteredJobs.length > 0) {
         <div class="mt-12 flex flex-col sm:flex-row justify-center items-center gap-4">
           <button type="button" (click)="previousPage()" [disabled]="currentPage === 1" class="px-6 py-3 rounded-full bg-white border border-black/5 text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#141414] hover:text-white transition">
