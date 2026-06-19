@@ -107,12 +107,12 @@
       </div>
     </div>
   </section>
-
   <!-- BENTO INFO -->
   <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20">
-    <div class="grid lg:grid-cols-4 gap-5">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
 
-      <div class="lg:col-span-2 bg-white rounded-[2rem] p-8 md:p-10 border border-black/5 flex flex-col justify-between min-h-64">
+      <!-- Card Grande Blanca (Intro) - Texto ORIGINAL -->
+      <article class="md:col-span-2 bg-white rounded-[2rem] p-8 md:p-10 border border-black/5 flex flex-col justify-between min-h-[240px]">
         <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
           {{ t('home.processTitle') }}
         </span>
@@ -126,94 +126,77 @@
             {{ t('home.processDescription') }}
           </p>
         </div>
-      </div>
+      </article>
 
-      <div class="bg-[#141414] text-white rounded-[2rem] overflow-hidden flex flex-col justify-between min-h-64 relative">
+      <!-- 01 Explora -->
+      <article class="feature-card md:col-span-1">
         <img
           src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80"
           alt="Explorar empleos"
           loading="lazy"
-          class="absolute inset-0 w-full h-full object-cover opacity-20"
         />
-
-        <div class="relative z-10 p-8 flex flex-col justify-between h-full">
+        <div>
           <span class="text-white/30 text-xs font-medium tracking-wide">01</span>
-
-          <div>
-            <h3 class="text-2xl font-semibold tracking-tight">{{ t('home.explore') }}</h3>
-            <p class="text-white/50 text-sm mt-2">{{ t('home.explore') }}</p>
-          </div>
+          <h3 class="text-xl md:text-2xl font-semibold tracking-tight">{{ t('home.explore') }}</h3>
+          <p class="text-white/50 text-sm mt-2">{{ t('home.explore') }}</p>
         </div>
-      </div>
+      </article>
 
-      <div class="bg-[#ede7df] rounded-[2rem] overflow-hidden flex flex-col justify-between min-h-64 relative">
+      <!-- 02 Filtra -->
+      <article class="feature-card md:col-span-1">
         <img
           src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=600&q=80"
           alt="Filtrar por categoría"
           loading="lazy"
-          class="absolute inset-0 w-full h-full object-cover opacity-15"
         />
-
-        <div class="relative z-10 p-8 flex flex-col justify-between h-full">
-          <span class="text-black/25 text-xs font-medium tracking-wide">02</span>
-
-          <div>
-            <h3 class="text-2xl font-semibold tracking-tight text-[#141414]">{{ t('home.filter') }}</h3>
-            <p class="text-[#6b665f] text-sm mt-2">{{ t('home.filter') }}</p>
-          </div>
+        <div>
+          <span class="text-white/30 text-xs font-medium tracking-wide">02</span>
+          <h3 class="text-xl md:text-2xl font-semibold tracking-tight">{{ t('home.filter') }}</h3>
+          <p class="text-white/50 text-sm mt-2">{{ t('home.filter') }}</p>
         </div>
-      </div>
+      </article>
 
-      <div class="bg-[#e4d9cc] rounded-[2rem] overflow-hidden flex flex-col justify-between min-h-64 relative">
+      <!-- 03 Guarda -->
+      <article class="feature-card md:col-span-1">
         <img
           src="https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?auto=format&fit=crop&w=600&q=80"
           alt="Guardar favoritos"
           loading="lazy"
-          class="absolute inset-0 w-full h-full object-cover opacity-15"
         />
-
-        <div class="relative z-10 p-8 flex flex-col justify-between h-full">
-          <span class="text-black/25 text-xs font-medium tracking-wide">03</span>
-
-          <div>
-            <h3 class="text-2xl font-semibold tracking-tight text-[#141414]">{{ t('home.save') }}</h3>
-            <p class="text-[#6b665f] text-sm mt-2">{{ t('home.save') }}</p>
-          </div>
+        <div>
+          <span class="text-white/30 text-xs font-medium tracking-wide">03</span>
+          <h3 class="text-xl md:text-2xl font-semibold tracking-tight">{{ t('home.save') }}</h3>
+          <p class="text-white/50 text-sm mt-2">{{ t('home.save') }}</p>
         </div>
-      </div>
+      </article>
 
-      <div class="lg:col-span-2 bg-[#141414] rounded-[2rem] overflow-hidden min-h-64 flex flex-col justify-between relative">
+      <!-- 04 Vacantes destacadas (Protagonista) -->
+      <article class="feature-card md:col-span-2">
         <img
           src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1200&q=80"
-          alt="Equipo de tecnología"
+          alt="Vacantes destacadas"
           loading="lazy"
-          class="absolute inset-0 w-full h-full object-cover opacity-25"
         />
-
-        <div class="relative z-10 p-8 md:p-10 flex flex-col justify-between h-full">
+        <div>
           <h3 class="text-white text-2xl md:text-3xl font-semibold tracking-[-0.04em] leading-tight">
             {{ t('home.recentJobs') }}
           </h3>
         </div>
-      </div>
+      </article>
 
-      <div class="bg-[#141414] text-white rounded-[2rem] overflow-hidden flex flex-col justify-between min-h-64 relative">
+      <!-- 05 Aplica -->
+      <article class="feature-card md:col-span-1">
         <img
           src="./remotea.webp"
           alt="Aplicar a vacante"
           loading="lazy"
-          class="absolute inset-0 w-full h-full object-cover opacity-20"
         />
-
-        <div class="relative z-10 p-8 flex flex-col justify-between h-full">
+        <div>
           <span class="text-white/30 text-xs font-medium tracking-wide">04</span>
-
-          <div>
-            <h3 class="text-2xl font-semibold tracking-tight">{{ t('home.apply') }}</h3>
-            <p class="text-white/50 text-sm mt-2">{{ t('home.apply') }}</p>
-          </div>
+          <h3 class="text-xl md:text-2xl font-semibold tracking-tight">{{ t('home.apply') }}</h3>
+          <p class="text-white/50 text-sm mt-2">{{ t('home.apply') }}</p>
         </div>
-      </div>
+      </article>
 
     </div>
   </section>

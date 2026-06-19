@@ -319,4 +319,60 @@ button {
   .home-translation-btn {
     flex: 1;
   }
+}/* ===== FEATURE CARDS (Bento Ajustado) ===== */
+.feature-card {
+  position: relative;
+  min-height: 210px; /* Reducido para que las imágenes no se vean tan grandes */
+  border-radius: 2rem;
+  overflow: hidden;
+  background: #141414;
+}
+
+.feature-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center; /* Centra mejor la imagen */
+  transition: transform 0.6s ease;
+}
+
+.feature-card:hover img {
+  transform: scale(1.03);
+}
+
+/* Overlay elegante: Oscuro abajo, transparente arriba */
+.feature-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.15) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* Texto siempre abajo a la izquierda */
+.feature-card > div {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 26px;
+  z-index: 2;
+  color: #ffffff;
+}
+
+/* Ajustes Responsivos */
+@media (max-width: 768px) {
+  .feature-card {
+    min-height: 180px;
+    border-radius: 1.5rem;
+  }
+  .feature-card > div {
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+  }
 }
