@@ -176,7 +176,7 @@ button {
   font-weight: 800;
 }
 
-/* ===== MOBILE MENU (NUEVO DISEÑO) ===== */
+/* ===== MOBILE MENU ===== */
 @media (max-width: 768px) {
   .navbar-shell {
     border-radius: 2rem;
@@ -206,7 +206,7 @@ button {
     gap: 1rem;
   }
 
-  /* Selector de idioma móvil */
+  /* Selector de idioma móvil con SVG */
   .mobile-language-selector {
     display: flex;
     gap: 0.75rem;
@@ -216,7 +216,7 @@ button {
   .mobile-lang-btn {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.6rem;
     padding: 0.5rem 1rem;
     border-radius: 999px;
     background: transparent;
@@ -228,8 +228,12 @@ button {
     transition: all 0.25s ease;
   }
 
-  .mobile-lang-btn .lang-flag {
-    font-size: 1.1rem;
+  .mobile-lang-flag {
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+    object-fit: cover;
+    display: block;
   }
 
   .mobile-lang-btn:hover {

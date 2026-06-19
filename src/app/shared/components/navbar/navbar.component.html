@@ -136,7 +136,7 @@
 
         </div>
 
-        <!-- Mobile Button (Hamburguesa o X) -->
+        <!-- Mobile Button -->
         <button
           type="button"
           (click)="toggleMenu()"
@@ -179,19 +179,19 @@
       </div>
     </div>
 
-    <!-- Mobile Menu (Nuevo diseño) -->
+    <!-- Mobile Menu (Con banderas SVG) -->
     @if (isMenuOpen) {
       <div class="mobile-menu">
         
-        <!-- 1. Selector de idioma con banderas (a la izquierda y limpias) -->
+        <!-- 1. Selector de idioma con banderas SVG -->
         <div class="mobile-language-selector">
           <button
             (click)="changeLanguage('es')"
             class="mobile-lang-btn"
             [class.active]="translation.currentLanguage === 'es'"
           >
-            <span class="lang-flag">🇲🇽</span>
-            <span class="lang-text">Español</span>
+            <img src="https://flagcdn.com/mx.svg" alt="Español" class="mobile-lang-flag" />
+            <span>Español</span>
           </button>
 
           <button
@@ -199,8 +199,8 @@
             class="mobile-lang-btn"
             [class.active]="translation.currentLanguage === 'en'"
           >
-            <span class="lang-flag">🇺🇸</span>
-            <span class="lang-text">English</span>
+            <img src="https://flagcdn.com/us.svg" alt="English" class="mobile-lang-flag" />
+            <span>English</span>
           </button>
         </div>
 
@@ -235,7 +235,7 @@
           </a>
         </div>
 
-        <!-- 3. Botón CTA (Explorar vacantes) -->
+        <!-- 3. Botón CTA -->
         <a
           routerLink="/jobs"
           class="mobile-cta"
