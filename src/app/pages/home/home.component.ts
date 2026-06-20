@@ -122,7 +122,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           // 1. Obtener todos los datos de la respuesta
           const allJobs = response.data || [];
 
-          // 2.  ORDENAR POR FECHA (Los más recientes primero)
+          // 2. ORDENAR POR FECHA (Los más recientes primero)
           const sortedJobs = allJobs.sort((a, b) => {
             const dateA = a.created_at || 0;
             const dateB = b.created_at || 0;
@@ -159,6 +159,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.translateHomeJobs(language);
   }
 
+  // 🔥 NUEVA LÓGICA: Traduce Título, Descripción, Tipos y Tags
   private translateHomeJobs(target: 'es' | 'en'): void {
     if (!this.originalLatestJobs.length) return;
 
@@ -179,24 +180,29 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       const textToTranslate = [
         job.title || '',
+        job.description || '', // <-- Agregado la descripción
         job.job_types?.join(' · ') || '',
         job.tags?.join(' · ') || ''
-      ].join('\n');
+      ].join('\n|||\n');
 
       return this.translateService.translate(textToTranslate, target).pipe(
         map((response) => {
-          const parts = (response.translatedText || '').split('\n');
+          // Dividimos el resultado usando el mismo separador
+          const parts = (response.translatedText || '').split('\n|||\n');
 
           const translatedJob: Partial<Job> = {
             title: parts[0] || job.title,
-            job_types: parts[1]
-              ? parts[1].split(' · ').map(item => item.trim()).filter(Boolean)
-              : job.job_types,
-            tags: parts[2]
+            // 🔥 La descripción traducida está en la posición 1
+            description: parts[1] ? parts[1].trim() : job.description,
+            job_types: parts[2]
               ? parts[2].split(' · ').map(item => item.trim()).filter(Boolean)
+              : job.job_types,
+            tags: parts[3]
+              ? parts[3].split(' · ').map(item => item.trim()).filter(Boolean)
               : job.tags
           };
 
+          // Guardamos en localStorage para no volver a traducir
           localStorage.setItem(cacheKey, JSON.stringify(translatedJob));
 
           return {
@@ -204,7 +210,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             ...translatedJob
           };
         }),
-        catchError(() => of(job))
+        catchError(() => of(job)) // Si falla, devolvemos el job original
       );
     });
 
