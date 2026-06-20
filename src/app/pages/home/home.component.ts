@@ -154,7 +154,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.translateHomeJobs(language);
   }
 
-  // 🔥 NUEVA LÓGICA ROBUSTA: 2 llamadas por trabajo
+  // 🔥 VERSIÓN FINAL Y DEFINITIVA: Traduce Título y Descripción por separado
   private translateHomeJobs(target: 'es' | 'en'): void {
     if (!this.originalLatestJobs.length) return;
 
@@ -166,7 +166,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       const cacheKey = `home_job_translation_${job.slug}_${target}`;
       const cached = localStorage.getItem(cacheKey);
 
-      // Si ya está en caché, lo devolvemos directamente
+      // Si ya está en caché, lo devolvemos
       if (cached) {
         return of({
           ...job,
@@ -174,38 +174,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
         });
       }
 
-      // 1. Traducir Título (solo el título)
+      // 🔥 SOLUCIÓN: 2 llamadas separadas y simples
       const titleRequest = this.translateService.translate(job.title || '', target).pipe(
         map(res => res.translatedText || job.title)
       );
 
-      // 2. Traducir el resto del contenido (Descripción + Tipos + Tags)
-      //    Se juntan con saltos de línea para que la API los mantenga
-      const bodyText = [
-        job.description || '',
-        job.job_types?.join(' · ') || '',
-        job.tags?.join(' · ') || ''
-      ].join('\n\n');
-
-      const bodyRequest = this.translateService.translate(bodyText, target).pipe(
-        map(res => {
-          const parts = (res.translatedText || '').split('\n\n');
-          return {
-            description: parts[0] || job.description,
-            job_types: parts[1] ? parts[1].split(' · ').map(item => item.trim()).filter(Boolean) : job.job_types,
-            tags: parts[2] ? parts[2].split(' · ').map(item => item.trim()).filter(Boolean) : job.tags
-          };
-        })
+      const descriptionRequest = this.translateService.translate(job.description || '', target).pipe(
+        map(res => res.translatedText || job.description)
       );
 
-      // Ejecutamos ambas traducciones en paralelo
-      return forkJoin([titleRequest, bodyRequest]).pipe(
-        map(([translatedTitle, translatedBody]) => {
+      // Ejecutamos ambas en paralelo
+      return forkJoin([titleRequest, descriptionRequest]).pipe(
+        map(([translatedTitle, translatedDescription]) => {
           const translatedJob: Partial<Job> = {
             title: translatedTitle,
-            description: translatedBody.description,
-            job_types: translatedBody.job_types,
-            tags: translatedBody.tags
+            description: translatedDescription
+            // Dejamos job_types y tags en su idioma original para no romper el diseño
           };
 
           localStorage.setItem(cacheKey, JSON.stringify(translatedJob));
