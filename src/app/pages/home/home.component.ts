@@ -150,6 +150,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.homeTranslationError = null;
     this.cdr.detectChanges();
 
+    const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 días
+
     const requests = this.originalLatestJobs.map((job) => {
       const cacheKey = `home_job_translation_${job.slug}_${target}`;
       const cached = localStorage.getItem(cacheKey);
@@ -157,7 +159,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
       if (cached) {
         try {
           const parsed = JSON.parse(cached);
-          if (parsed.title && parsed.description) {
+          const isExpired = !parsed.timestamp || (Date.now() - parsed.timestamp) > CACHE_TTL_MS;
+
+          if (parsed.title && parsed.description && !isExpired) {
             return of({
               ...job,
               title: parsed.title,
@@ -170,12 +174,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
       }
 
-      // 1. Traducir Título
+      // 1. Traducir Título (se marca si falló para no cachear el fallback)
+      let titleFailed = false;
       const titleRequest = this.translateService
         .translate(job.title || '', target)
         .pipe(
           map(res => res?.translatedText || job.title || ''),
-          catchError(() => of(job.title || ''))
+          catchError(() => {
+            titleFailed = true;
+            return of(job.title || '');
+          })
         );
 
       // 2. Limpiar y traducir Descripción (Sin etiquetas HTML)
@@ -184,11 +192,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
         .replace(/\s+/g, ' ')
         .trim();
 
+      let descriptionFailed = false;
       const descriptionRequest = this.translateService
         .translate(cleanDescription, target)
         .pipe(
           map(res => res?.translatedText || cleanDescription),
-          catchError(() => of(cleanDescription))
+          catchError(() => {
+            descriptionFailed = true;
+            return of(cleanDescription);
+          })
         );
 
       return forkJoin({
@@ -196,8 +208,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
         description: descriptionRequest
       }).pipe(
         map(({ title, description }) => {
-          const translatedJob = { title, description };
-          localStorage.setItem(cacheKey, JSON.stringify(translatedJob));
+          // Solo cachear si ambas traducciones fueron exitosas
+          if (!titleFailed && !descriptionFailed) {
+            const translatedJob = { title, description, timestamp: Date.now() };
+            localStorage.setItem(cacheKey, JSON.stringify(translatedJob));
+          }
           return { ...job, title, description };
         }),
         catchError(() => of(job))
