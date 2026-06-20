@@ -85,7 +85,6 @@
               {{ category }}
             </a>
           }
-          <!-- Repeticiones para el carrusel -->
           @for (category of techCategories; track category) {
             <a
               routerLink="/jobs"
@@ -264,9 +263,14 @@
           }
         </div>
 
+        <!-- 🔥 BOTONES MÓVILES CORREGIDOS -->
         <div class="md:hidden flex justify-center gap-3 mt-4">
-          <button type="button" (click)="scrollCarousel('left')" class="carousel-mobile-btn transition-all duration-200 ease-out hover:scale-105">{{ t('home.recentJobs') }}</button>
-          <button type="button" (click)="scrollCarousel('right')" class="carousel-mobile-btn carousel-mobile-btn-dark transition-all duration-200 ease-out hover:scale-105">{{ t('home.recentJobs') }}</button>
+          <button type="button" (click)="scrollCarousel('left')" class="carousel-mobile-btn transition-all duration-200 ease-out hover:scale-105">
+            ← {{ t('home.previous') }}
+          </button>
+          <button type="button" (click)="scrollCarousel('right')" class="carousel-mobile-btn carousel-mobile-btn-dark transition-all duration-200 ease-out hover:scale-105">
+            {{ t('home.next') }} →
+          </button>
         </div>
       </div>
     }
