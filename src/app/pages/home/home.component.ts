@@ -146,7 +146,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.homeTranslationError = null;
 
     if (language === 'original') {
-      // 🔥 Clonación profunda para forzar el renderizado del carrusel
       this.latestJobs = this.originalLatestJobs.map(job => ({ ...job }));
       this.cdr.detectChanges();
       return;
@@ -155,7 +154,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.translateHomeJobs(language);
   }
 
-  // ✅ Traduce Título y Descripción por separado y fuerza la actualización
+  // 🔥 NUEVA LÓGICA 100% ROBUSTA
   private translateHomeJobs(target: 'es' | 'en'): void {
     if (!this.originalLatestJobs.length) return;
 
@@ -175,6 +174,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         });
       }
 
+      // 1. Traducir solo el título (Texto plano)
       const titleRequest = this.translateService
         .translate(job.title || '', target)
         .pipe(
@@ -182,6 +182,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           catchError(() => of(job.title))
         );
 
+      // 2. Traducir solo la descripción (Texto plano, la API maneja el HTML internamente)
       const descriptionRequest = this.translateService
         .translate(job.description || '', target)
         .pipe(
@@ -189,6 +190,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           catchError(() => of(job.description))
         );
 
+      // 3. Ejecutar ambas peticiones en paralelo
       return forkJoin({
         title: titleRequest,
         description: descriptionRequest
@@ -212,7 +214,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     forkJoin(requests).subscribe({
       next: (translatedJobs) => {
-        // 🔥 Clonación profunda para forzar la actualización del carrusel
         this.latestJobs = translatedJobs.map(job => ({ ...job }));
         this.translatingHomeJobs = false;
         this.cdr.detectChanges();
