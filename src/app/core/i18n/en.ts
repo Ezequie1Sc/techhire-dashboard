@@ -23,6 +23,8 @@ export const EN = {
     original: 'Original',
     spanish: 'Spanish',
     english: 'English',
+    previous: 'Previous',
+    next: 'Next',
     
     ctaTitle: 'Your next job could start today.',
     ctaDescription: 'Explore opportunities, save favorites and organize your job search.',

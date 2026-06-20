@@ -23,6 +23,8 @@ export const ES = {
     original: 'Original',
     spanish: 'Español',
     english: 'English',
+    previous: 'Anterior',
+    next: 'Siguiente',
     
     ctaTitle: 'Tu próximo empleo puede empezar hoy.',
     ctaDescription: 'Explora vacantes, guarda tus favoritas y construye una búsqueda laboral más organizada.',
