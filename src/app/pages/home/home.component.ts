@@ -37,7 +37,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   loading = false;
   error: string | null = null;
 
-  selectedHomeJobsLanguage: HomeJobsLanguage = 'original';
+  selectedHomeJobsLanguage: HomeJobsLanguage =
+    (localStorage.getItem('homeJobsLanguage') as HomeJobsLanguage) || 'original';
+
   translatingHomeJobs = false;
   homeTranslationError: string | null = null;
 
@@ -107,7 +109,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.error = null;
     this.latestJobs = [];
     this.originalLatestJobs = [];
-    this.selectedHomeJobsLanguage = 'original';
     this.homeTranslationError = null;
 
     this.jobService.getJobs(1)
@@ -120,10 +121,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
       .subscribe({
         next: (response) => {
           const allJobs = response.data || [];
+
           const sortedJobs = allJobs.sort((a, b) => {
             const dateA = a.created_at || 0;
             const dateB = b.created_at || 0;
-            return dateB - dateA; 
+            return dateB - dateA;
           });
 
           const latest = sortedJobs.slice(0, 8);
@@ -133,6 +135,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
           if (this.latestJobs.length === 0) {
             this.error = 'No se encontraron vacantes disponibles.';
+            return;
+          }
+
+          if (this.selectedHomeJobsLanguage !== 'original') {
+            this.translateHomeJobs(this.selectedHomeJobsLanguage);
           }
         },
         error: () => {
@@ -143,6 +150,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   changeHomeJobsLanguage(language: HomeJobsLanguage): void {
     this.selectedHomeJobsLanguage = language;
+    localStorage.setItem('homeJobsLanguage', language);
     this.homeTranslationError = null;
 
     if (language === 'original') {
@@ -154,7 +162,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.translateHomeJobs(language);
   }
 
-  // 🔥 LÓGICA FINAL: Limpia el HTML de la descripción antes de traducirla
   private translateHomeJobs(target: 'es' | 'en'): void {
     if (!this.originalLatestJobs.length) return;
 
@@ -167,26 +174,31 @@ export class HomeComponent implements OnInit, AfterViewInit {
       const cached = localStorage.getItem(cacheKey);
 
       if (cached) {
-        const parsed = JSON.parse(cached);
-        return of({
-          ...job,
-          ...parsed
-        });
+        try {
+          const parsed = JSON.parse(cached);
+
+          if (parsed.title && parsed.description) {
+            return of({
+              ...job,
+              title: parsed.title,
+              description: parsed.description
+            });
+          }
+
+          localStorage.removeItem(cacheKey);
+        } catch {
+          localStorage.removeItem(cacheKey);
+        }
       }
 
-      // 1. Traducir el título (texto plano)
+      const cleanDescription = this.cleanJobDescription(job.description || '');
+
       const titleRequest = this.translateService
         .translate(job.title || '', target)
         .pipe(
-          map(res => res.translatedText || job.title),
-          catchError(() => of(job.title))
+          map(res => res.translatedText || job.title || ''),
+          catchError(() => of(job.title || ''))
         );
-
-      // 2. Limpiar el HTML de la descripción ANTES de traducirla
-      const cleanDescription = (job.description || '')
-        .replace(/<[^>]*>/g, ' ') // Elimina todas las etiquetas HTML (como <p>, <br>, etc.)
-        .replace(/\s+/g, ' ')     // Elimina espacios múltiples
-        .trim();
 
       const descriptionRequest = this.translateService
         .translate(cleanDescription, target)
@@ -195,22 +207,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
           catchError(() => of(cleanDescription))
         );
 
-      // 3. Ejecutar ambas peticiones en paralelo
       return forkJoin({
         title: titleRequest,
         description: descriptionRequest
       }).pipe(
         map(({ title, description }) => {
-          const translatedJob: Partial<Job> = {
+          const translatedJob = {
             title,
-            description // ✅ La descripción traducida y limpia
+            description
           };
 
           localStorage.setItem(cacheKey, JSON.stringify(translatedJob));
 
           return {
             ...job,
-            ...translatedJob
+            title,
+            description
           };
         }),
         catchError(() => of(job))
@@ -229,6 +241,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  private cleanJobDescription(description: string): string {
+    return String(description || '')
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/p>/gi, '\n')
+      .replace(/<\/li>/gi, '\n')
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 
   changeInterfaceLanguage(lang: 'es' | 'en'): void {
