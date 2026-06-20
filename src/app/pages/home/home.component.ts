@@ -200,12 +200,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
           catchError(() => of(job.title || ''))
         );
 
-      const descriptionRequest = this.translateService
-        .translate(cleanDescription, target)
-        .pipe(
-          map(res => res.translatedText || cleanDescription),
-          catchError(() => of(cleanDescription))
-        );
+    const descriptionRequest = this.translateService
+  .translate(cleanDescription, target)
+  .pipe(
+    map(res => this.cleanJobDescription(res.translatedText || cleanDescription)),
+    catchError(() => of(cleanDescription))
+  );
 
       return forkJoin({
         title: titleRequest,
@@ -243,23 +243,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private cleanJobDescription(description: string): string {
-    return String(description || '')
-      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-      .replace(/<br\s*\/?>/gi, '\n')
-      .replace(/<\/p>/gi, '\n')
-      .replace(/<\/li>/gi, '\n')
-      .replace(/<[^>]*>/g, ' ')
-      .replace(/&nbsp;/g, ' ')
-      .replace(/&amp;/g, '&')
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"')
-      .replace(/&#39;/g, "'")
-      .replace(/\s+/g, ' ')
-      .trim();
-  }
+ private cleanJobDescription(description: string): string {
+  const textarea = document.createElement('textarea');
+
+  textarea.innerHTML = String(description || '')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<\/li>/gi, '\n');
+
+  return textarea.value
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 
   changeInterfaceLanguage(lang: 'es' | 'en'): void {
     this.translationService.setLanguage(lang);
