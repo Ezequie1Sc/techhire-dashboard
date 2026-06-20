@@ -185,6 +185,32 @@ export class JobsComponent implements OnInit {
     this.updatePagination();
   }
 
+  private readonly JOBS_CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 días
+
+  private getJobsTranslationCache(job: Job, target: TranslationTarget): Partial<Job> | null {
+    const cacheKey = `jobs_translation_${job.slug}_${target}`;
+    const cached = localStorage.getItem(cacheKey);
+    if (!cached) return null;
+
+    try {
+      const parsed = JSON.parse(cached);
+      const isExpired = !parsed.timestamp || (Date.now() - parsed.timestamp) > this.JOBS_CACHE_TTL_MS;
+      if (isExpired || !parsed.title) {
+        localStorage.removeItem(cacheKey);
+        return null;
+      }
+      return parsed;
+    } catch {
+      localStorage.removeItem(cacheKey);
+      return null;
+    }
+  }
+
+  private setJobsTranslationCache(job: Job, target: TranslationTarget, data: Partial<Job>): void {
+    const cacheKey = `jobs_translation_${job.slug}_${target}`;
+    localStorage.setItem(cacheKey, JSON.stringify({ ...data, timestamp: Date.now() }));
+  }
+
   private translateVisibleJobs(target: TranslationTarget): void {
     if (!this.jobs.length) return;
     this.translatingJobs = true;
@@ -192,16 +218,55 @@ export class JobsComponent implements OnInit {
     this.cdr.detectChanges();
 
     const requests = this.jobs.map((job) => {
-      const textToTranslate = [job.title || '', job.job_types?.join(' · ') || '', job.tags?.join(' · ') || ''].join('\n');
-      return this.translateService.translate(textToTranslate, target).pipe(
-        map((response) => {
-          const parts = (response.translatedText || '').split('\n');
-          return {
-            ...job,
-            title: parts[0] || job.title,
-            job_types: parts[1] ? parts[1].split(' · ').map(item => item.trim()) : job.job_types,
-            tags: parts[2] ? parts[2].split(' · ').map(item => item.trim()) : job.tags
-          };
+      const cached = this.getJobsTranslationCache(job, target);
+      if (cached) {
+        return of({ ...job, ...cached });
+      }
+
+      const cleanDescription = (job.description || '')
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+      let anyFailed = false;
+
+      const titleRequest = this.translateService.translate(job.title || '', target).pipe(
+        map(res => res?.translatedText || job.title || ''),
+        catchError(() => { anyFailed = true; return of(job.title || ''); })
+      );
+
+      const descriptionRequest = cleanDescription
+        ? this.translateService.translate(cleanDescription, target).pipe(
+            map(res => res?.translatedText || cleanDescription),
+            catchError(() => { anyFailed = true; return of(cleanDescription); })
+          )
+        : of('');
+
+      const jobTypesRequest = job.job_types?.length
+        ? this.translateService.translate(job.job_types.join(' · '), target).pipe(
+            map(res => (res?.translatedText || job.job_types!.join(' · ')).split(' · ').map(s => s.trim())),
+            catchError(() => { anyFailed = true; return of(job.job_types || []); })
+          )
+        : of(job.job_types || []);
+
+      const tagsRequest = job.tags?.length
+        ? this.translateService.translate(job.tags.join(' · '), target).pipe(
+            map(res => (res?.translatedText || job.tags!.join(' · ')).split(' · ').map(s => s.trim())),
+            catchError(() => { anyFailed = true; return of(job.tags || []); })
+          )
+        : of(job.tags || []);
+
+      return forkJoin({
+        title: titleRequest,
+        description: descriptionRequest,
+        job_types: jobTypesRequest,
+        tags: tagsRequest
+      }).pipe(
+        map((result) => {
+          if (!anyFailed) {
+            this.setJobsTranslationCache(job, target, result);
+          }
+          return { ...job, ...result };
         }),
         catchError(() => of(job))
       );
@@ -209,7 +274,7 @@ export class JobsComponent implements OnInit {
 
     forkJoin(requests).subscribe({
       next: (translatedJobs) => { this.jobs = translatedJobs; this.translatingJobs = false; this.cdr.detectChanges(); },
-      error: () => { this.translationError = 'Error'; this.translatingJobs = false; }
+      error: () => { this.translationError = 'No se pudieron traducir las vacantes.'; this.translatingJobs = false; this.cdr.detectChanges(); }
     });
   }
 
