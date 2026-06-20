@@ -42,16 +42,18 @@
   transform: scale(1.2);
 }
 
-/* --- 5. BOTÓN DE FLECHA (Desplazamiento y cambio de color) --- */
+/* --- 5. BOTÓN DE FLECHA (Desplazamiento y cambio de color premium) --- */
 .job-arrow-btn {
   transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+  cursor: pointer; /* 🔥 Añadido para que parezca clickeable */
 }
 
 .job-card:hover .job-arrow-btn {
-  transform: translateX(4px);
+  transform: translateX(4px) scale(1.05); /* 🔥 Añadido un pequeño zoom */
   background: #141414;
   color: white;
   border-color: #141414;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* --- Utilidades para limitar texto --- */
