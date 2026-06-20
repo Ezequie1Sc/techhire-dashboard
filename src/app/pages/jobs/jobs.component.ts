@@ -185,36 +185,31 @@ export class JobsComponent implements OnInit {
     this.updatePagination();
   }
 
-  // 🔥 NUEVA FUNCIÓN: Normaliza el título de la vacante
-  private normalizeJobTitle(
-    title: string,
-    language: 'original' | 'es' | 'en'
-  ): string {
-    if (!title) return '';
+  // 🔥 NUEVA FUNCIÓN: Normalización condicional
+  private normalizeJobTitle(title: string, language: 'original' | 'es' | 'en'): string {
+    if (!title || language === 'original') return title;
 
-    if (language === 'original') {
-      return title;
+    const replacement = language === 'es' ? '(Todos los géneros)' : '(All genders)';
+    const patterns = [
+      /\(m\/w\/d\)/gi, /\(m\/f\/d\)/gi, /\(w\/m\/d\)/gi,
+      /\(f\/m\/d\)/gi, /\(d\/m\/w\)/gi, /\(d\/w\/m\)/gi,
+      /\(w\/d\/m\)/gi, /\(f\/d\/m\)/gi
+    ];
+
+    let result = title;
+    let hasMatch = false;
+
+    for (const pattern of patterns) {
+      if (pattern.test(result)) {
+        result = result.replace(pattern, replacement);
+        hasMatch = true;
+      }
     }
 
-    const replacement =
-      language === 'es'
-        ? '(Todos los géneros)'
-        : '(All genders)';
-
-    return title
-      .replace(/\(m\/w\/d\)/gi, replacement)
-      .replace(/\(m\/f\/d\)/gi, replacement)
-      .replace(/\(w\/m\/d\)/gi, replacement)
-      .replace(/\(f\/m\/d\)/gi, replacement)
-      .replace(/\(d\/m\/w\)/gi, replacement)
-      .replace(/\(d\/w\/m\)/gi, replacement)
-      .replace(/\(w\/d\/m\)/gi, replacement)
-      .replace(/\(f\/d\/m\)/gi, replacement)
-      .replace(/\s+/g, ' ')
-      .trim();
+    return hasMatch ? result.replace(/\s+/g, ' ').trim() : title;
   }
 
-  private readonly JOBS_CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 días
+  private readonly JOBS_CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
   private getJobsTranslationCache(job: Job, target: TranslationTarget): Partial<Job> | null {
     const cacheKey = `jobs_translation_${job.slug}_${target}`;
@@ -252,14 +247,10 @@ export class JobsComponent implements OnInit {
         return of({ ...job, ...cached });
       }
 
-      const cleanDescription = (job.description || '')
-        .replace(/<[^>]*>/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim();
+      const cleanDescription = (job.description || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 
       let anyFailed = false;
 
-      // 🔥 Título con normalización
       const titleRequest = this.translateService.translate(job.title || '', target).pipe(
         map(res => this.normalizeJobTitle(res?.translatedText || job.title || '', target)),
         catchError(() => {
