@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   loading = false;
   error: string | null = null;
 
-  // 🔥 SIEMPRE INICIA EN ORIGINAL
+  // SIEMPRE INICIA EN ORIGINAL
   selectedHomeJobsLanguage: HomeJobsLanguage = 'original';
 
   translatingHomeJobs = false;
@@ -138,8 +138,36 @@ export class HomeComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    // 🔥 SOLO SE TRADUCE SI EL USUARIO HACE CLIC
     this.translateHomeJobs(language);
+  }
+
+  // 🔥 NUEVA FUNCIÓN: Normaliza el título de la vacante
+  private normalizeJobTitle(
+    title: string,
+    language: 'original' | 'es' | 'en'
+  ): string {
+    if (!title) return '';
+
+    if (language === 'original') {
+      return title;
+    }
+
+    const replacement =
+      language === 'es'
+        ? '(Todos los géneros)'
+        : '(All genders)';
+
+    return title
+      .replace(/\(m\/w\/d\)/gi, replacement)
+      .replace(/\(m\/f\/d\)/gi, replacement)
+      .replace(/\(w\/m\/d\)/gi, replacement)
+      .replace(/\(f\/m\/d\)/gi, replacement)
+      .replace(/\(d\/m\/w\)/gi, replacement)
+      .replace(/\(d\/w\/m\)/gi, replacement)
+      .replace(/\(w\/d\/m\)/gi, replacement)
+      .replace(/\(f\/d\/m\)/gi, replacement)
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 
   // ✅ TRADUCCIÓN DE TÍTULO Y DESCRIPCIÓN DE LAS CARDS
@@ -179,10 +207,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
       const titleRequest = this.translateService
         .translate(job.title || '', target)
         .pipe(
-          map(res => res?.translatedText || job.title || ''),
+          map(res => {
+            const translated = res?.translatedText || job.title || '';
+            // 🔥 Aplicar normalización al título traducido
+            return this.normalizeJobTitle(translated, target);
+          }),
           catchError(() => {
             titleFailed = true;
-            return of(job.title || '');
+            // 🔥 Aplicar normalización al fallback
+            return of(this.normalizeJobTitle(job.title || '', target));
           })
         );
 

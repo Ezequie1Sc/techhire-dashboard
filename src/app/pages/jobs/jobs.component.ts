@@ -185,6 +185,35 @@ export class JobsComponent implements OnInit {
     this.updatePagination();
   }
 
+  // 🔥 NUEVA FUNCIÓN: Normaliza el título de la vacante
+  private normalizeJobTitle(
+    title: string,
+    language: 'original' | 'es' | 'en'
+  ): string {
+    if (!title) return '';
+
+    if (language === 'original') {
+      return title;
+    }
+
+    const replacement =
+      language === 'es'
+        ? '(Todos los géneros)'
+        : '(All genders)';
+
+    return title
+      .replace(/\(m\/w\/d\)/gi, replacement)
+      .replace(/\(m\/f\/d\)/gi, replacement)
+      .replace(/\(w\/m\/d\)/gi, replacement)
+      .replace(/\(f\/m\/d\)/gi, replacement)
+      .replace(/\(d\/m\/w\)/gi, replacement)
+      .replace(/\(d\/w\/m\)/gi, replacement)
+      .replace(/\(w\/d\/m\)/gi, replacement)
+      .replace(/\(f\/d\/m\)/gi, replacement)
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
   private readonly JOBS_CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 días
 
   private getJobsTranslationCache(job: Job, target: TranslationTarget): Partial<Job> | null {
@@ -230,9 +259,13 @@ export class JobsComponent implements OnInit {
 
       let anyFailed = false;
 
+      // 🔥 Título con normalización
       const titleRequest = this.translateService.translate(job.title || '', target).pipe(
-        map(res => res?.translatedText || job.title || ''),
-        catchError(() => { anyFailed = true; return of(job.title || ''); })
+        map(res => this.normalizeJobTitle(res?.translatedText || job.title || '', target)),
+        catchError(() => {
+          anyFailed = true;
+          return of(this.normalizeJobTitle(job.title || '', target));
+        })
       );
 
       const descriptionRequest = cleanDescription
