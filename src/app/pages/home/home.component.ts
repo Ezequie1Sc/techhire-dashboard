@@ -154,7 +154,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.translateHomeJobs(language);
   }
 
-  // 🔥 NUEVA LÓGICA 100% ROBUSTA
+  // 🔥 LÓGICA FINAL: Limpia el HTML de la descripción antes de traducirla
   private translateHomeJobs(target: 'es' | 'en'): void {
     if (!this.originalLatestJobs.length) return;
 
@@ -174,7 +174,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         });
       }
 
-      // 1. Traducir solo el título (Texto plano)
+      // 1. Traducir el título (texto plano)
       const titleRequest = this.translateService
         .translate(job.title || '', target)
         .pipe(
@@ -182,12 +182,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
           catchError(() => of(job.title))
         );
 
-      // 2. Traducir solo la descripción (Texto plano, la API maneja el HTML internamente)
+      // 2. Limpiar el HTML de la descripción ANTES de traducirla
+      const cleanDescription = (job.description || '')
+        .replace(/<[^>]*>/g, ' ') // Elimina todas las etiquetas HTML (como <p>, <br>, etc.)
+        .replace(/\s+/g, ' ')     // Elimina espacios múltiples
+        .trim();
+
       const descriptionRequest = this.translateService
-        .translate(job.description || '', target)
+        .translate(cleanDescription, target)
         .pipe(
-          map(res => res.translatedText || job.description),
-          catchError(() => of(job.description))
+          map(res => res.translatedText || cleanDescription),
+          catchError(() => of(cleanDescription))
         );
 
       // 3. Ejecutar ambas peticiones en paralelo
@@ -198,7 +203,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         map(({ title, description }) => {
           const translatedJob: Partial<Job> = {
             title,
-            description
+            description // ✅ La descripción traducida y limpia
           };
 
           localStorage.setItem(cacheKey, JSON.stringify(translatedJob));
