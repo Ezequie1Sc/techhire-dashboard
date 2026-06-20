@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { finalize, forkJoin, lastValueFrom } from 'rxjs';
+import { finalize, forkJoin, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { JobService } from '../../core/services/job.service';
@@ -154,8 +154,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.translateHomeJobs(language);
   }
 
-  // 🔥 VERSIÓN DEFINITIVA: Verifica y traduce TODAS las descripciones
-  private async translateHomeJobs(target: 'es' | 'en'): Promise<void> {
+  // 🔥 LÓGICA FINAL: Limpia el HTML de la descripción antes de traducirla
+  private translateHomeJobs(target: 'es' | 'en'): void {
     if (!this.originalLatestJobs.length) return;
 
     this.translatingHomeJobs = true;
@@ -168,72 +168,67 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       if (cached) {
         const parsed = JSON.parse(cached);
-        return Promise.resolve({
+        return of({
           ...job,
           ...parsed
         });
       }
 
-      // 1. Limpiar el HTML de la descripción
+      // 1. Traducir el título (texto plano)
+      const titleRequest = this.translateService
+        .translate(job.title || '', target)
+        .pipe(
+          map(res => res.translatedText || job.title),
+          catchError(() => of(job.title))
+        );
+
+      // 2. Limpiar el HTML de la descripción ANTES de traducirla
       const cleanDescription = (job.description || '')
-        .replace(/<[^>]*>/g, ' ')
-        .replace(/\s+/g, ' ')
+        .replace(/<[^>]*>/g, ' ') // Elimina todas las etiquetas HTML (como <p>, <br>, etc.)
+        .replace(/\s+/g, ' ')     // Elimina espacios múltiples
         .trim();
 
-      // 2. Si la descripción está vacía o es demasiado corta, la saltamos
-      if (cleanDescription.length < 3) {
-        const emptyResult = {
-          title: job.title,
-          description: job.description
-        };
-        localStorage.setItem(cacheKey, JSON.stringify(emptyResult));
-        return Promise.resolve({
-          ...job,
-          ...emptyResult
-        });
-      }
+      const descriptionRequest = this.translateService
+        .translate(cleanDescription, target)
+        .pipe(
+          map(res => res.translatedText || cleanDescription),
+          catchError(() => of(cleanDescription))
+        );
 
-      // 3. Traducir título
-      const titleRequest = this.translateService.translate(job.title || '', target).pipe(
-        map(res => res?.translatedText || job.title),
-        catchError(() => job.title)
+      // 3. Ejecutar ambas peticiones en paralelo
+      return forkJoin({
+        title: titleRequest,
+        description: descriptionRequest
+      }).pipe(
+        map(({ title, description }) => {
+          const translatedJob: Partial<Job> = {
+            title,
+            description // ✅ La descripción traducida y limpia
+          };
+
+          localStorage.setItem(cacheKey, JSON.stringify(translatedJob));
+
+          return {
+            ...job,
+            ...translatedJob
+          };
+        }),
+        catchError(() => of(job))
       );
-
-      // 4. Traducir descripción (Texto plano)
-      const descriptionRequest = this.translateService.translate(cleanDescription, target).pipe(
-        map(res => res?.translatedText || cleanDescription),
-        catchError(() => cleanDescription)
-      );
-
-      // 5. Ejecutar ambas en paralelo
-      return lastValueFrom(
-        forkJoin({
-          title: titleRequest,
-          description: descriptionRequest
-        })
-      ).then(({ title, description }) => {
-        const translatedJob: Partial<Job> = {
-          title,
-          description
-        };
-
-        localStorage.setItem(cacheKey, JSON.stringify(translatedJob));
-
-        return {
-          ...job,
-          ...translatedJob
-        };
-      }).catch((err) => {
-        console.warn('Error traduciendo job:', job.slug, err);
-        return job;
-      });
     });
 
-    const translatedJobs = await Promise.all(requests);
-
-    this.latestJobs = translatedJobs.map(job => ({ ...job }));
-    this.translatingHomeJobs = false;
-    this.cdr.detectChanges();
+    forkJoin(requests).subscribe({
+      next: (translatedJobs) => {
+        this.latestJobs = translatedJobs.map(job => ({ ...job }));
+        this.translatingHomeJobs = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.homeTranslationError = 'No se pudieron traducir las vacantes recientes.';
+        this.translatingHomeJobs = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   changeInterfaceLanguage(lang: 'es' | 'en'): void {
