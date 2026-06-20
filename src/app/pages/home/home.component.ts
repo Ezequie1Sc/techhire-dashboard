@@ -119,20 +119,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
       )
       .subscribe({
         next: (response) => {
-          // 1. Obtener todos los datos de la respuesta
           const allJobs = response.data || [];
-
-          // 2. ORDENAR POR FECHA (Los más recientes primero)
           const sortedJobs = allJobs.sort((a, b) => {
             const dateA = a.created_at || 0;
             const dateB = b.created_at || 0;
-            return dateB - dateA; // Orden descendente
+            return dateB - dateA; 
           });
 
-          // 3. Tomar solo los primeros 8 trabajos (los más recientes)
           const latest = sortedJobs.slice(0, 8);
 
-          // 4. Guardar en las variables del componente
           this.originalLatestJobs = latest.map(job => ({ ...job }));
           this.latestJobs = latest.map(job => ({ ...job }));
 
@@ -159,7 +154,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.translateHomeJobs(language);
   }
 
-  // 🔥 NUEVA LÓGICA: Traduce Título, Descripción, Tipos y Tags
+  // 🔥 NUEVA LÓGICA ROBUSTA: 2 llamadas por trabajo
   private translateHomeJobs(target: 'es' | 'en'): void {
     if (!this.originalLatestJobs.length) return;
 
@@ -171,6 +166,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       const cacheKey = `home_job_translation_${job.slug}_${target}`;
       const cached = localStorage.getItem(cacheKey);
 
+      // Si ya está en caché, lo devolvemos directamente
       if (cached) {
         return of({
           ...job,
@@ -178,31 +174,40 @@ export class HomeComponent implements OnInit, AfterViewInit {
         });
       }
 
-      const textToTranslate = [
-        job.title || '',
-        job.description || '', // <-- Agregado la descripción
+      // 1. Traducir Título (solo el título)
+      const titleRequest = this.translateService.translate(job.title || '', target).pipe(
+        map(res => res.translatedText || job.title)
+      );
+
+      // 2. Traducir el resto del contenido (Descripción + Tipos + Tags)
+      //    Se juntan con saltos de línea para que la API los mantenga
+      const bodyText = [
+        job.description || '',
         job.job_types?.join(' · ') || '',
         job.tags?.join(' · ') || ''
-      ].join('\n|||\n');
+      ].join('\n\n');
 
-      return this.translateService.translate(textToTranslate, target).pipe(
-        map((response) => {
-          // Dividimos el resultado usando el mismo separador
-          const parts = (response.translatedText || '').split('\n|||\n');
+      const bodyRequest = this.translateService.translate(bodyText, target).pipe(
+        map(res => {
+          const parts = (res.translatedText || '').split('\n\n');
+          return {
+            description: parts[0] || job.description,
+            job_types: parts[1] ? parts[1].split(' · ').map(item => item.trim()).filter(Boolean) : job.job_types,
+            tags: parts[2] ? parts[2].split(' · ').map(item => item.trim()).filter(Boolean) : job.tags
+          };
+        })
+      );
 
+      // Ejecutamos ambas traducciones en paralelo
+      return forkJoin([titleRequest, bodyRequest]).pipe(
+        map(([translatedTitle, translatedBody]) => {
           const translatedJob: Partial<Job> = {
-            title: parts[0] || job.title,
-            // 🔥 La descripción traducida está en la posición 1
-            description: parts[1] ? parts[1].trim() : job.description,
-            job_types: parts[2]
-              ? parts[2].split(' · ').map(item => item.trim()).filter(Boolean)
-              : job.job_types,
-            tags: parts[3]
-              ? parts[3].split(' · ').map(item => item.trim()).filter(Boolean)
-              : job.tags
+            title: translatedTitle,
+            description: translatedBody.description,
+            job_types: translatedBody.job_types,
+            tags: translatedBody.tags
           };
 
-          // Guardamos en localStorage para no volver a traducir
           localStorage.setItem(cacheKey, JSON.stringify(translatedJob));
 
           return {
@@ -210,7 +215,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             ...translatedJob
           };
         }),
-        catchError(() => of(job)) // Si falla, devolvemos el job original
+        catchError(() => of(job))
       );
     });
 
@@ -228,13 +233,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // Método para cambiar el idioma de la interfaz
   changeInterfaceLanguage(lang: 'es' | 'en'): void {
     this.translationService.setLanguage(lang);
     this.cdr.detectChanges();
   }
 
-  // Método auxiliar para traducciones
   t(key: string): string {
     return this.translationService.translate(key);
   }
