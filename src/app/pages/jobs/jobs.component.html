@@ -185,12 +185,15 @@
           <button 
             type="button"
             (click)="changeJobsLanguage('es')"
+            [disabled]="translatingJobs"
             class="px-3 py-1.5 rounded-full text-[11px] font-medium transition flex items-center gap-1.5"
             [class.bg-[#141414]]="selectedJobsLanguage === 'es'"
             [class.text-white]="selectedJobsLanguage === 'es'"
             [class.text-[#6b665f]]="selectedJobsLanguage !== 'es'"
             [class.border]="selectedJobsLanguage !== 'es'"
             [class.border-black/5]="selectedJobsLanguage !== 'es'"
+            [class.opacity-50]="translatingJobs"
+            [class.cursor-not-allowed]="translatingJobs"
           >
             <span class="text-sm">🇲🇽</span> Español
           </button>
@@ -198,12 +201,15 @@
           <button 
             type="button"
             (click)="changeJobsLanguage('en')"
+            [disabled]="translatingJobs"
             class="px-3 py-1.5 rounded-full text-[11px] font-medium transition flex items-center gap-1.5"
             [class.bg-[#141414]]="selectedJobsLanguage === 'en'"
             [class.text-white]="selectedJobsLanguage === 'en'"
             [class.text-[#6b665f]]="selectedJobsLanguage !== 'en'"
             [class.border]="selectedJobsLanguage !== 'en'"
             [class.border-black/5]="selectedJobsLanguage !== 'en'"
+            [class.opacity-50]="translatingJobs"
+            [class.cursor-not-allowed]="translatingJobs"
           >
             <span class="text-sm">🇺🇸</span> English
           </button>
@@ -211,15 +217,31 @@
           <button 
             type="button"
             (click)="changeJobsLanguage('original')"
+            [disabled]="translatingJobs"
             class="px-3 py-1.5 rounded-full text-[11px] font-medium transition flex items-center gap-1.5"
             [class.bg-[#141414]]="selectedJobsLanguage === 'original'"
             [class.text-white]="selectedJobsLanguage === 'original'"
             [class.text-[#6b665f]]="selectedJobsLanguage !== 'original'"
             [class.border]="selectedJobsLanguage !== 'original'"
             [class.border-black/5]="selectedJobsLanguage !== 'original'"
+            [class.opacity-50]="translatingJobs"
+            [class.cursor-not-allowed]="translatingJobs"
           >
             Original
           </button>
+
+          @if (translatingJobs) {
+            <span class="translating-indicator">
+              <span class="translating-dot"></span>
+              <span class="translating-dot"></span>
+              <span class="translating-dot"></span>
+              {{ translation.translate('jobs.translating') }}
+            </span>
+          }
+
+          @if (translationError) {
+            <span class="jobs-translation-error">{{ translationError }}</span>
+          }
         </div>
 
         <!-- Chips de Filtros Activos -->
@@ -307,9 +329,22 @@
 
       <!-- GRID DE VACANTES -->
       @if (!loading && !error && jobs.length > 0) {
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          @for (job of jobs; track job.slug) {
-            <app-job-card [job]="job"></app-job-card>
+        <div class="relative">
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" [class.translating-grid]="translatingJobs">
+            @for (job of jobs; track job.slug) {
+              <app-job-card [job]="job"></app-job-card>
+            }
+          </div>
+
+          @if (translatingJobs) {
+            <div class="translating-overlay">
+              <div class="translating-pill">
+                <span class="translating-dot"></span>
+                <span class="translating-dot"></span>
+                <span class="translating-dot"></span>
+                <span>{{ translation.translate('jobs.translating') }}</span>
+              </div>
+            </div>
           }
         </div>
       }

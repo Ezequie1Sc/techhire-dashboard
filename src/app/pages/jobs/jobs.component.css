@@ -426,7 +426,83 @@ button {
   font-weight: 700;
 }
 
-/* ===== RESPONSIVE ===== */
+/* ===== INDICADOR DE TRADUCCIÓN ===== */
+
+.translating-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  background: #fbfaf7;
+  border: 1px solid rgba(20, 20, 20, 0.06);
+  color: #6b665f;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  animation: filterSlideIn 0.25s ease-out forwards;
+}
+
+.translating-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #141414;
+  animation: translatingPulse 1s ease-in-out infinite;
+}
+
+.translating-dot:nth-child(1) { animation-delay: 0s; }
+.translating-dot:nth-child(2) { animation-delay: 0.15s; }
+.translating-dot:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes translatingPulse {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Overlay minimalista sobre el grid mientras traduce */
+.translating-grid {
+  opacity: 0.45;
+  filter: saturate(0.7);
+  pointer-events: none;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.translating-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 2rem;
+  pointer-events: none;
+}
+
+.translating-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #141414;
+  color: #ffffff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  box-shadow: 0 12px 30px rgba(20, 20, 20, 0.25);
+  animation: filterSlideIn 0.3s cubic-bezier(0.2, 0, 0, 1) forwards;
+}
+
+.translating-pill .translating-dot {
+  background: #ffffff;
+}
+
+
 @media (max-width: 1024px) {
   .jobs-filter-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
