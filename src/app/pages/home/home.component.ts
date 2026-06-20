@@ -154,7 +154,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.translateHomeJobs(language);
   }
 
-  // 🔥 VERSIÓN FINAL Y DEFINITIVA: Traduce Título y Descripción por separado
+  // ✅ TU SOLUCIÓN: Traduce Título y Descripción por separado con ForkJoin de objeto
   private translateHomeJobs(target: 'es' | 'en'): void {
     if (!this.originalLatestJobs.length) return;
 
@@ -166,7 +166,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       const cacheKey = `home_job_translation_${job.slug}_${target}`;
       const cached = localStorage.getItem(cacheKey);
 
-      // Si ya está en caché, lo devolvemos
       if (cached) {
         return of({
           ...job,
@@ -174,22 +173,28 @@ export class HomeComponent implements OnInit, AfterViewInit {
         });
       }
 
-      // 🔥 SOLUCIÓN: 2 llamadas separadas y simples
-      const titleRequest = this.translateService.translate(job.title || '', target).pipe(
-        map(res => res.translatedText || job.title)
-      );
+      const titleRequest = this.translateService
+        .translate(job.title || '', target)
+        .pipe(
+          map(res => res.translatedText || job.title),
+          catchError(() => of(job.title))
+        );
 
-      const descriptionRequest = this.translateService.translate(job.description || '', target).pipe(
-        map(res => res.translatedText || job.description)
-      );
+      const descriptionRequest = this.translateService
+        .translate(job.description || '', target)
+        .pipe(
+          map(res => res.translatedText || job.description),
+          catchError(() => of(job.description))
+        );
 
-      // Ejecutamos ambas en paralelo
-      return forkJoin([titleRequest, descriptionRequest]).pipe(
-        map(([translatedTitle, translatedDescription]) => {
+      return forkJoin({
+        title: titleRequest,
+        description: descriptionRequest
+      }).pipe(
+        map(({ title, description }) => {
           const translatedJob: Partial<Job> = {
-            title: translatedTitle,
-            description: translatedDescription
-            // Dejamos job_types y tags en su idioma original para no romper el diseño
+            title,
+            description
           };
 
           localStorage.setItem(cacheKey, JSON.stringify(translatedJob));
