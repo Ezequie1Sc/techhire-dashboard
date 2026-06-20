@@ -200,13 +200,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
           catchError(() => of(job.title || ''))
         );
 
-    const descriptionRequest = this.translateService
-  .translate(cleanDescription, target)
-  .pipe(
-    map(res => this.cleanJobDescription(res.translatedText || cleanDescription)),
-    catchError(() => of(cleanDescription))
-  );
+   const originalDescription = job.description || '';
 
+const descriptionRequest = this.translateService
+  .translate(originalDescription, target)
+  .pipe(
+    map(res => res.translatedText || originalDescription),
+    catchError(() => of(originalDescription))
+  );
       return forkJoin({
         title: titleRequest,
         description: descriptionRequest

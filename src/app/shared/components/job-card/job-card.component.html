@@ -69,11 +69,11 @@
         }
       </div>
 
-      <!-- Description -->
-<div class="flex-1 mb-4">
-  <p class="text-sm text-[#6b665f] leading-relaxed line-clamp-3">
-    {{ job.description }}
-  </p>
+    <div class="flex-1 mb-4">
+  <p
+    class="text-sm text-[#6b665f] leading-relaxed line-clamp-3"
+    [innerHTML]="job.description"
+  ></p>
 </div>
 
       <!-- Tags -->
