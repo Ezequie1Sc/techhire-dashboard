@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   loading = false;
   error: string | null = null;
 
-  // ✅ 1. SIEMPRE INICIA EN 'original' (Se eliminó el localStorage)
+  // 🔥 SIEMPRE INICIA EN ORIGINAL
   selectedHomeJobsLanguage: HomeJobsLanguage = 'original';
 
   translatingHomeJobs = false;
@@ -77,30 +77,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     const carousel = this.categoriesCarousel?.nativeElement;
-
     if (!carousel) return;
 
-    carousel.addEventListener('touchstart', () => {
-      carousel.classList.add('is-touching');
-    });
-
-    carousel.addEventListener('touchend', () => {
-      setTimeout(() => {
-        carousel.classList.remove('is-touching');
-      }, 100);
-    });
-
-    carousel.addEventListener('touchcancel', () => {
-      carousel.classList.remove('is-touching');
-    });
-
+    carousel.addEventListener('touchstart', () => carousel.classList.add('is-touching'));
+    carousel.addEventListener('touchend', () => setTimeout(() => carousel.classList.remove('is-touching'), 100));
+    carousel.addEventListener('touchcancel', () => carousel.classList.remove('is-touching'));
     carousel.addEventListener('scroll', () => {
       carousel.classList.add('is-touching');
       clearTimeout((carousel as any)._scrollTimeout);
-
-      (carousel as any)._scrollTimeout = setTimeout(() => {
-        carousel.classList.remove('is-touching');
-      }, 1500);
+      (carousel as any)._scrollTimeout = setTimeout(() => carousel.classList.remove('is-touching'), 1500);
     });
   }
 
@@ -109,6 +94,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.error = null;
     this.latestJobs = [];
     this.originalLatestJobs = [];
+    this.selectedHomeJobsLanguage = 'original';
     this.homeTranslationError = null;
 
     this.jobService.getJobs(1)
@@ -121,7 +107,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       .subscribe({
         next: (response) => {
           const allJobs = response.data || [];
-
           const sortedJobs = allJobs.sort((a, b) => {
             const dateA = a.created_at || 0;
             const dateB = b.created_at || 0;
@@ -135,10 +120,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
           if (this.latestJobs.length === 0) {
             this.error = 'No se encontraron vacantes disponibles.';
-            return;
           }
-
-          // ✅ 2. ELIMINADO: Ya no se traduce automáticamente al cargar
         },
         error: () => {
           this.error = 'No se pudieron cargar las vacantes.';
@@ -146,7 +128,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       });
   }
 
-  // ✅ 3. ELIMINADO EL localStorage Y SE DEJA SIEMPRE EN 'original'
   changeHomeJobsLanguage(language: HomeJobsLanguage): void {
     this.selectedHomeJobsLanguage = language;
     this.homeTranslationError = null;
@@ -157,9 +138,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
       return;
     }
 
+    // 🔥 SOLO SE TRADUCE SI EL USUARIO HACE CLIC
     this.translateHomeJobs(language);
   }
 
+  // ✅ TRADUCCIÓN DE TÍTULO Y DESCRIPCIÓN DE LAS CARDS
   private translateHomeJobs(target: 'es' | 'en'): void {
     if (!this.originalLatestJobs.length) return;
 
@@ -174,7 +157,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       if (cached) {
         try {
           const parsed = JSON.parse(cached);
-
           if (parsed.title && parsed.description) {
             return of({
               ...job,
@@ -182,30 +164,31 @@ export class HomeComponent implements OnInit, AfterViewInit {
               description: parsed.description
             });
           }
-
           localStorage.removeItem(cacheKey);
         } catch {
           localStorage.removeItem(cacheKey);
         }
       }
 
-      // Limpieza de la descripción (tal como la tenías)
-      const cleanDescription = this.cleanJobDescription(job.description || '');
-
+      // 1. Traducir Título
       const titleRequest = this.translateService
         .translate(job.title || '', target)
         .pipe(
-          map(res => res.translatedText || job.title || ''),
+          map(res => res?.translatedText || job.title || ''),
           catchError(() => of(job.title || ''))
         );
 
-      const originalDescription = job.description || '';
+      // 2. Limpiar y traducir Descripción (Sin etiquetas HTML)
+      const cleanDescription = (job.description || '')
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
 
       const descriptionRequest = this.translateService
-        .translate(originalDescription, target)
+        .translate(cleanDescription, target)
         .pipe(
-          map(res => res.translatedText || originalDescription),
-          catchError(() => of(originalDescription))
+          map(res => res?.translatedText || cleanDescription),
+          catchError(() => of(cleanDescription))
         );
 
       return forkJoin({
@@ -213,18 +196,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
         description: descriptionRequest
       }).pipe(
         map(({ title, description }) => {
-          const translatedJob = {
-            title,
-            description
-          };
-
+          const translatedJob = { title, description };
           localStorage.setItem(cacheKey, JSON.stringify(translatedJob));
-
-          return {
-            ...job,
-            title,
-            description
-          };
+          return { ...job, title, description };
         }),
         catchError(() => of(job))
       );
@@ -242,22 +216,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.cdr.detectChanges();
       }
     });
-  }
-
-  private cleanJobDescription(description: string): string {
-    const textarea = document.createElement('textarea');
-
-    textarea.innerHTML = String(description || '')
-      .replace(/<br\s*\/?>/gi, '\n')
-      .replace(/<\/p>/gi, '\n')
-      .replace(/<\/li>/gi, '\n');
-
-    return textarea.value
-      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-      .replace(/<[^>]*>/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
   }
 
   changeInterfaceLanguage(lang: 'es' | 'en'): void {
@@ -282,24 +240,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
   scrollCarousel(direction: 'left' | 'right'): void {
     const carousel = this.jobsCarousel?.nativeElement;
     if (!carousel) return;
-
     const scrollAmount = carousel.clientWidth * 0.85;
-
-    carousel.scrollBy({
-      left: direction === 'right' ? scrollAmount : -scrollAmount,
-      behavior: 'smooth'
-    });
+    carousel.scrollBy({ left: direction === 'right' ? scrollAmount : -scrollAmount, behavior: 'smooth' });
   }
 
   scrollCategories(direction: 'left' | 'right'): void {
     const carousel = this.categoriesCarousel?.nativeElement;
     if (!carousel) return;
-
     const scrollAmount = 200;
-
-    carousel.scrollBy({
-      left: direction === 'right' ? scrollAmount : -scrollAmount,
-      behavior: 'smooth'
-    });
+    carousel.scrollBy({ left: direction === 'right' ? scrollAmount : -scrollAmount, behavior: 'smooth' });
   }
 }
