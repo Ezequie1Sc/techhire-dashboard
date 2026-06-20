@@ -154,7 +154,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.translateHomeJobs(language);
   }
 
-  // 🔥 FUNCIÓN CORREGIDA Y SIN ERRORES DE TIPADO
+  // 🔥 VERSIÓN DEFINITIVA: Verifica y traduce TODAS las descripciones
   private async translateHomeJobs(target: 'es' | 'en'): Promise<void> {
     if (!this.originalLatestJobs.length) return;
 
@@ -174,25 +174,38 @@ export class HomeComponent implements OnInit, AfterViewInit {
         });
       }
 
-      // Limpiar HTML de la descripción para que el traductor no falle
+      // 1. Limpiar el HTML de la descripción
       const cleanDescription = (job.description || '')
         .replace(/<[^>]*>/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
 
-      // Título
+      // 2. Si la descripción está vacía o es demasiado corta, la saltamos
+      if (cleanDescription.length < 3) {
+        const emptyResult = {
+          title: job.title,
+          description: job.description
+        };
+        localStorage.setItem(cacheKey, JSON.stringify(emptyResult));
+        return Promise.resolve({
+          ...job,
+          ...emptyResult
+        });
+      }
+
+      // 3. Traducir título
       const titleRequest = this.translateService.translate(job.title || '', target).pipe(
-        map(res => res.translatedText || job.title),
+        map(res => res?.translatedText || job.title),
         catchError(() => job.title)
       );
 
-      // Descripción
+      // 4. Traducir descripción (Texto plano)
       const descriptionRequest = this.translateService.translate(cleanDescription, target).pipe(
-        map(res => res.translatedText || cleanDescription),
+        map(res => res?.translatedText || cleanDescription),
         catchError(() => cleanDescription)
       );
 
-      // Usamos forkJoin + lastValueFrom para obtener los resultados en un solo objeto seguro
+      // 5. Ejecutar ambas en paralelo
       return lastValueFrom(
         forkJoin({
           title: titleRequest,
@@ -210,7 +223,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
           ...job,
           ...translatedJob
         };
-      }).catch(() => job);
+      }).catch((err) => {
+        console.warn('Error traduciendo job:', job.slug, err);
+        return job;
+      });
     });
 
     const translatedJobs = await Promise.all(requests);
