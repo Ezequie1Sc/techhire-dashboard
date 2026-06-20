@@ -1,29 +1,46 @@
 const translate = require('google-translate-api-x');
 
-const MAX_CHUNK_SIZE = 900;
+const MAX_CHUNK_SIZE = 800;
 
-/**
- * Divide textos largos en bloques para evitar
- * errores de Google Translate con descripciones extensas.
- */
+function cleanText(text) {
+  return String(text || '')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<\/li>/gi, '\n')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function splitText(text) {
-  const cleanText = String(text || '').trim();
+  const clean = cleanText(text);
 
-  const paragraphs = cleanText
-    .split(/\n+/)
-    .filter(Boolean);
+  if (!clean) return [];
 
+  const words = clean.split(/\s+/);
   const chunks = [];
+
   let currentChunk = '';
 
-  for (const paragraph of paragraphs) {
-    if ((currentChunk + paragraph).length > MAX_CHUNK_SIZE) {
-      if (currentChunk) {
+  for (const word of words) {
+    const nextChunk = `${currentChunk} ${word}`.trim();
+
+    if (nextChunk.length > MAX_CHUNK_SIZE) {
+      if (currentChunk.trim()) {
         chunks.push(currentChunk.trim());
       }
-      currentChunk = paragraph;
+
+      currentChunk = word;
     } else {
-      currentChunk += '\n' + paragraph;
+      currentChunk = nextChunk;
     }
   }
 
@@ -44,7 +61,7 @@ module.exports = async function handler(req, res) {
   try {
     const { text, target } = req.body;
 
-    if (!text) {
+    if (!text || !String(text).trim()) {
       return res.status(400).json({
         error: 'Texto requerido'
       });
@@ -69,7 +86,7 @@ module.exports = async function handler(req, res) {
     }
 
     return res.status(200).json({
-      translatedText: translatedChunks.join('\n\n')
+      translatedText: translatedChunks.join(' ')
     });
 
   } catch (error) {
