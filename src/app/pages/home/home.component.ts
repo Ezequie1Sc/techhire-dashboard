@@ -37,8 +37,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   loading = false;
   error: string | null = null;
 
-  selectedHomeJobsLanguage: HomeJobsLanguage =
-    (localStorage.getItem('homeJobsLanguage') as HomeJobsLanguage) || 'original';
+  // ✅ 1. SIEMPRE INICIA EN 'original' (Se eliminó el localStorage)
+  selectedHomeJobsLanguage: HomeJobsLanguage = 'original';
 
   translatingHomeJobs = false;
   homeTranslationError: string | null = null;
@@ -138,9 +138,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             return;
           }
 
-          if (this.selectedHomeJobsLanguage !== 'original') {
-            this.translateHomeJobs(this.selectedHomeJobsLanguage);
-          }
+          // ✅ 2. ELIMINADO: Ya no se traduce automáticamente al cargar
         },
         error: () => {
           this.error = 'No se pudieron cargar las vacantes.';
@@ -148,9 +146,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
       });
   }
 
+  // ✅ 3. ELIMINADO EL localStorage Y SE DEJA SIEMPRE EN 'original'
   changeHomeJobsLanguage(language: HomeJobsLanguage): void {
     this.selectedHomeJobsLanguage = language;
-    localStorage.setItem('homeJobsLanguage', language);
     this.homeTranslationError = null;
 
     if (language === 'original') {
@@ -191,6 +189,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         }
       }
 
+      // Limpieza de la descripción (tal como la tenías)
       const cleanDescription = this.cleanJobDescription(job.description || '');
 
       const titleRequest = this.translateService
@@ -200,14 +199,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
           catchError(() => of(job.title || ''))
         );
 
-   const originalDescription = job.description || '';
+      const originalDescription = job.description || '';
 
-const descriptionRequest = this.translateService
-  .translate(originalDescription, target)
-  .pipe(
-    map(res => res.translatedText || originalDescription),
-    catchError(() => of(originalDescription))
-  );
+      const descriptionRequest = this.translateService
+        .translate(originalDescription, target)
+        .pipe(
+          map(res => res.translatedText || originalDescription),
+          catchError(() => of(originalDescription))
+        );
+
       return forkJoin({
         title: titleRequest,
         description: descriptionRequest
@@ -244,22 +244,21 @@ const descriptionRequest = this.translateService
     });
   }
 
- private cleanJobDescription(description: string): string {
-  const textarea = document.createElement('textarea');
+  private cleanJobDescription(description: string): string {
+    const textarea = document.createElement('textarea');
 
-  textarea.innerHTML = String(description || '')
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/p>/gi, '\n')
-    .replace(/<\/li>/gi, '\n');
+    textarea.innerHTML = String(description || '')
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/p>/gi, '\n')
+      .replace(/<\/li>/gi, '\n');
 
-  return textarea.value
-    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
+    return textarea.value
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
 
   changeInterfaceLanguage(lang: 'es' | 'en'): void {
     this.translationService.setLanguage(lang);
