@@ -185,34 +185,41 @@ export class JobsComponent implements OnInit {
     this.updatePagination();
   }
 
-  // 🔥 NUEVA FUNCIÓN: Normalización condicional
+  // 🔥 NUEVO normalizeJobTitle (Maneja paréntesis compuestos)
   private normalizeJobTitle(title: string, language: 'original' | 'es' | 'en'): string {
     if (!title || language === 'original') return title;
 
-    const replacement = language === 'es' ? '(Todos los géneros)' : '(All genders)';
-    const patterns = [
-      /\(m\/w\/d\)/gi, /\(m\/f\/d\)/gi, /\(w\/m\/d\)/gi,
-      /\(f\/m\/d\)/gi, /\(d\/m\/w\)/gi, /\(d\/w\/m\)/gi,
-      /\(w\/d\/m\)/gi, /\(f\/d\/m\)/gi
-    ];
+    const replacement = language === 'es'
+      ? 'Todos los géneros'
+      : 'All genders';
 
-    let result = title;
-    let hasMatch = false;
+    const genderCodePattern =
+      /(m\/w\/d|m\/f\/d|w\/m\/d|f\/m\/d|d\/m\/w|d\/w\/m|w\/d\/m|f\/d\/m)/gi;
 
-    for (const pattern of patterns) {
-      if (pattern.test(result)) {
-        result = result.replace(pattern, replacement);
-        hasMatch = true;
-      }
-    }
+    return title
+      .replace(/\(([^)]*)\)/g, (match, content) => {
+        if (!genderCodePattern.test(content)) return match;
 
-    return hasMatch ? result.replace(/\s+/g, ' ').trim() : title;
+        genderCodePattern.lastIndex = 0;
+
+        const normalizedContent = content
+          .replace(genderCodePattern, replacement)
+          .replace(/todos los géneros/gi, language === 'es' ? 'Todos los géneros' : 'All genders')
+          .replace(/all genders/gi, language === 'es' ? 'Todos los géneros' : 'All genders');
+
+        return `(${normalizedContent})`;
+      })
+      .replace(/\(todos los géneros\)/gi, language === 'es' ? '(Todos los géneros)' : '(All genders)')
+      .replace(/\(all genders\)/gi, language === 'es' ? '(Todos los géneros)' : '(All genders)')
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 
   private readonly JOBS_CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
   private getJobsTranslationCache(job: Job, target: TranslationTarget): Partial<Job> | null {
-    const cacheKey = `jobs_translation_${job.slug}_${target}`;
+    // 🔥 Cache key actualizada a V2
+    const cacheKey = `jobs_translation_v2_${job.slug}_${target}`;
     const cached = localStorage.getItem(cacheKey);
     if (!cached) return null;
 
@@ -231,7 +238,8 @@ export class JobsComponent implements OnInit {
   }
 
   private setJobsTranslationCache(job: Job, target: TranslationTarget, data: Partial<Job>): void {
-    const cacheKey = `jobs_translation_${job.slug}_${target}`;
+    // 🔥 Cache key actualizada a V2
+    const cacheKey = `jobs_translation_v2_${job.slug}_${target}`;
     localStorage.setItem(cacheKey, JSON.stringify({ ...data, timestamp: Date.now() }));
   }
 

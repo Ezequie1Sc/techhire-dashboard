@@ -37,6 +37,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   loading = false;
   error: string | null = null;
 
+  // SIEMPRE INICIA EN ORIGINAL
   selectedHomeJobsLanguage: HomeJobsLanguage = 'original';
 
   translatingHomeJobs = false;
@@ -77,6 +78,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     const carousel = this.categoriesCarousel?.nativeElement;
     if (!carousel) return;
+
     carousel.addEventListener('touchstart', () => carousel.classList.add('is-touching'));
     carousel.addEventListener('touchend', () => setTimeout(() => carousel.classList.remove('is-touching'), 100));
     carousel.addEventListener('touchcancel', () => carousel.classList.remove('is-touching'));
@@ -139,31 +141,37 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.translateHomeJobs(language);
   }
 
-  // 🔥 NUEVA FUNCIÓN: Solo reemplaza si encuentra los patrones
+  // 🔥 NUEVO normalizeJobTitle (Maneja paréntesis compuestos)
   private normalizeJobTitle(title: string, language: 'original' | 'es' | 'en'): string {
     if (!title || language === 'original') return title;
 
-    const replacement = language === 'es' ? '(Todos los géneros)' : '(All genders)';
-    const patterns = [
-      /\(m\/w\/d\)/gi, /\(m\/f\/d\)/gi, /\(w\/m\/d\)/gi,
-      /\(f\/m\/d\)/gi, /\(d\/m\/w\)/gi, /\(d\/w\/m\)/gi,
-      /\(w\/d\/m\)/gi, /\(f\/d\/m\)/gi
-    ];
+    const replacement = language === 'es'
+      ? 'Todos los géneros'
+      : 'All genders';
 
-    let result = title;
-    let hasMatch = false;
+    const genderCodePattern =
+      /(m\/w\/d|m\/f\/d|w\/m\/d|f\/m\/d|d\/m\/w|d\/w\/m|w\/d\/m|f\/d\/m)/gi;
 
-    for (const pattern of patterns) {
-      if (pattern.test(result)) {
-        result = result.replace(pattern, replacement);
-        hasMatch = true;
-      }
-    }
+    return title
+      .replace(/\(([^)]*)\)/g, (match, content) => {
+        if (!genderCodePattern.test(content)) return match;
 
-    return hasMatch ? result.replace(/\s+/g, ' ').trim() : title;
+        genderCodePattern.lastIndex = 0;
+
+        const normalizedContent = content
+          .replace(genderCodePattern, replacement)
+          .replace(/todos los géneros/gi, language === 'es' ? 'Todos los géneros' : 'All genders')
+          .replace(/all genders/gi, language === 'es' ? 'Todos los géneros' : 'All genders');
+
+        return `(${normalizedContent})`;
+      })
+      .replace(/\(todos los géneros\)/gi, language === 'es' ? '(Todos los géneros)' : '(All genders)')
+      .replace(/\(all genders\)/gi, language === 'es' ? '(Todos los géneros)' : '(All genders)')
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 
-  // ✅ Lógica corregida de traducción
+  // ✅ TRADUCCIÓN CON CACHE V2
   private translateHomeJobs(target: 'es' | 'en'): void {
     if (!this.originalLatestJobs.length) return;
 
@@ -171,18 +179,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.homeTranslationError = null;
     this.cdr.detectChanges();
 
-    const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+    const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 días
 
     const requests = this.originalLatestJobs.map((job) => {
-      const cacheKey = `home_job_translation_${job.slug}_${target}`;
+      // 🔥 Cache key actualizada a V2
+      const cacheKey = `home_job_translation_v2_${job.slug}_${target}`;
       const cached = localStorage.getItem(cacheKey);
 
       if (cached) {
         try {
           const parsed = JSON.parse(cached);
           const isExpired = !parsed.timestamp || (Date.now() - parsed.timestamp) > CACHE_TTL_MS;
+
           if (parsed.title && parsed.description && !isExpired) {
-            return of({ ...job, title: parsed.title, description: parsed.description });
+            return of({
+              ...job,
+              title: parsed.title,
+              description: parsed.description
+            });
           }
           localStorage.removeItem(cacheKey);
         } catch {
@@ -191,34 +205,41 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
 
       let titleFailed = false;
-      const titleRequest = this.translateService.translate(job.title || '', target).pipe(
-        map(res => {
-          const translated = res?.translatedText || job.title || '';
-          // 🔥 Aplica normalización SOLO si el traducido contiene los patrones
-          return this.normalizeJobTitle(translated, target);
-        }),
-        catchError(() => {
-          titleFailed = true;
-          // 🔥 Si falla la API, normalizamos el título original
-          return of(this.normalizeJobTitle(job.title || '', target));
-        })
-      );
+      const titleRequest = this.translateService
+        .translate(job.title || '', target)
+        .pipe(
+          map(res => this.normalizeJobTitle(res?.translatedText || job.title || '', target)),
+          catchError(() => {
+            titleFailed = true;
+            return of(this.normalizeJobTitle(job.title || '', target));
+          })
+        );
 
-      const cleanDescription = (job.description || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+      // 2. Limpiar y traducir Descripción
+      const cleanDescription = (job.description || '')
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
 
       let descriptionFailed = false;
-      const descriptionRequest = this.translateService.translate(cleanDescription, target).pipe(
-        map(res => res?.translatedText || cleanDescription),
-        catchError(() => {
-          descriptionFailed = true;
-          return of(cleanDescription);
-        })
-      );
+      const descriptionRequest = this.translateService
+        .translate(cleanDescription, target)
+        .pipe(
+          map(res => res?.translatedText || cleanDescription),
+          catchError(() => {
+            descriptionFailed = true;
+            return of(cleanDescription);
+          })
+        );
 
-      return forkJoin({ title: titleRequest, description: descriptionRequest }).pipe(
+      return forkJoin({
+        title: titleRequest,
+        description: descriptionRequest
+      }).pipe(
         map(({ title, description }) => {
           if (!titleFailed && !descriptionFailed) {
-            localStorage.setItem(cacheKey, JSON.stringify({ title, description, timestamp: Date.now() }));
+            const translatedJob = { title, description, timestamp: Date.now() };
+            localStorage.setItem(cacheKey, JSON.stringify(translatedJob));
           }
           return { ...job, title, description };
         }),
