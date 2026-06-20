@@ -146,6 +146,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.homeTranslationError = null;
 
     if (language === 'original') {
+      // 🔥 Clonación profunda para forzar el renderizado del carrusel
       this.latestJobs = this.originalLatestJobs.map(job => ({ ...job }));
       this.cdr.detectChanges();
       return;
@@ -154,7 +155,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.translateHomeJobs(language);
   }
 
-  // ✅ TU SOLUCIÓN: Traduce Título y Descripción por separado con ForkJoin de objeto
+  // ✅ Traduce Título y Descripción por separado y fuerza la actualización
   private translateHomeJobs(target: 'es' | 'en'): void {
     if (!this.originalLatestJobs.length) return;
 
@@ -167,9 +168,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
       const cached = localStorage.getItem(cacheKey);
 
       if (cached) {
+        const parsed = JSON.parse(cached);
         return of({
           ...job,
-          ...JSON.parse(cached)
+          ...parsed
         });
       }
 
@@ -210,7 +212,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     forkJoin(requests).subscribe({
       next: (translatedJobs) => {
-        this.latestJobs = translatedJobs;
+        // 🔥 Clonación profunda para forzar la actualización del carrusel
+        this.latestJobs = translatedJobs.map(job => ({ ...job }));
         this.translatingHomeJobs = false;
         this.cdr.detectChanges();
       },
