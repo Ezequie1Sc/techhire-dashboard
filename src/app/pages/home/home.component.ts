@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { finalize, forkJoin, of } from 'rxjs';
+import { finalize, forkJoin, lastValueFrom } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { JobService } from '../../core/services/job.service';
@@ -154,8 +154,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.translateHomeJobs(language);
   }
 
-  // 🔥 LÓGICA FINAL: Limpia el HTML de la descripción antes de traducirla
-  private translateHomeJobs(target: 'es' | 'en'): void {
+  // 🔥 FUNCIÓN CORREGIDA Y SIN ERRORES DE TIPADO
+  private async translateHomeJobs(target: 'es' | 'en'): Promise<void> {
     if (!this.originalLatestJobs.length) return;
 
     this.translatingHomeJobs = true;
@@ -168,67 +168,56 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       if (cached) {
         const parsed = JSON.parse(cached);
-        return of({
+        return Promise.resolve({
           ...job,
           ...parsed
         });
       }
 
-      // 1. Traducir el título (texto plano)
-      const titleRequest = this.translateService
-        .translate(job.title || '', target)
-        .pipe(
-          map(res => res.translatedText || job.title),
-          catchError(() => of(job.title))
-        );
-
-      // 2. Limpiar el HTML de la descripción ANTES de traducirla
+      // Limpiar HTML de la descripción para que el traductor no falle
       const cleanDescription = (job.description || '')
-        .replace(/<[^>]*>/g, ' ') // Elimina todas las etiquetas HTML (como <p>, <br>, etc.)
-        .replace(/\s+/g, ' ')     // Elimina espacios múltiples
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/\s+/g, ' ')
         .trim();
 
-      const descriptionRequest = this.translateService
-        .translate(cleanDescription, target)
-        .pipe(
-          map(res => res.translatedText || cleanDescription),
-          catchError(() => of(cleanDescription))
-        );
-
-      // 3. Ejecutar ambas peticiones en paralelo
-      return forkJoin({
-        title: titleRequest,
-        description: descriptionRequest
-      }).pipe(
-        map(({ title, description }) => {
-          const translatedJob: Partial<Job> = {
-            title,
-            description // ✅ La descripción traducida y limpia
-          };
-
-          localStorage.setItem(cacheKey, JSON.stringify(translatedJob));
-
-          return {
-            ...job,
-            ...translatedJob
-          };
-        }),
-        catchError(() => of(job))
+      // Título
+      const titleRequest = this.translateService.translate(job.title || '', target).pipe(
+        map(res => res.translatedText || job.title),
+        catchError(() => job.title)
       );
+
+      // Descripción
+      const descriptionRequest = this.translateService.translate(cleanDescription, target).pipe(
+        map(res => res.translatedText || cleanDescription),
+        catchError(() => cleanDescription)
+      );
+
+      // Usamos forkJoin + lastValueFrom para obtener los resultados en un solo objeto seguro
+      return lastValueFrom(
+        forkJoin({
+          title: titleRequest,
+          description: descriptionRequest
+        })
+      ).then(({ title, description }) => {
+        const translatedJob: Partial<Job> = {
+          title,
+          description
+        };
+
+        localStorage.setItem(cacheKey, JSON.stringify(translatedJob));
+
+        return {
+          ...job,
+          ...translatedJob
+        };
+      }).catch(() => job);
     });
 
-    forkJoin(requests).subscribe({
-      next: (translatedJobs) => {
-        this.latestJobs = translatedJobs.map(job => ({ ...job }));
-        this.translatingHomeJobs = false;
-        this.cdr.detectChanges();
-      },
-      error: () => {
-        this.homeTranslationError = 'No se pudieron traducir las vacantes recientes.';
-        this.translatingHomeJobs = false;
-        this.cdr.detectChanges();
-      }
-    });
+    const translatedJobs = await Promise.all(requests);
+
+    this.latestJobs = translatedJobs.map(job => ({ ...job }));
+    this.translatingHomeJobs = false;
+    this.cdr.detectChanges();
   }
 
   changeInterfaceLanguage(lang: 'es' | 'en'): void {
