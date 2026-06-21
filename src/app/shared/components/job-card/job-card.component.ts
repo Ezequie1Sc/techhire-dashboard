@@ -20,10 +20,6 @@ export class JobCardComponent {
     return this.favoriteService.isFavorite(this.job.slug);
   }
 
-  get displayTitle(): string {
-    return this.normalizeJobTitle(this.job.title || '');
-  }
-
   toggleFavorite(event: Event): void {
     event.preventDefault();
     event.stopPropagation();
@@ -36,20 +32,5 @@ export class JobCardComponent {
       month: 'long',
       day: 'numeric'
     });
-  }
-
-  private normalizeJobTitle(title: string): string {
-    return title
-      .replace(/\(m\/w\/d\)/gi, '(Todos los géneros)')
-      .replace(/\(m\/f\/d\)/gi, '(Todos los géneros)')
-      .replace(/\(w\/m\/d\)/gi, '(Todos los géneros)')
-      .replace(/\(f\/m\/d\)/gi, '(Todos los géneros)')
-      .replace(/\(d\/m\/w\)/gi, '(Todos los géneros)')
-      .replace(/\(d\/w\/m\)/gi, '(Todos los géneros)')
-      .replace(/\(w\/d\/m\)/gi, '(Todos los géneros)')
-      .replace(/\(f\/d\/m\)/gi, '(Todos los géneros)')
-      .replace(/\(all genders\)/gi, '(Todos los géneros)')
-      .replace(/\s+/g, ' ')
-      .trim();
   }
 }
