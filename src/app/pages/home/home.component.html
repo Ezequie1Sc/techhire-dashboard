@@ -1,11 +1,11 @@
 <div class="min-h-screen bg-[#f4f1ec] text-[#141414] overflow-hidden">
 
   <!-- HERO -->
-  <section class="max-w-7xl mx-auto px-5 md:px-8 pt-10 pb-16 animate-fade-in-up">
+  <section class="premium-section max-w-7xl mx-auto px-5 md:px-8 pt-10 pb-16 animate-fade-in-up">
     <div class="rounded-[2rem] bg-[#fbfaf7] border border-black/5 shadow-[0_30px_80px_rgba(0,0,0,0.08)] overflow-hidden">
       <div class="grid lg:grid-cols-2 gap-8 items-center p-6 md:p-10 lg:p-14">
         <div>
-          <h1 class="text-5xl md:text-7xl tracking-[-0.04em] leading-[1.05] max-w-2xl text-[#141414]">
+          <h1 class="premium-title text-5xl md:text-7xl tracking-[-0.04em] leading-[1.05] max-w-2xl text-[#141414]">
             <span class="font-normal">{{ t('home.heroTitle') }}</span>
           </h1>
 
@@ -39,7 +39,7 @@
               src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80"
               alt="Equipo tech colaborando"
               loading="eager"
-              class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              class="premium-image w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
           </div>
 
@@ -48,7 +48,7 @@
               src="./oficina-tech.jpg"
               alt="Trabajo remoto global"
               loading="lazy"
-              class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              class="premium-image w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
           </div>
 
@@ -57,7 +57,7 @@
               src="https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&w=800&q=80"
               alt="Diseñador trabajando"
               loading="lazy"
-              class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              class="premium-image w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
           </div>
         </div>
@@ -66,7 +66,7 @@
   </section>
 
   <!-- CATEGORÍAS -->
-  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-16 animate-fade-in-up animate-delay-1">
+  <section class="premium-section max-w-7xl mx-auto px-5 md:px-8 pb-16 animate-fade-in-up animate-delay-1">
     <div class="flex items-center gap-4 mb-6">
       <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
         {{ t('home.techSection') }}
@@ -107,11 +107,11 @@
   </section>
 
   <!-- BENTO INFO -->
-  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20 animate-fade-in-up animate-delay-2">
+  <section class="premium-section max-w-7xl mx-auto px-5 md:px-8 pb-20 animate-fade-in-up animate-delay-2">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
 
       <!-- Card Grande Blanca -->
-      <article class="md:col-span-2 bg-white rounded-[2rem] p-8 md:p-10 border border-black/5 flex flex-col justify-between min-h-[256px] transition-all duration-300 ease-out hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)]">
+      <article class="premium-card md:col-span-2 bg-white rounded-[2rem] p-8 md:p-10 border border-black/5 flex flex-col justify-between min-h-[256px] transition-all duration-300 ease-out hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)]">
         <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
           {{ t('home.processTitle') }}
         </span>
@@ -128,8 +128,8 @@
       </article>
 
       <!-- Features Cards -->
-      <article class="feature-card md:col-span-1 min-h-[256px]">
-        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80" alt="Explorar empleos" loading="lazy" />
+      <article class="premium-card feature-card md:col-span-1 min-h-[256px]">
+        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80" alt="Explorar empleos" loading="lazy" class="premium-image" />
         <div>
           <span class="text-white/30 text-xs font-medium tracking-wide">01</span>
           <h3 class="text-2xl font-semibold tracking-tight">{{ t('home.explore') }}</h3>
@@ -137,8 +137,8 @@
         </div>
       </article>
 
-      <article class="feature-card md:col-span-1 min-h-[256px]">
-        <img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=600&q=80" alt="Filtrar por categoría" loading="lazy" />
+      <article class="premium-card feature-card md:col-span-1 min-h-[256px]">
+        <img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&w=600&q=80" alt="Filtrar por categoría" loading="lazy" class="premium-image" />
         <div>
           <span class="text-white/30 text-xs font-medium tracking-wide">02</span>
           <h3 class="text-2xl font-semibold tracking-tight">{{ t('home.filter') }}</h3>
@@ -146,8 +146,8 @@
         </div>
       </article>
 
-      <article class="feature-card md:col-span-1 min-h-[256px]">
-        <img src="https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?auto=format&fit=crop&w=600&q=80" alt="Guardar favoritos" loading="lazy" />
+      <article class="premium-card feature-card md:col-span-1 min-h-[256px]">
+        <img src="https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?auto=format&fit=crop&w=600&q=80" alt="Guardar favoritos" loading="lazy" class="premium-image" />
         <div>
           <span class="text-white/30 text-xs font-medium tracking-wide">03</span>
           <h3 class="text-2xl font-semibold tracking-tight">{{ t('home.save') }}</h3>
@@ -156,8 +156,8 @@
       </article>
 
       <!-- Vacantes destacadas -->
-      <article class="feature-card md:col-span-2 min-h-[256px]">
-        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1200&q=80" alt="Vacantes destacadas" loading="lazy" />
+      <article class="premium-card feature-card md:col-span-2 min-h-[256px]">
+        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1200&q=80" alt="Vacantes destacadas" loading="lazy" class="premium-image" />
         <div>
           <h3 class="text-white text-2xl md:text-3xl font-semibold tracking-[-0.04em] leading-tight">
             {{ t('home.recentJobs') }}
@@ -165,8 +165,8 @@
         </div>
       </article>
 
-      <article class="feature-card md:col-span-1 min-h-[256px]">
-        <img src="./remotea.webp" alt="Aplicar a vacante" loading="lazy" />
+      <article class="premium-card feature-card md:col-span-1 min-h-[256px]">
+        <img src="./remotea.webp" alt="Aplicar a vacante" loading="lazy" class="premium-image" />
         <div>
           <span class="text-white/30 text-xs font-medium tracking-wide">04</span>
           <h3 class="text-2xl font-semibold tracking-tight">{{ t('home.apply') }}</h3>
@@ -178,7 +178,7 @@
   </section>
 
   <!-- VACANTES -->
-  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20 animate-fade-in-up animate-delay-3">
+  <section class="premium-section max-w-7xl mx-auto px-5 md:px-8 pb-20 animate-fade-in-up animate-delay-3">
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
       <div>
         <span class="text-xs uppercase tracking-[0.2em] text-[#8a8177] font-bold">
@@ -282,7 +282,7 @@
   </section>
 
   <!-- CTA FINAL -->
-  <section class="max-w-7xl mx-auto px-5 md:px-8 pb-20 animate-fade-in-up animate-delay-4">
+  <section class="premium-section max-w-7xl mx-auto px-5 md:px-8 pb-20 animate-fade-in-up animate-delay-4">
     <div class="relative overflow-hidden rounded-[2.5rem] bg-[#141414] text-white p-8 md:p-14">
       <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80" alt="Oficina moderna tech" loading="lazy" class="absolute inset-0 w-full h-full object-cover opacity-20" />
       

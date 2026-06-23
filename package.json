@@ -18,7 +18,9 @@
     "@angular/platform-browser": "^22.0.0",
     "@angular/router": "^22.0.0",
     "google-translate-api-x": "^10.7.3",
+    "gsap": "^3.15.0",
     "rxjs": "~7.8.0",
+    "split-type": "^0.3.4",
     "tailwindcss": "^4.3.0",
     "tslib": "^2.3.0"
   },

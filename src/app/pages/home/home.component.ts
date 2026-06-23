@@ -2,6 +2,7 @@ import {
   Component,
   OnInit,
   AfterViewInit,
+  OnDestroy,
   ChangeDetectorRef,
   ElementRef,
   ViewChild
@@ -11,12 +12,18 @@ import { CommonModule } from '@angular/common';
 import { finalize, forkJoin, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import SplitType from 'split-type';
+
 import { JobService } from '../../core/services/job.service';
 import { TranslationService } from '../../core/i18n/translation.service';
 import { TranslateService } from '../../core/services/translate.service';
 import { Job } from '../../models/job.model';
 
 import { JobCardComponent } from '../../shared/components/job-card/job-card.component';
+
+gsap.registerPlugin(ScrollTrigger);
 
 type HomeJobsLanguage = 'original' | 'es' | 'en';
 
@@ -27,7 +34,7 @@ type HomeJobsLanguage = 'original' | 'es' | 'en';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('jobsCarousel') jobsCarousel!: ElementRef<HTMLDivElement>;
   @ViewChild('categoriesCarousel') categoriesCarousel!: ElementRef<HTMLDivElement>;
 
@@ -37,11 +44,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   loading = false;
   error: string | null = null;
 
-  // SIEMPRE INICIA EN ORIGINAL
   selectedHomeJobsLanguage: HomeJobsLanguage = 'original';
 
   translatingHomeJobs = false;
   homeTranslationError: string | null = null;
+
+  private splitInstances: SplitType[] = [];
+  private scrollTriggers: ScrollTrigger[] = [];
 
   techCategories = [
     'Frontend',
@@ -76,17 +85,112 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.initCategoriesTouch();
+    this.initPremiumAnimations();
+  }
+
+  ngOnDestroy(): void {
+    this.splitInstances.forEach((split) => split.revert());
+    this.scrollTriggers.forEach((trigger) => trigger.kill());
+  }
+
+  private initCategoriesTouch(): void {
     const carousel = this.categoriesCarousel?.nativeElement;
     if (!carousel) return;
 
     carousel.addEventListener('touchstart', () => carousel.classList.add('is-touching'));
     carousel.addEventListener('touchend', () => setTimeout(() => carousel.classList.remove('is-touching'), 100));
     carousel.addEventListener('touchcancel', () => carousel.classList.remove('is-touching'));
+
     carousel.addEventListener('scroll', () => {
       carousel.classList.add('is-touching');
       clearTimeout((carousel as any)._scrollTimeout);
       (carousel as any)._scrollTimeout = setTimeout(() => carousel.classList.remove('is-touching'), 1500);
     });
+  }
+
+  private initPremiumAnimations(): void {
+    const titleElements = document.querySelectorAll<HTMLElement>('.premium-title');
+
+    titleElements.forEach((title) => {
+     const split = new SplitType(title, {
+  types: ['words', 'chars']
+});
+
+      this.splitInstances.push(split);
+
+      gsap.from(split.chars, {
+        opacity: 0,
+        y: 42,
+        rotateX: -55,
+        filter: 'blur(10px)',
+        stagger: 0.018,
+        duration: 1,
+        ease: 'power4.out',
+        delay: 0.1
+      });
+    });
+
+    gsap.utils.toArray<HTMLElement>('.premium-section').forEach((section) => {
+      const animation = gsap.from(section, {
+        opacity: 0,
+        y: 90,
+        scale: 0.97,
+        filter: 'blur(14px)',
+        duration: 1.05,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 84%',
+          once: true
+        }
+      });
+
+      if (animation.scrollTrigger) {
+        this.scrollTriggers.push(animation.scrollTrigger);
+      }
+    });
+
+    gsap.utils.toArray<HTMLElement>('.premium-card').forEach((card) => {
+      const animation = gsap.from(card, {
+        opacity: 0,
+        y: 70,
+        scale: 0.95,
+        duration: 0.9,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 88%',
+          once: true
+        }
+      });
+
+      if (animation.scrollTrigger) {
+        this.scrollTriggers.push(animation.scrollTrigger);
+      }
+    });
+
+    gsap.utils.toArray<HTMLElement>('.premium-image').forEach((image) => {
+      const animation = gsap.from(image, {
+        scale: 1.12,
+        opacity: 0,
+        duration: 1.2,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: image,
+          start: 'top 90%',
+          once: true
+        }
+      });
+
+      if (animation.scrollTrigger) {
+        this.scrollTriggers.push(animation.scrollTrigger);
+      }
+    });
+
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 300);
   }
 
   loadLatestJobs(): void {
@@ -102,6 +206,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
         finalize(() => {
           this.loading = false;
           this.cdr.detectChanges();
+
+          setTimeout(() => {
+            ScrollTrigger.refresh();
+          }, 150);
         })
       )
       .subscribe({
@@ -141,7 +249,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.translateHomeJobs(language);
   }
 
-  // 🔥 NUEVO normalizeJobTitle (Maneja paréntesis compuestos)
   private normalizeJobTitle(title: string, language: 'original' | 'es' | 'en'): string {
     if (!title || language === 'original') return title;
 
@@ -171,7 +278,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       .trim();
   }
 
-  // ✅ TRADUCCIÓN CON CACHE V2
   private translateHomeJobs(target: 'es' | 'en'): void {
     if (!this.originalLatestJobs.length) return;
 
@@ -179,10 +285,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.homeTranslationError = null;
     this.cdr.detectChanges();
 
-    const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 días
+    const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
     const requests = this.originalLatestJobs.map((job) => {
-      // 🔥 Cache key actualizada a V2
       const cacheKey = `home_job_translation_v2_${job.slug}_${target}`;
       const cached = localStorage.getItem(cacheKey);
 
@@ -198,6 +303,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
               description: parsed.description
             });
           }
+
           localStorage.removeItem(cacheKey);
         } catch {
           localStorage.removeItem(cacheKey);
@@ -205,6 +311,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
 
       let titleFailed = false;
+
       const titleRequest = this.translateService
         .translate(job.title || '', target)
         .pipe(
@@ -215,13 +322,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
           })
         );
 
-      // 2. Limpiar y traducir Descripción
       const cleanDescription = (job.description || '')
         .replace(/<[^>]*>/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
 
       let descriptionFailed = false;
+
       const descriptionRequest = this.translateService
         .translate(cleanDescription, target)
         .pipe(
@@ -241,6 +348,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
             const translatedJob = { title, description, timestamp: Date.now() };
             localStorage.setItem(cacheKey, JSON.stringify(translatedJob));
           }
+
           return { ...job, title, description };
         }),
         catchError(() => of(job))
@@ -252,6 +360,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.latestJobs = translatedJobs.map(job => ({ ...job }));
         this.translatingHomeJobs = false;
         this.cdr.detectChanges();
+
+        setTimeout(() => {
+          ScrollTrigger.refresh();
+        }, 150);
       },
       error: () => {
         this.homeTranslationError = 'No se pudieron traducir las vacantes recientes.';
@@ -283,14 +395,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
   scrollCarousel(direction: 'left' | 'right'): void {
     const carousel = this.jobsCarousel?.nativeElement;
     if (!carousel) return;
+
     const scrollAmount = carousel.clientWidth * 0.85;
-    carousel.scrollBy({ left: direction === 'right' ? scrollAmount : -scrollAmount, behavior: 'smooth' });
+
+    carousel.scrollBy({
+      left: direction === 'right' ? scrollAmount : -scrollAmount,
+      behavior: 'smooth'
+    });
   }
 
   scrollCategories(direction: 'left' | 'right'): void {
     const carousel = this.categoriesCarousel?.nativeElement;
     if (!carousel) return;
+
     const scrollAmount = 200;
-    carousel.scrollBy({ left: direction === 'right' ? scrollAmount : -scrollAmount, behavior: 'smooth' });
+
+    carousel.scrollBy({
+      left: direction === 'right' ? scrollAmount : -scrollAmount,
+      behavior: 'smooth'
+    });
   }
 }

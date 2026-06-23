@@ -316,3 +316,14 @@ button {
   .home-translation-actions { width: 100%; }
   .home-translation-btn { flex: 1; }
 }
+/* ===== PREMIUM TITLE CHAR/WORD ===== */
+.premium-title .char,
+.premium-title .word {
+  display: inline-block;
+}
+
+.premium-section,
+.premium-card,
+.premium-image {
+  will-change: transform, opacity, filter;
+}
